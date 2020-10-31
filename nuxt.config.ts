@@ -48,14 +48,14 @@ const config: NuxtConfig = {
   vuetify: {
     customVariables: ['@/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       default: 'light',
       disable: false,
       options: {},
       themes: {
         light: {
-          primary: colors.purple.darken1,
-          secondary: colors.purple.lighten1,
+          primary: colors.purple.darken4,
+          secondary: colors.purple.darken3,
           accent: colors.amber.lighten3,
           info: colors.blue.lighten1,
           success: colors.green.accent3,
