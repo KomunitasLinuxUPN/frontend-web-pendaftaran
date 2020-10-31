@@ -2,26 +2,43 @@
   <div class="home">
     <h1>Homepage</h1>
 
-    <p class="red white--text">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam suscipit
-      in, a quae cumque fugiat placeat impedit exercitationem provident sint
-      tempore non ullam quisquam sunt qui incidunt harum alias! Hic.
-    </p>
-    <p class="pink lighten-4 red--text text--darken-4">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda eos
-      totam alias, sed praesentium mollitia similique id libero sit impedit
-      exercitationem commodi. Mollitia consectetur eligendi id quo dolores
-      eveniet magnam?
-    </p>
+    <v-spacer class="mt-4" />
 
-    <h1 class="display-4">Massive Display</h1>
-    <h4 class="display-1">Smaller Display</h4>
-    <p class="headline">This is a paragraph headline</p>
-    <p class="subheading">This is a paragraph subheading</p>
-    <p class="caption">This is a paragraph caption</p>
+    <h1 class="headline">Coloring button using class</h1>
+    <v-btn class="pink white--text">Click Me</v-btn>
+    <v-btn dark color="pink">Click Me</v-btn>
 
-    <p class="subheading font-weight-bold">
-      This is a paragraph subheading (bold)
-    </p>
+    <v-spacer class="mt-4" />
+
+    <h1 class="headline">Custom button effect</h1>
+    <v-btn depressed color="pink white--text">Click Me</v-btn>
+    <v-btn text color="pink">Click Me</v-btn>
+
+    <v-spacer class="mt-4" />
+
+    <h1 class="headline">Icon button</h1>
+    <v-btn depressed color="pink white--text">
+      <v-icon left>mdi-email</v-icon>
+      <span>Email Me</span>
+    </v-btn>
+
+    <v-btn depressed small color="pink white--text">
+      <v-icon left small>mdi-email</v-icon>
+      <span>Email Me</span>
+    </v-btn>
+
+    <v-btn depressed large color="pink white--text">
+      <span>Email Me</span>
+      <v-icon right large>mdi-email</v-icon>
+    </v-btn>
+
+    <v-spacer class="mt-4" />
+
+    <h1 class="headline">
+      Coloring the button using color props and Circle button (FAB)
+    </h1>
+    <v-btn fab dark color="purple">
+      <v-icon>mdi-heart</v-icon>
+    </v-btn>
   </div>
 </template>
