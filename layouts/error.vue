@@ -1,17 +1,23 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/"> Home page </NuxtLink>
+    <v-col cols="12">
+      <div class="text-center">
+        <h1 v-if="error.statusCode === 404">
+          {{ pageNotFound }}
+        </h1>
+        <h1 v-else>
+          {{ otherError }}
+        </h1>
+        <nuxt-link to="/"> Home page </nuxt-link>
+      </div>
+    </v-col>
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref, useMeta } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   layout: 'empty',
   props: {
     error: {
@@ -19,20 +25,21 @@ export default {
       default: null,
     },
   },
-  data() {
+  head: {},
+  setup(props) {
+    const pageNotFound = ref('404 Not Found')
+    const otherError = ref('An error occurred')
+
+    const { title } = useMeta()
+    title.value =
+      props.error.statusCode === 404 ? pageNotFound.value : otherError.value
+
     return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred',
+      pageNotFound,
+      otherError,
     }
   },
-  head() {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title,
-    }
-  },
-}
+})
 </script>
 
 <style scoped>
