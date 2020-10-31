@@ -1,91 +1,27 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div class="home">
+    <h1>Homepage</h1>
+
+    <p class="red white--text">
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam suscipit
+      in, a quae cumque fugiat placeat impedit exercitationem provident sint
+      tempore non ullam quisquam sunt qui incidunt harum alias! Hic.
+    </p>
+    <p class="pink lighten-4 red--text text--darken-4">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda eos
+      totam alias, sed praesentium mollitia similique id libero sit impedit
+      exercitationem commodi. Mollitia consectetur eligendi id quo dolores
+      eveniet magnam?
+    </p>
+
+    <h1 class="display-4">Massive Display</h1>
+    <h4 class="display-1">Smaller Display</h4>
+    <p class="headline">This is a paragraph headline</p>
+    <p class="subheading">This is a paragraph subheading</p>
+    <p class="caption">This is a paragraph caption</p>
+
+    <p class="subheading font-weight-bold">
+      This is a paragraph subheading (bold)
+    </p>
+  </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
-
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
-export default defineComponent({
-  components: {
-    Logo,
-    VuetifyLogo,
-  },
-})
-</script>
