@@ -18,8 +18,8 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawerIsOpen" app class="indigo">
-      <p>Test</p>
+    <v-navigation-drawer v-model="drawerIsOpen" app class="primary">
+      <p class="warning">Test</p>
     </v-navigation-drawer>
   </nav>
 </template>

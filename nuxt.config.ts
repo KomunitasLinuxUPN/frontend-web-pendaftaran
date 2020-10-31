@@ -1,16 +1,15 @@
-// import colors from 'vuetify/es5/util/colors'
-
 import { NuxtConfig } from '@nuxt/types'
+import colors from 'vuetify/es5/util/colors'
 
 const config: NuxtConfig = {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    titleTemplate: '%s - vuetify-todo-app',
-    title: 'vuetify-todo-app',
+    titleTemplate: '%s - Vuetify Todo App',
+    title: 'Vuetify Todo App',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Simple Todo App' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -46,23 +45,35 @@ const config: NuxtConfig = {
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
-  // vuetify: {
-  //   customVariables: ['~/assets/variables.scss'],
-  //   theme: {
-  //     dark: true,
-  //     themes: {
-  //       dark: {
-  //         primary: colors.blue.darken2,
-  //         accent: colors.grey.darken3,
-  //         secondary: colors.amber.darken3,
-  //         info: colors.teal.lighten1,
-  //         warning: colors.amber.base,
-  //         error: colors.deepOrange.accent4,
-  //         success: colors.green.accent3,
-  //       },
-  //     },
-  //   },
-  // },
+  vuetify: {
+    customVariables: ['@/assets/variables.scss'],
+    theme: {
+      dark: true,
+      default: 'light',
+      disable: false,
+      options: {},
+      themes: {
+        light: {
+          primary: colors.purple.darken1,
+          secondary: colors.purple.lighten1,
+          accent: colors.amber.lighten3,
+          info: colors.blue.lighten1,
+          success: colors.green.accent3,
+          warning: colors.yellow.darken3,
+          error: colors.red.lighten2,
+        },
+        dark: {
+          primary: colors.blue.darken2,
+          secondary: colors.amber.darken3,
+          accent: colors.grey.darken3,
+          info: colors.blue.lighten1,
+          success: colors.green.accent3,
+          warning: colors.yellow.darken3,
+          error: colors.red.lighten2,
+        },
+      },
+    },
+  },
 }
 
 export default config
