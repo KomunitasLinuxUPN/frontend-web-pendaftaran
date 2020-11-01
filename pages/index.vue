@@ -4,14 +4,39 @@
 
     <v-container class="my-16">
       <v-row class="mb-6" dense>
-        <v-btn small text color="grey" @click="sortBy('title')">
-          <v-icon left small>mdi-folder</v-icon>
-          <span class="caption text-lowercase">By Project Name</span>
-        </v-btn>
-        <v-btn small text color="grey" @click="sortBy('personName')">
-          <v-icon left small>mdi-account</v-icon>
-          <span class="caption text-lowercase">By Person Name</span>
-        </v-btn>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              color="grey"
+              v-bind="attrs"
+              v-on="on"
+              @click="sortBy('title')"
+            >
+              <v-icon left small>mdi-folder</v-icon>
+              <span class="caption text-lowercase">By Project Name</span>
+            </v-btn>
+          </template>
+          <span>Sort projects by project name</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              v-bind="attrs"
+              color="grey"
+              v-on="on"
+              @click="sortBy('personName')"
+            >
+              <v-icon left small>mdi-account</v-icon>
+              <span class="caption text-lowercase">By Person Name</span>
+            </v-btn>
+          </template>
+          <span>Sort projects by persons</span>
+        </v-tooltip>
       </v-row>
 
       <v-card v-for="project in projects" :key="project.id" flat>
