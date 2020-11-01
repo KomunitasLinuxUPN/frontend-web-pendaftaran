@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <nav-bar />
-    <v-main class="grey lighten-4">
+    <v-main class="grey lighten-4 mx-4 mb-4">
       <nuxt />
     </v-main>
   </v-app>
