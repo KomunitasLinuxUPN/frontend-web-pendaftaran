@@ -1,6 +1,6 @@
 <template>
-  <div class="dashboard">
-    <h3 class="subheading grey--text">Dashboard</h3>
+  <div class="team">
+    <h3 class="subheading grey--text">This is a team page</h3>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   head: {
-    title: 'Dashboard',
+    title: 'Team',
   },
 })
 </script>
