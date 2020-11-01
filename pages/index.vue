@@ -3,15 +3,26 @@
     <h1 class="subtitle-1 grey--text">Dashboard</h1>
 
     <v-container class="my-16">
+      <v-row class="mb-6" dense>
+        <v-btn small text color="grey" @click="sortBy('title')">
+          <v-icon left small>mdi-folder</v-icon>
+          <span class="caption text-lowercase">By Project Name</span>
+        </v-btn>
+        <v-btn small text color="grey" @click="sortBy('personName')">
+          <v-icon left small>mdi-account</v-icon>
+          <span class="caption text-lowercase">By Person Name</span>
+        </v-btn>
+      </v-row>
+
       <v-card v-for="project in projects" :key="project.id" flat>
-        <v-row no-gutters :class="`pa-6 project ${project.status}`">
+        <v-row dense no-gutters :class="`pa-6 project ${project.status}`">
           <v-col cols="12" md="6">
             <h1 class="caption grey--text">Project Title</h1>
             <p>{{ project.title }}</p>
           </v-col>
           <v-col cols="6" sm="4" md="2">
             <h1 class="caption grey--text">Person</h1>
-            <p>{{ project.person }}</p>
+            <p>{{ project.personName }}</p>
           </v-col>
           <v-col cols="6" sm="4" md="2">
             <h1 class="caption grey--text">Due By</h1>
@@ -35,13 +46,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { uuid } from 'vue-uuid'
 
 interface Project {
+  [x: string]: string
   id: string
   title: string
-  person: string
+  personName: string
   due: string
   status: string
   content: string
@@ -52,11 +64,11 @@ export default defineComponent({
     title: 'Dashboard',
   },
   setup() {
-    const projects: Project[] = [
+    const projects = reactive<Project[]>([
       {
         id: uuid.v4(),
         title: 'Design a new website',
-        person: 'Amir Hakim',
+        personName: 'Amir Hakim',
         due: '1st Jan 2019',
         status: 'ongoing',
         content:
@@ -65,7 +77,7 @@ export default defineComponent({
       {
         id: uuid.v4(),
         title: 'Code up the homepage',
-        person: 'Doni Alfiando',
+        personName: 'Doni Alfiando',
         due: '10th Jan 2019',
         status: 'complete',
         content:
@@ -74,7 +86,7 @@ export default defineComponent({
       {
         id: uuid.v4(),
         title: 'Design video thumbnails',
-        person: 'Rafael',
+        personName: 'Rafael',
         due: '20th Dec 2018',
         status: 'complete',
         content:
@@ -83,16 +95,23 @@ export default defineComponent({
       {
         id: uuid.v4(),
         title: 'Create a community forum',
-        person: 'Uzumaki Bayu',
+        personName: 'Uzumaki Bayu',
         due: '20th Oct 2018',
         status: 'overdue',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
       },
-    ]
+    ])
+
+    function sortBy(projAttr: 'personName' | 'title') {
+      projects.sort((proj1, proj2) => {
+        return proj1[projAttr] < proj2[projAttr] ? -1 : 1
+      })
+    }
 
     return {
       projects,
+      sortBy,
     }
   },
 })
