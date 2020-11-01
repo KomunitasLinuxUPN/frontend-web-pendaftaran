@@ -18,8 +18,14 @@
             <p>{{ project.due }}</p>
           </v-col>
           <v-col cols="2" sm="4" md="2">
-            <h1 class="caption grey--text">Status</h1>
-            <p>{{ project.status }}</p>
+            <div class="text-right">
+              <v-chip
+                small
+                :class="`white--text caption my-2 project ${project.status}`"
+              >
+                {{ project.status }}
+              </v-chip>
+            </div>
           </v-col>
         </v-row>
         <v-divider />
@@ -94,7 +100,7 @@ export default defineComponent({
 
 <style scoped>
 .project.complete {
-  border-left: 4px solid #3cd1c2;
+  border-left: 4px solid #26de81;
 }
 
 .project.ongoing {
@@ -103,5 +109,17 @@ export default defineComponent({
 
 .project.overdue {
   border-left: 4px solid tomato;
+}
+
+.v-chip.ongoing {
+  background: orange;
+}
+
+.v-chip.complete {
+  background: #26de81;
+}
+
+.v-chip.overdue {
+  background: #fc5c65;
 }
 </style>
