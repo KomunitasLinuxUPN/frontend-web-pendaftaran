@@ -34,11 +34,14 @@
 
     <v-navigation-drawer v-model="drawerIsOpen" app class="secondary">
       <v-row justify="center" class="mt-5 text-center">
-        <v-col cols="12">
+        <v-col>
           <v-avatar size="100">
             <img src="/images/avatar-1.png" />
           </v-avatar>
           <p class="subtitle-1 white--text mt-3">Amir Muhammad Hakim</p>
+        </v-col>
+        <v-col>
+          <the-dialog />
         </v-col>
       </v-row>
 
@@ -61,6 +64,8 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
+import TheDialog from '@/components/ui/TheDialog.vue'
+
 interface NavLink {
   icon: string
   text: string
@@ -68,6 +73,9 @@ interface NavLink {
 }
 
 export default defineComponent({
+  components: {
+    TheDialog,
+  },
   setup() {
     const drawerIsOpen = ref(false)
     const links: NavLink[] = [

@@ -56,7 +56,7 @@ const config: NuxtConfig = {
         light: {
           primary: colors.purple.darken4,
           secondary: colors.purple.darken3,
-          accent: colors.amber.lighten3,
+          accent: colors.amber.darken3,
           info: colors.blue.lighten1,
           success: colors.green.accent3,
           warning: colors.yellow.darken3,
