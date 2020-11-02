@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { uuid } from 'vue-uuid'
 
 interface Team {
   id: string
@@ -53,31 +52,31 @@ export default defineComponent({
   setup() {
     const team: Team[] = [
       {
-        id: uuid.v4(),
+        id: 'u1',
         name: 'Amir Hakim',
         role: 'Web developer',
         avatar: 'images/avatar-1.png',
       },
       {
-        id: uuid.v4(),
+        id: 'u2',
         name: 'Rafael',
         role: 'Graphic designer',
         avatar: 'images/avatar-2.png',
       },
       {
-        id: uuid.v4(),
+        id: 'u3',
         name: 'Doni Alfiando',
         role: 'Web developer',
         avatar: 'images/avatar-3.png',
       },
       {
-        id: uuid.v4(),
+        id: 'u4',
         name: 'Uzumaki Bayu',
         role: 'Social media maverick',
         avatar: 'images/avatar-4.png',
       },
       {
-        id: uuid.v4(),
+        id: 'u5',
         name: 'Uzumaki Saburo',
         role: 'Sales guru',
         avatar: 'images/avatar-5.png',

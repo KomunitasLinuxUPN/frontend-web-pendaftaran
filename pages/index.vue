@@ -47,7 +47,7 @@
           </v-col>
           <v-col cols="6" sm="4" md="2">
             <h1 class="caption grey--text">Person</h1>
-            <p>{{ project.personName }}</p>
+            <p>{{ project.person.name }}</p>
           </v-col>
           <v-col cols="6" sm="4" md="2">
             <h1 class="caption grey--text">Due By</h1>
@@ -71,66 +71,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from '@nuxtjs/composition-api'
-import { uuid } from 'vue-uuid'
+import { defineComponent, reactive, useContext } from '@nuxtjs/composition-api'
 
-interface Project {
-  [x: string]: string
-  id: string
-  title: string
-  personName: string
-  due: string
-  status: string
-  content: string
-}
+import Project from '@/models/Project'
+import {
+  projectsStore,
+  GetterType as ProjectsGetterType,
+} from '@/store/projects'
 
 export default defineComponent({
   head: {
     title: 'Dashboard',
   },
   setup() {
-    const projects = reactive<Project[]>([
-      {
-        id: uuid.v4(),
-        title: 'Design a new website',
-        personName: 'Amir Hakim',
-        due: '1st Jan 2019',
-        status: 'ongoing',
-        content:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
-      },
-      {
-        id: uuid.v4(),
-        title: 'Code up the homepage',
-        personName: 'Doni Alfiando',
-        due: '10th Jan 2019',
-        status: 'complete',
-        content:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
-      },
-      {
-        id: uuid.v4(),
-        title: 'Design video thumbnails',
-        personName: 'Rafael',
-        due: '20th Dec 2018',
-        status: 'complete',
-        content:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
-      },
-      {
-        id: uuid.v4(),
-        title: 'Create a community forum',
-        personName: 'Uzumaki Bayu',
-        due: '20th Oct 2018',
-        status: 'overdue',
-        content:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
-      },
+    const { store } = useContext()
+
+    let projects = reactive<Project[]>([
+      ...store.getters[`${projectsStore}/${ProjectsGetterType.PROJECTS}`],
     ])
 
     function sortBy(projAttr: 'personName' | 'title') {
-      projects.sort((proj1, proj2) => {
-        return proj1[projAttr] < proj2[projAttr] ? -1 : 1
+      projects = projects.sort((proj1, proj2) => {
+        switch (projAttr) {
+          case 'title':
+            return proj1.title < proj2.title ? -1 : 1
+          case 'personName':
+            return proj1.person.name < proj2.person.name ? -1 : 1
+        }
       })
     }
 
