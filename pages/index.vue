@@ -73,7 +73,7 @@
 <script lang="ts">
 import { defineComponent, reactive, useContext } from '@nuxtjs/composition-api'
 
-import Project from '@/models/Project'
+import { Project } from '@/models/Project'
 import {
   projectsStore,
   GetterType as ProjectsGetterType,
@@ -85,7 +85,6 @@ export default defineComponent({
   },
   setup() {
     const { store } = useContext()
-
     let projects = reactive<Project[]>([
       ...store.getters[`${projectsStore}/${ProjectsGetterType.PROJECTS}`],
     ])

@@ -36,9 +36,9 @@
       <v-row justify="center" class="mt-5 text-center">
         <v-col>
           <v-avatar size="100">
-            <img src="/images/avatar-1.png" />
+            <img :src="currentUser.avatar" />
           </v-avatar>
-          <p class="subtitle-1 white--text mt-3">Amir Muhammad Hakim</p>
+          <p class="subtitle-1 white--text mt-3">{{ currentUser.name }}</p>
         </v-col>
         <v-col>
           <input-project-dialog />
@@ -62,9 +62,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
 import InputProjectDialog from '@/components/projects/InputProjectDialog.vue'
+import { authStore, GetterType as AuthGetterType } from '@/store/auth'
+import Person from '~/models/Person'
 
 interface NavLink {
   icon: string
@@ -84,9 +86,15 @@ export default defineComponent({
       { icon: 'mdi-account', text: 'Team', route: '/team' },
     ]
 
+    const { store } = useContext()
+    const currentUser = store.getters[
+      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+    ] as Person
+
     return {
       drawerIsOpen,
       links,
+      currentUser,
     }
   },
 })

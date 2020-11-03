@@ -25,7 +25,9 @@
 <script lang="ts">
 import { defineComponent, useContext } from '@nuxtjs/composition-api'
 
-import Project from '@/models/Project'
+import { Project } from '@/models/Project'
+// import Person from '@/models/Person'
+// import { authStore, GetterType as AuthGetterType } from '@/store/auth'
 import {
   projectsStore,
   GetterType as ProjectsGetterType,
@@ -37,6 +39,10 @@ export default defineComponent({
   },
   setup() {
     const { store } = useContext()
+
+    // const currentUser = store.getters[
+    //   `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+    // ] as Person
 
     const personProjects = store.getters[
       `${projectsStore}/${ProjectsGetterType.PROJECTS_BY_PERSON_ID}`

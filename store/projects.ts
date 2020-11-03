@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
-import Project from '@/models/Project'
+import { Project } from '@/models/Project'
 import { RootState } from './index'
 
 /*

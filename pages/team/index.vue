@@ -38,19 +38,14 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-interface Team {
-  id: string
-  name: string
-  role: string
-  avatar: string
-}
+import Person from '@/models/Person'
 
 export default defineComponent({
   head: {
     title: 'Team',
   },
   setup() {
-    const team: Team[] = [
+    const team: Person[] = [
       {
         id: 'u1',
         name: 'Amir Hakim',

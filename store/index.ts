@@ -1,7 +1,7 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Context } from '@nuxt/types'
 
-import Project from '@/models/Project'
+import { Project } from '@/models/Project'
 import { projectsStore, ActionType as ProjectsActionType } from './projects'
 
 /*
@@ -34,7 +34,7 @@ export const actions: ActionTree<RootState, RootState> = {
       {
         id: 'p1',
         title: 'Design a new website',
-        due: '1st Jan 2019',
+        due: new Date('2019-01-01').toUTCString().substr(0, 16),
         status: 'ongoing',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
@@ -46,7 +46,7 @@ export const actions: ActionTree<RootState, RootState> = {
       {
         id: 'p2',
         title: 'Code up the homepage',
-        due: '10th Jan 2019',
+        due: new Date('2019-01-10').toUTCString().substr(0, 16),
         status: 'complete',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
@@ -58,7 +58,7 @@ export const actions: ActionTree<RootState, RootState> = {
       {
         id: 'p3',
         title: 'Design video thumbnails',
-        due: '20th Dec 2018',
+        due: new Date('2018-12-20').toUTCString().substr(0, 16),
         status: 'complete',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
@@ -70,7 +70,7 @@ export const actions: ActionTree<RootState, RootState> = {
       {
         id: 'p4',
         title: 'Create a community forum',
-        due: '20th Oct 2018',
+        due: new Date('2018-10-20').toUTCString().substr(0, 16),
         status: 'overdue',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
@@ -82,7 +82,7 @@ export const actions: ActionTree<RootState, RootState> = {
       {
         id: 'p5',
         title: 'Design a Logo',
-        due: '7st Feb 2019',
+        due: new Date('2019-02-07').toUTCString().substr(0, 16),
         status: 'ongoing',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',

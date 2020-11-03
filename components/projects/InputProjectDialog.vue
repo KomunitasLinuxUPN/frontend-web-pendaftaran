@@ -27,7 +27,7 @@
           <v-menu>
             <template #activator="{ on, attrs }">
               <v-text-field
-                v-model="formattedDate"
+                :value="formattedDate"
                 v-bind="attrs"
                 label="Due date"
                 readonly
@@ -53,9 +53,12 @@ import {
   computed,
   reactive,
   ref,
+  useContext,
 } from '@nuxtjs/composition-api'
 
-import { InputProject } from '@/models/Project'
+import { FirestoreProject, InputProject } from '@/models/Project'
+import Person from '@/models/Person'
+import { authStore, GetterType as AuthGetterType } from '@/store/auth'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -66,23 +69,52 @@ interface VForm extends HTMLFormElement {
 export default defineComponent({
   setup() {
     const formRef = ref<VForm>()
+
     const inputRules = [
-      (val: string) => val.length > 0 || 'This input field must not be empty',
+      (val: string | null) => {
+        return (val && val.length > 0) || 'This input field must not be empty'
+      },
     ]
+
     const inputProject = reactive<InputProject>({
-      title: '',
-      content: '',
-      due: new Date().toISOString().substr(0, 10),
+      title: null,
+      content: null,
+      due: null,
     })
 
     const formattedDate = computed(() => {
+      if (!inputProject.due) {
+        inputProject.due = new Date().toISOString().substr(0, 10)
+      }
       return new Date(inputProject.due).toUTCString().substr(0, 16)
     })
 
-    function submit() {
+    const { store, app, error } = useContext()
+
+    const user = store.getters[
+      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+    ] as Person
+
+    async function submit() {
       if (formRef.value?.validate()) {
-        // eslint-disable-next-line no-console
-        console.log(inputProject)
+        try {
+          const project: FirestoreProject = {
+            title: inputProject.title!,
+            due: inputProject.due!,
+            content: inputProject.content!,
+            status: 'ongoing',
+            person: app.$fire.firestore.doc(`persons/${user.id}`),
+          }
+
+          await app.$fire.firestore.collection('projects').add(project)
+
+          inputProject.title = null
+          inputProject.content = null
+          inputProject.due = null
+          formRef.value.resetValidation()
+        } catch (err) {
+          error(err)
+        }
       }
     }
 
