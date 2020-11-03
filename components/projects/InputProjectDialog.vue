@@ -1,5 +1,5 @@
 <template>
-  <v-dialog eager max-width="600px">
+  <v-dialog v-model="dialogIsOpen" eager max-width="600px">
     <template #activator="{ on, attrs }">
       <v-btn text class="accent mb-4" v-bind="attrs" v-on="on">
         Add New Project
@@ -41,7 +41,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn text class="accent ma-4" @click="submit">Add Project</v-btn>
+        <v-btn :loading="isLoading" text class="accent ma-4" @click="submit">
+          Add Project
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -66,11 +68,17 @@ interface VForm extends HTMLFormElement {
   validate(): boolean
 }
 
+interface InputRules {
+  (val: string | null): boolean | string
+}
+
 export default defineComponent({
   setup() {
+    const dialogIsOpen = ref(false)
+
     const formRef = ref<VForm>()
 
-    const inputRules = [
+    const inputRules: InputRules[] = [
       (val: string | null) => {
         return (val && val.length > 0) || 'This input field must not be empty'
       },
@@ -89,6 +97,7 @@ export default defineComponent({
       return new Date(inputProject.due).toUTCString().substr(0, 16)
     })
 
+    const isLoading = ref(false)
     const { store, app, error } = useContext()
 
     const user = store.getters[
@@ -106,6 +115,7 @@ export default defineComponent({
             person: app.$fire.firestore.doc(`persons/${user.id}`),
           }
 
+          isLoading.value = true
           await app.$fire.firestore.collection('projects').add(project)
 
           inputProject.title = null
@@ -114,12 +124,17 @@ export default defineComponent({
           formRef.value.resetValidation()
         } catch (err) {
           error(err)
+        } finally {
+          isLoading.value = false
+          dialogIsOpen.value = false
         }
       }
     }
 
     return {
+      dialogIsOpen,
       formRef,
+      isLoading,
       inputRules,
       inputProject,
       formattedDate,
