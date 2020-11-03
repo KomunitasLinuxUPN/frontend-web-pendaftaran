@@ -1,5 +1,19 @@
 <template>
   <nav>
+    <v-snackbar
+      v-model="snackbarIsDisplayed"
+      :timeout="4000"
+      top
+      color="success"
+    >
+      Awesome! You added a new project!
+      <template #action="{ attrs }">
+        <v-btn text color="white" v-bind="attrs" @click="toggleSnackbar(false)">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
     <v-app-bar flat app>
       <v-app-bar-nav-icon
         class="grey--text"
@@ -41,7 +55,7 @@
           <p class="subtitle-1 white--text mt-3">{{ currentUser.name }}</p>
         </v-col>
         <v-col>
-          <input-project-dialog />
+          <input-project-dialog @project-added="toggleSnackbar(true)" />
         </v-col>
       </v-row>
 
@@ -91,10 +105,18 @@ export default defineComponent({
       `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
     ] as Person
 
+    const snackbarIsDisplayed = ref(false)
+
+    function toggleSnackbar(newState: boolean) {
+      snackbarIsDisplayed.value = newState
+    }
+
     return {
       drawerIsOpen,
       links,
       currentUser,
+      snackbarIsDisplayed,
+      toggleSnackbar,
     }
   },
 })

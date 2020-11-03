@@ -58,9 +58,11 @@ import {
   useContext,
 } from '@nuxtjs/composition-api'
 
-import { FirestoreProject, InputProject } from '@/models/Project'
-import Person from '@/models/Person'
-import { authStore, GetterType as AuthGetterType } from '@/store/auth'
+import { InputProject } from '@/models/Project'
+import {
+  projectsStore,
+  ActionType as ProjectsActionType,
+} from '@/store/projects'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -73,7 +75,8 @@ interface InputRules {
 }
 
 export default defineComponent({
-  setup() {
+  emits: ['project-added'],
+  setup(_, { emit }) {
     const dialogIsOpen = ref(false)
 
     const formRef = ref<VForm>()
@@ -98,30 +101,24 @@ export default defineComponent({
     })
 
     const isLoading = ref(false)
-    const { store, app, error } = useContext()
-
-    const user = store.getters[
-      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
-    ] as Person
+    const { store, error } = useContext()
 
     async function submit() {
       if (formRef.value?.validate()) {
         try {
-          const project: FirestoreProject = {
-            title: inputProject.title!,
-            due: inputProject.due!,
-            content: inputProject.content!,
-            status: 'ongoing',
-            person: app.$fire.firestore.doc(`persons/${user.id}`),
-          }
-
           isLoading.value = true
-          await app.$fire.firestore.collection('projects').add(project)
+
+          await store.dispatch(
+            `${projectsStore}/${ProjectsActionType.ADD_PROJECT}`,
+            inputProject
+          )
 
           inputProject.title = null
           inputProject.content = null
           inputProject.due = null
           formRef.value.resetValidation()
+
+          emit('project-added')
         } catch (err) {
           error(err)
         } finally {

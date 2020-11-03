@@ -1,6 +1,8 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
-import { Project } from '@/models/Project'
+import { FirestoreProject, InputProject, Project } from '@/models/Project'
+import Person from '@/models/Person'
+import { authStore, GetterType as AuthGetterType } from './auth'
 import { RootState } from './index'
 
 /*
@@ -54,10 +56,26 @@ export const mutations: MutationTree<ProjectsState> = {
  */
 export const ActionType = {
   SET_PROJECTS: 'setProjects',
+  ADD_PROJECT: 'addProject',
 }
 
 export const actions: ActionTree<ProjectsState, RootState> = {
   [ActionType.SET_PROJECTS](vuexContext, projects: Project[]) {
     vuexContext.commit(MutationType.SET_PROJECTS, projects)
+  },
+  async [ActionType.ADD_PROJECT](vuexContext, inputProject: InputProject) {
+    const currentUser = vuexContext.rootGetters[
+      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+    ] as Person
+
+    const project: FirestoreProject = {
+      title: inputProject.title!,
+      due: inputProject.due!,
+      content: inputProject.content!,
+      status: 'ongoing',
+      person: this.$fire.firestore.doc(`persons/${currentUser.id}`),
+    }
+
+    await this.$fire.firestore.collection('projects').add(project)
   },
 }
