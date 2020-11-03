@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="600px">
+  <v-dialog eager max-width="600px">
     <template #activator="{ on, attrs }">
       <v-btn text class="accent mb-4" v-bind="attrs" v-on="on">
         Add New Project
@@ -11,16 +11,18 @@
         <h2 class="title">Add a New Project</h2>
       </v-card-title>
       <v-card-text>
-        <v-form class="px-3">
+        <v-form ref="formRef" class="px-3">
           <v-text-field
             v-model="inputProject.title"
             label="Title"
             prepend-icon="mdi-folder"
+            :rules="inputRules"
           />
           <v-textarea
             v-model="inputProject.content"
             label="Content"
             prepend-icon="mdi-pencil"
+            :rules="inputRules"
           />
           <v-menu>
             <template #activator="{ on, attrs }">
@@ -46,12 +48,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  computed,
+  reactive,
+  ref,
+} from '@nuxtjs/composition-api'
 
 import { InputProject } from '@/models/Project'
 
+interface VForm extends HTMLFormElement {
+  reset(): void
+  resetValidation(): void
+  validate(): boolean
+}
+
 export default defineComponent({
   setup() {
+    const formRef = ref<VForm>()
+    const inputRules = [
+      (val: string) => val.length > 0 || 'This input field must not be empty',
+    ]
     const inputProject = reactive<InputProject>({
       title: '',
       content: '',
@@ -63,11 +80,15 @@ export default defineComponent({
     })
 
     function submit() {
-      // eslint-disable-next-line no-console
-      console.log(inputProject)
+      if (formRef.value?.validate()) {
+        // eslint-disable-next-line no-console
+        console.log(inputProject)
+      }
     }
 
     return {
+      formRef,
+      inputRules,
       inputProject,
       formattedDate,
       submit,
