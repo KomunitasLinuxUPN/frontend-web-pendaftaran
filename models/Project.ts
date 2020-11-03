@@ -1,4 +1,6 @@
-export default interface Project {
+export interface InputProject {}
+
+export default interface Project extends InputProject {
   id: string
   title: string
   due: string

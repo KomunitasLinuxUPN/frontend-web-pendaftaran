@@ -41,7 +41,7 @@
           <p class="subtitle-1 white--text mt-3">Amir Muhammad Hakim</p>
         </v-col>
         <v-col>
-          <the-dialog />
+          <input-project-dialog />
         </v-col>
       </v-row>
 
@@ -64,7 +64,7 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
-import TheDialog from '@/components/ui/TheDialog.vue'
+import InputProjectDialog from '@/components/projects/InputProjectDialog.vue'
 
 interface NavLink {
   icon: string
@@ -74,7 +74,7 @@ interface NavLink {
 
 export default defineComponent({
   components: {
-    TheDialog,
+    InputProjectDialog,
   },
   setup() {
     const drawerIsOpen = ref(false)
