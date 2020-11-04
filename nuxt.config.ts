@@ -62,6 +62,9 @@ const config: NuxtConfig = {
     },
   },
 
+  // Nuxt Loading Bar
+  loading: { color: 'green', height: '3px' },
+
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['@/assets/variables.scss'],
@@ -91,6 +94,14 @@ const config: NuxtConfig = {
         },
       },
     },
+  },
+
+  // Inject dummy user session
+  env: {
+    id: process.env.ID!,
+    name: process.env.NAME!,
+    avatar: process.env.AVATAR!,
+    role: process.env.ROLE!,
   },
 }
 

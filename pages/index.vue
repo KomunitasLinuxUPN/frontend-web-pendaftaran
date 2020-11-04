@@ -12,7 +12,7 @@
               color="grey"
               v-bind="attrs"
               v-on="on"
-              @click="sortBy('title')"
+              @click="sortKey = 'title'"
             >
               <v-icon left small>mdi-folder</v-icon>
               <span class="caption text-lowercase">By Project Name</span>
@@ -29,7 +29,7 @@
               v-bind="attrs"
               color="grey"
               v-on="on"
-              @click="sortBy('personName')"
+              @click="sortKey = 'personName'"
             >
               <v-icon left small>mdi-account</v-icon>
               <span class="caption text-lowercase">By Person Name</span>
@@ -39,7 +39,7 @@
         </v-tooltip>
       </v-row>
 
-      <v-card v-for="project in projects" :key="project.id" flat>
+      <v-card v-for="project in sortedProjects" :key="project.id" flat>
         <v-row dense no-gutters :class="`pa-6 project ${project.status}`">
           <v-col cols="12" md="6">
             <h1 class="caption grey--text">Project Title</h1>
@@ -71,38 +71,81 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useContext } from '@nuxtjs/composition-api'
-
-import { Project } from '@/models/Project'
 import {
-  projectsStore,
-  GetterType as ProjectsGetterType,
-} from '@/store/projects'
+  computed,
+  defineComponent,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
+
+import { FirestoreProject, Project } from '@/models/Project'
+import Person from '@/models/Person'
+
+type SortKey = 'personName' | 'title' | 'default'
 
 export default defineComponent({
   head: {
     title: 'Dashboard',
   },
   setup() {
-    const { store } = useContext()
-    let projects = reactive<Project[]>([
-      ...store.getters[`${projectsStore}/${ProjectsGetterType.PROJECTS}`],
-    ])
+    const { app } = useContext()
 
-    function sortBy(projAttr: 'personName' | 'title') {
-      projects = projects.sort((proj1, proj2) => {
-        switch (projAttr) {
+    const sortKey = ref<SortKey>('default')
+    const projects = ref<Project[]>([])
+
+    app.$fire.firestore
+      .collection('projects')
+      .onSnapshot(async (docSnapshots) => {
+        const changes = docSnapshots.docChanges()
+
+        const newProjects = await Promise.all(
+          changes.map(async (change) => {
+            const firestoreProject = change.doc.data() as FirestoreProject
+
+            const personDocSnapshot = await firestoreProject.person.get()
+            const personDoc = personDocSnapshot.data() as Person
+
+            const project: Project = {
+              id: change.doc.id,
+              ...firestoreProject,
+              person: {
+                id: personDocSnapshot.id,
+                name: personDoc.name,
+              },
+            }
+
+            switch (change.type) {
+              case 'added':
+              case 'modified':
+              case 'removed':
+                return project
+            }
+          })
+        )
+
+        projects.value.push(...newProjects)
+      })
+
+    const sortedProjects = computed<Project[]>(() => {
+      if (sortKey.value === 'default') {
+        return projects.value
+      }
+
+      return projects.value.sort((proj1, proj2) => {
+        switch (sortKey.value) {
           case 'title':
             return proj1.title < proj2.title ? -1 : 1
           case 'personName':
             return proj1.person.name < proj2.person.name ? -1 : 1
+          default:
+            throw new Error('Unknown sort keyword')
         }
       })
-    }
+    })
 
     return {
-      projects,
-      sortBy,
+      sortedProjects,
+      sortKey,
     }
   },
 })

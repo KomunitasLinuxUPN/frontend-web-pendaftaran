@@ -23,30 +23,62 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
-import { Project } from '@/models/Project'
-// import Person from '@/models/Person'
-// import { authStore, GetterType as AuthGetterType } from '@/store/auth'
-import {
-  projectsStore,
-  GetterType as ProjectsGetterType,
-} from '@/store/projects'
+import { authStore, GetterType as AuthGetterType } from '@/store/auth'
+import { FirestoreProject, Project } from '@/models/Project'
+import Person from '@/models/Person'
 
 export default defineComponent({
   head: {
     title: 'Projects',
   },
   setup() {
-    const { store } = useContext()
+    const personProjects = ref<Project[]>([])
 
-    // const currentUser = store.getters[
-    //   `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
-    // ] as Person
+    const { app, store } = useContext()
 
-    const personProjects = store.getters[
-      `${projectsStore}/${ProjectsGetterType.PROJECTS_BY_PERSON_ID}`
-    ]('u1') as Project[]
+    const curUser = store.getters[
+      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+    ] as Person
+
+    const curPersonRef = app.$fire.firestore
+      .collection('persons')
+      .doc(curUser.id)
+
+    app.$fire.firestore
+      .collection('projects')
+      .where('person', '==', curPersonRef)
+      .onSnapshot(async (docSnapshots) => {
+        const changes = docSnapshots.docChanges()
+
+        const newProjects = await Promise.all(
+          changes.map(async (change) => {
+            const firestoreProject = change.doc.data() as FirestoreProject
+
+            const personDocSnapshot = await firestoreProject.person.get()
+            const personDoc = personDocSnapshot.data() as Person
+
+            const project: Project = {
+              id: change.doc.id,
+              ...firestoreProject,
+              person: {
+                id: personDocSnapshot.id,
+                name: personDoc.name,
+              },
+            }
+
+            switch (change.type) {
+              case 'added':
+              case 'modified':
+              case 'removed':
+                return project
+            }
+          })
+        )
+
+        personProjects.value.push(...newProjects)
+      })
 
     return {
       personProjects,

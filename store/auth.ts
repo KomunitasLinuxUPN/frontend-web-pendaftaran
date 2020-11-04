@@ -12,10 +12,10 @@ export const authStore = 'auth'
  * State
  */
 export const state = (): Person => ({
-  id: '5qJz5bA1mRNut3K8e0Vd',
-  name: 'Amir Muhammad Hakim',
-  avatar: 'images/avatar-1.png',
-  role: 'Web developer',
+  id: process.env.ID!,
+  name: process.env.NAME!,
+  avatar: process.env.AVATAR!,
+  role: process.env.ROLE!,
 })
 
 export type AuthState = ReturnType<typeof state>
