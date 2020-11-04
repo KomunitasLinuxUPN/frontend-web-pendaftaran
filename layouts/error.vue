@@ -1,16 +1,28 @@
 <template>
-  <v-app dark>
-    <v-col cols="12">
-      <div class="text-center">
-        <h1 v-if="error.statusCode === 404">
-          {{ pageNotFound }}
-        </h1>
-        <h1 v-else>
-          {{ otherError }}
-        </h1>
-        <nuxt-link to="/"> Home page </nuxt-link>
-      </div>
-    </v-col>
+  <v-app>
+    <registration-nav-bar />
+    <v-main class="grey lighten-4">
+      <v-container class="registration fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12">
+            <div class="text-center">
+              <h1 v-if="error.statusCode === 404" class="display-1">
+                {{ pageNotFound }}
+              </h1>
+              <h1 v-else class="display-1">
+                {{ otherError }}
+              </h1>
+            </div>
+            <div class="text-center mt-6">
+              <nuxt-link to="/" style="text-decoration: none">
+                <v-btn color="primary">Home page</v-btn>
+              </nuxt-link>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+    <registration-footer />
   </v-app>
 </template>
 
@@ -25,7 +37,9 @@ export default defineComponent({
       default: null,
     },
   },
-  head: {},
+  head: {
+    title: 'Halaman Error',
+  },
   setup(props) {
     const pageNotFound = ref('404 Not Found')
     const otherError = ref('An error occurred')

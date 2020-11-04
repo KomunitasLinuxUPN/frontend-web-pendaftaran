@@ -17,9 +17,21 @@
       <v-spacer />
 
       <div class="hidden-sm-and-down">
-        <v-btn text href="https://www.kolu.web.id" target="_blank">
-          SITUS RESMI
-        </v-btn>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              text
+              fab
+              href="https://www.kolu.web.id"
+              target="_blank"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-web</v-icon>
+            </v-btn>
+          </template>
+          <span>Situs Resmi KoLU</span>
+        </v-tooltip>
 
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">
