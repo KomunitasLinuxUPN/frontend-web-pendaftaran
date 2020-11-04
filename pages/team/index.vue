@@ -41,6 +41,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import Person from '@/models/Person'
 
 export default defineComponent({
+  layout: 'admin',
   head: {
     title: 'Team',
   },

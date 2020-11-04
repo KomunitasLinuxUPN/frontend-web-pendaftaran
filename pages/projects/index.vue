@@ -30,6 +30,7 @@ import { FirestoreProject, Project } from '@/models/Project'
 import Person from '@/models/Person'
 
 export default defineComponent({
+  layout: 'admin',
   head: {
     title: 'Projects',
   },

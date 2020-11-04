@@ -95,7 +95,7 @@ export default defineComponent({
   setup() {
     const drawerIsOpen = ref(false)
     const links: NavLink[] = [
-      { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/' },
+      { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/dashboard' },
       { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
       { icon: 'mdi-account', text: 'Team', route: '/team' },
     ]
