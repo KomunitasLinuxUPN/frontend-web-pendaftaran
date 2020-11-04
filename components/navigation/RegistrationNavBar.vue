@@ -16,9 +16,70 @@
 
       <v-spacer />
 
-      <v-btn text href="https://www.kolu.web.id/" target="_blank">
-        SITUS RESMI
-      </v-btn>
+      <div class="hidden-sm-and-down">
+        <v-btn text href="https://www.kolu.web.id" target="_blank">
+          SITUS RESMI
+        </v-btn>
+
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              text
+              fab
+              href="https://www.instagram.com/kolu_upn_jatim"
+              target="_blank"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-instagram</v-icon>
+            </v-btn>
+          </template>
+          <span>Instagram KoLU</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              text
+              fab
+              href="https://github.com/KomunitasLinuxUPN"
+              target="_blank"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-github</v-icon>
+            </v-btn>
+          </template>
+          <span>Github KoLU</span>
+        </v-tooltip>
+      </div>
+
+      <div class="hidden-md-and-up">
+        <v-menu offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn text v-bind="attrs" v-on="on">
+              <v-icon left>mdi-chevron-down</v-icon>
+              <span>Menu</span>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item to="https://www.kolu.web.id">
+              <v-icon left>mdi-web</v-icon>
+              <v-list-item-title>Situs Resmi</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="https://www.instagram.com/kolu_upn_jatim">
+              <v-icon left>mdi-instagram</v-icon>
+              <v-list-item-title>Instagram KoLU</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="https://github.com/KomunitasLinuxUPN">
+              <v-icon left>mdi-github</v-icon>
+              <v-list-item-title>Github KoLU</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
   </nav>
 </template>
