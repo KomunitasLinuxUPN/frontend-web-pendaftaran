@@ -12,11 +12,7 @@
               <h1 v-else class="display-1">
                 {{ otherError }}
               </h1>
-            </div>
-            <div class="text-center mt-6">
-              <nuxt-link to="/" style="text-decoration: none">
-                <v-btn color="primary">Home page</v-btn>
-              </nuxt-link>
+              <v-btn class="mt-6" nuxt to="/" color="primary">Home page</v-btn>
             </div>
           </v-col>
         </v-row>

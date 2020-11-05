@@ -43,6 +43,7 @@ const config: NuxtConfig = {
         },
         services: {
           firestore: true,
+          storage: true,
         },
       },
     ],
@@ -94,14 +95,6 @@ const config: NuxtConfig = {
         },
       },
     },
-  },
-
-  // Inject dummy user session
-  env: {
-    id: process.env.ID!,
-    name: process.env.NAME!,
-    avatar: process.env.AVATAR!,
-    role: process.env.ROLE!,
   },
 }
 
