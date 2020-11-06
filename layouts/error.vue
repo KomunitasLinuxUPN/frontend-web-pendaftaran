@@ -2,7 +2,7 @@
   <v-app>
     <registration-nav-bar />
     <v-main class="grey lighten-4">
-      <v-container class="registration fill-height" fluid>
+      <v-container class="error-page fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12">
             <div class="text-center">
@@ -12,7 +12,9 @@
               <h1 v-else class="display-1">
                 {{ otherError }}
               </h1>
-              <v-btn class="mt-6" nuxt to="/" color="primary">Home page</v-btn>
+              <v-btn class="mt-6" text nuxt to="/" color="primary">
+                KEMBALI KE HALAMAN UTAMA
+              </v-btn>
             </div>
           </v-col>
         </v-row>

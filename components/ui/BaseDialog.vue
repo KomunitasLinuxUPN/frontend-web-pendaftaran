@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog.dialogIsOpen" max-width="290">
+    <v-dialog v-model="dialog.dialogIsOpen" max-width="400">
       <v-card>
         <v-card-title class="headline primary white--text">
           Terjadi Kesalahan

@@ -20,8 +20,12 @@ export interface FirestoreNewMember {
   phone: string
   lineID: string
   photoURL: string
+  verification: {
+    isVerified: boolean
+    token: string
+  }
 }
 
-export interface NewMember extends FirestoreNewMember {
+export interface Member extends FirestoreNewMember {
   id: string
 }

@@ -128,8 +128,9 @@ import {
 } from '@nuxtjs/composition-api'
 
 import Windows from '@/constants/Windows'
-import { FirestoreNewMember, NewMemberInput } from '@/models/NewMember'
+import { NewMemberInput } from '@/models/NewMember'
 import DialogData from '@/models/component-models/DialogData'
+import { membersStore, ActionType as MembersActionType } from '@/store/members'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -225,23 +226,10 @@ export default defineComponent({
         try {
           btnIsLoading.value = true
 
-          const storageRef = app.$fire.storage.ref()
-          const photoRef = storageRef.child(`photos/${newMemberInput.email}`)
-          await photoRef.put(newMemberInput.photo!)
-          const photoURL = await photoRef.getDownloadURL()
-
-          const newMember: FirestoreNewMember = {
-            name: newMemberInput.name!,
-            address: newMemberInput.address!,
-            generation: newMemberInput.generation!,
-            department: newMemberInput.department!,
-            email: newMemberInput.email!,
-            phone: newMemberInput.phone!,
-            lineID: newMemberInput.lineID!,
-            photoURL,
-          }
-
-          await app.$fire.firestore.collection('members').add(newMember)
+          await app.store?.dispatch(
+            `${membersStore}/${MembersActionType.REGISTER_MEMBER}`,
+            newMemberInput
+          )
 
           for (const key in newMemberInput) {
             newMemberInput[key] = null

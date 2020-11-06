@@ -1,5 +1,8 @@
 import { NuxtConfig } from '@nuxt/types'
 import colors from 'vuetify/es5/util/colors'
+import bodyParser from 'body-parser'
+
+import backend from './backend/app'
 
 const config: NuxtConfig = {
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -50,7 +53,16 @@ const config: NuxtConfig = {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [],
+  modules: ['@nuxtjs/axios'],
+
+  // Node Express Middlewares (Backend)
+  serverMiddleware: [
+    bodyParser.json(),
+    {
+      path: '/backend',
+      handler: backend,
+    },
+  ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
@@ -64,7 +76,7 @@ const config: NuxtConfig = {
   },
 
   // Nuxt Loading Bar
-  loading: { color: 'green', height: '3px' },
+  loading: { color: 'green', height: '5px' },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
