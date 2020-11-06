@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="8">
         <v-card class="elevation-12" style="overflow: hidden">
-          <v-window v-model="curWindowCode">
+          <v-window v-model="curWindowCode" vertical reverse>
             <v-window-item :value="Windows.REGISTER_MEMBER">
               <register-member @switch-window="switchWindow" />
             </v-window-item>

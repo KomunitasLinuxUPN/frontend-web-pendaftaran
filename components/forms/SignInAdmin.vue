@@ -1,6 +1,6 @@
 <template>
   <v-row dense class="fill-height">
-    <v-col cols="12" md="4" class="info pa-5">
+    <v-col cols="12" md="5" class="info pa-5">
       <v-card-text class="white--text mt-lg-5">
         <h1 class="text-center display-1">Halo Admin! &#x1F60A;</h1>
         <h5 class="text-center subtitle-1 mt-5">
@@ -18,7 +18,7 @@
         </v-btn>
       </div>
     </v-col>
-    <v-col cols="12" md="8" class="pa-5">
+    <v-col cols="12" md="7" class="pa-5">
       <v-card-text class="mt-5">
         <h1 class="text-center display-1">Login Admin</h1>
         <h4 class="subtitle-1 text-center mt-4">

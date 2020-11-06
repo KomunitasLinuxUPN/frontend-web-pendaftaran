@@ -5,7 +5,7 @@
         <v-card-text class="mt-5">
           <h1 class="text-center display-1">Registrasi Member</h1>
           <h4 class="subtitle-1 text-center mt-4">
-            Gunakan email aktifmu untuk registrasi ya &#128521;
+            Kuy rek gabung KoLU &#128521;
           </h4>
           <v-form ref="formRef" class="mt-8">
             <v-text-field
@@ -77,7 +77,7 @@
             />
           </v-form>
         </v-card-text>
-        <div class="text-center mt-2">
+        <div class="text-center mb-3">
           <v-btn
             :loading="btnIsLoading"
             rounded
@@ -93,21 +93,22 @@
         <v-card-text class="text-center white--text mt-lg-5">
           <h1 class="display-1">Halo rek! &#x1F60A;</h1>
           <h5 class="subtitle-1 mt-5">
-            Ayo monggo daftar, buat babang Fathur bangga!
+            Ayo monggo daftar, buat babang Fathur bangga! Awoawkwaok
           </h5>
           <h5 class="subtitle-1 mt-5">
             Harap gunakan email aktifmu untuk melakukan konfirmasi setelah input
             pendaftaran
           </h5>
           <h5 class="subtitle-1 mt-5">
-            Apabila mengalami masalah harap hubungi Fathur dkk.
+            Apabila mengalami masalah harap hubungi kepala suku <br />
+            (+62-838-5300-2616)
           </h5>
           <h2 class="headline mt-5">Atau</h2>
           <v-btn
             rounded
+            class="mt-5"
             dark
             outlined
-            class="mt-5"
             @click="$emit('switch-window', Windows.SIGN_IN_ADMIN)"
           >
             LOGIN SEBAGAI ADMIN
@@ -129,7 +130,7 @@ import {
 
 import Windows from '@/constants/Windows'
 import { NewMemberInput } from '@/models/NewMember'
-import DialogData from '@/models/component-models/DialogData'
+import { useDialog } from '@/hooks/dialog'
 import { membersStore, ActionType as MembersActionType } from '@/store/members'
 
 interface VForm extends HTMLFormElement {
@@ -170,6 +171,7 @@ export default defineComponent({
     ]
 
     const imageRules: InputFileRules[] = [
+      (file) => !!file || 'Harap sertakan foto diri anda',
       (file) =>
         (file && file.size < 2000000) || 'Ukuran foto harus kurang dari 2 MB',
       (file) => {
@@ -188,15 +190,7 @@ export default defineComponent({
     const { app } = useContext()
     const formRef = ref<VForm>()
     const btnIsLoading = ref(false)
-    const dialogData = reactive<DialogData>({
-      dialogIsOpen: false,
-      message: null,
-    })
-
-    function closeDialog() {
-      dialogData.dialogIsOpen = false
-      dialogData.message = null
-    }
+    const { dialogData, openDialog, closeDialog } = useDialog()
 
     // const newMemberInput = reactive<NewMemberInput>({
     //   name: null,
@@ -235,10 +229,16 @@ export default defineComponent({
             newMemberInput[key] = null
           }
           formRef.value.resetValidation()
+
+          openDialog(
+            'Pendaftaran berhasil!',
+            'Silahkan cek emailmu untuk melakukan konfirmasi pendaftaran'
+          )
         } catch (err) {
-          dialogData.dialogIsOpen = true
-          dialogData.message =
-            err.message || 'Coba lagi nanti atau hubungi admin'
+          openDialog(
+            'Terjadi Kesalahan',
+            err.message || 'Coba lagi nanti atau silahkan hubungi admin'
+          )
         } finally {
           btnIsLoading.value = false
         }

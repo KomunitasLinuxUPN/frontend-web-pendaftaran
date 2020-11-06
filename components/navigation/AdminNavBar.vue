@@ -46,7 +46,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawerIsOpen" app class="secondary">
+    <v-navigation-drawer v-model="drawerIsOpen" app class="primary">
       <v-row justify="center" class="mt-5 text-center">
         <v-col>
           <v-avatar size="100">

@@ -40,6 +40,15 @@ export const ActionType = {
 
 export const actions: ActionTree<MembersState, RootState> = {
   async [ActionType.REGISTER_MEMBER](_, newMemberInput: NewMemberInput) {
+    const memberSnapshots = await this.$fire.firestore
+      .collection('members')
+      .where('email', '==', newMemberInput.email)
+      .get()
+
+    if (!memberSnapshots.empty) {
+      throw new Error(`Email ${newMemberInput.email} sudah terpakai`)
+    }
+
     const storageRef = this.$fire.storage.ref()
     const photoRef = storageRef.child(`photos/${newMemberInput.email}`)
     await photoRef.put(newMemberInput.photo!)

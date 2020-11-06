@@ -12,7 +12,7 @@
               <h1 v-else class="display-1">
                 {{ otherError }}
               </h1>
-              <v-btn class="mt-6" text nuxt to="/" color="primary">
+              <v-btn class="mt-8" outlined nuxt to="/" color="primary">
                 KEMBALI KE HALAMAN UTAMA
               </v-btn>
             </div>
