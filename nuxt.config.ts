@@ -8,11 +8,15 @@ const config: NuxtConfig = {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - Pendaftaran KoLU',
-    title: 'Vuetify Todo App',
+    title: 'Pendaftaran KoLU',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Simple Todo App' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Web pendaftaran anggota baru KoLU tahun 2020',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -76,7 +80,7 @@ const config: NuxtConfig = {
   },
 
   // Nuxt Loading Bar
-  loading: { color: 'green', height: '5px' },
+  loading: { color: colors.amber.darken3, height: '3px' },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {

@@ -1,7 +1,8 @@
 {
-  "name": "vuetify-todo-app",
+  "name": "web-pendaftaran-kolu",
   "version": "1.0.0",
   "private": true,
+  "description": "Web Pendaftaran KoLU",
   "scripts": {
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
