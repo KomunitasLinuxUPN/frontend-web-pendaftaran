@@ -80,7 +80,7 @@ import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
 import InputProjectDialog from '@/components/projects/InputProjectDialog.vue'
 import { authStore, GetterType as AuthGetterType } from '@/store/auth'
-import Person from '~/models/Person'
+import Person from '@/models/Person'
 
 interface NavLink {
   icon: string

@@ -78,13 +78,7 @@
           </v-form>
         </v-card-text>
         <div class="text-center mb-3">
-          <v-btn
-            :loading="btnIsLoading"
-            rounded
-            dark
-            color="accent"
-            @click="submit"
-          >
+          <v-btn :loading="btnIsLoading" rounded color="accent" @click="submit">
             REGISTER
           </v-btn>
         </div>
@@ -116,7 +110,7 @@
         </v-card-text>
       </v-col>
     </v-row>
-    <base-dialog :dialog-data="dialogData" @close-dialog="closeDialog" />
+    <base-dialog :dialog-data="dialogData" />
   </div>
 </template>
 
@@ -127,11 +121,13 @@ import {
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
+import { AxiosError } from 'axios'
 
 import Windows from '@/constants/Windows'
 import { NewMemberInput } from '@/models/NewMember'
 import { useDialog } from '@/hooks/dialog'
 import { membersStore, ActionType as MembersActionType } from '@/store/members'
+import { DialogStatus } from '@/models/component-models/DialogData'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -190,7 +186,7 @@ export default defineComponent({
     const { app } = useContext()
     const formRef = ref<VForm>()
     const btnIsLoading = ref(false)
-    const { dialogData, openDialog, closeDialog } = useDialog()
+    const { dialogData } = useDialog()
 
     // const newMemberInput = reactive<NewMemberInput>({
     //   name: null,
@@ -230,15 +226,23 @@ export default defineComponent({
           }
           formRef.value.resetValidation()
 
-          openDialog(
-            'Pendaftaran berhasil!',
+          dialogData.dialogIsOpen = true
+          dialogData.dialogStatus = DialogStatus.SUCCESS
+          dialogData.title = 'Pendaftaran berhasil!'
+          dialogData.message =
             'Silahkan cek emailmu untuk melakukan konfirmasi pendaftaran'
-          )
         } catch (err) {
-          openDialog(
-            'Terjadi Kesalahan',
+          let message =
             err.message || 'Coba lagi nanti atau silahkan hubungi admin'
-          )
+
+          if (err.isAxiosError) {
+            message = (err as AxiosError).response!.data.message
+          }
+
+          dialogData.dialogIsOpen = true
+          dialogData.dialogStatus = DialogStatus.ERROR
+          dialogData.title = 'Terjadi Kesalahan!'
+          dialogData.message = message
         } finally {
           btnIsLoading.value = false
         }
@@ -256,7 +260,6 @@ export default defineComponent({
       newMemberInput,
       submit,
       dialogData,
-      closeDialog,
     }
   },
 })

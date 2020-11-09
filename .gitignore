@@ -38,6 +38,8 @@ build/Release
 node_modules/
 jspm_packages/
 
+package-lock.json
+
 # TypeScript v1 declaration files
 typings/
 
@@ -88,5 +90,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-package-lock.json

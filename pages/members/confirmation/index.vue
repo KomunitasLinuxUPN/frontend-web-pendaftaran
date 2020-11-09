@@ -27,7 +27,7 @@
             </v-btn>
           </div>
         </v-col>
-        <base-dialog :dialog-data="dialogData" @close-dialog="closeDialog" />
+        <base-dialog :dialog-data="dialogData" />
       </v-row>
     </v-container>
   </client-only>
@@ -37,6 +37,7 @@
 import { defineComponent, useAsync, useContext } from '@nuxtjs/composition-api'
 
 import { useDialog } from '@/hooks/dialog'
+import { DialogStatus } from '~/models/component-models/DialogData'
 
 export default defineComponent({
   layout: 'registration',
@@ -47,7 +48,7 @@ export default defineComponent({
     const { app, query } = useContext()
 
     const token = query.value.token
-    const { dialogData, openDialog, closeDialog } = useDialog()
+    const { dialogData } = useDialog()
 
     const verificationSuccess = useAsync(async () => {
       try {
@@ -68,17 +69,17 @@ export default defineComponent({
         })
         return true
       } catch (err) {
-        openDialog(
-          'Terjadi Kesalahan',
+        dialogData.dialogIsOpen = true
+        dialogData.dialogStatus = DialogStatus.ERROR
+        dialogData.title = 'Terjadi Kesalahan!'
+        dialogData.message =
           err.message || 'Mohon maaf, coba lagi nanti atau hubungi admin'
-        )
       }
     })
 
     return {
       verificationSuccess,
       dialogData,
-      closeDialog,
     }
   },
 })

@@ -80,7 +80,10 @@ const config: NuxtConfig = {
   },
 
   // Nuxt Loading Bar
-  loading: { color: colors.amber.darken3, height: '3px' },
+  loading: {
+    color: colors.yellow.darken1,
+    height: '3px',
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
@@ -94,11 +97,11 @@ const config: NuxtConfig = {
         light: {
           primary: colors.purple.darken4,
           secondary: colors.purple.darken3,
-          accent: colors.amber.darken3,
+          accent: colors.yellow.darken2,
           info: colors.teal.lighten2,
           success: colors.green.accent3,
           warning: colors.yellow.darken3,
-          error: colors.red.lighten2,
+          error: colors.red.base,
         },
         dark: {
           primary: colors.blue.darken2,
