@@ -1,56 +1,53 @@
 <template>
-  <client-only>
-    <v-container class="confirmation fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12">
-          <div class="text-center">
-            <div v-if="verificationSuccess === null">
-              <v-progress-circular
-                :size="70"
-                :width="7"
-                color="primary"
-                indeterminate
-              />
-            </div>
-            <h1 v-else-if="verificationSuccess === true" class="display-1">
-              Selamat! Kamu terdaftar sebagai anggota KoLU &#128513;
-            </h1>
-            <div v-else-if="verificationSuccess === false">
-              <h1 class="display-1">Konfirmasi pendaftaran GAGAL!</h1>
-              <p class="subtitle-1 mt-5">
-                Mungkin pendaftaranmu sudah terkonfirmasi atau tokenmu tidak
-                valid
-              </p>
-            </div>
-            <v-btn class="mt-10" outlined nuxt to="/" color="primary">
-              KEMBALI KE HALAMAN UTAMA
-            </v-btn>
+  <v-container class="confirmation fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col cols="12">
+        <div class="text-center">
+          <div v-if="isVerifSuccess === true">
+            <h1 class="display-1">Konfirmasi Pendaftaran BERHASIL! 🥳</h1>
+            <p class="subtitle-1 mt-5">{{ caption }}</p>
           </div>
-        </v-col>
-        <base-dialog :dialog-data="dialogData" />
-      </v-row>
-    </v-container>
-  </client-only>
+          <div v-else-if="isVerifSuccess === false">
+            <h1 class="display-1">Konfirmasi pendaftaran GAGAL! &#128533;</h1>
+            <p class="subtitle-1 mt-5">{{ caption }}</p>
+          </div>
+          <div v-else>
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="primary"
+              indeterminate
+            />
+          </div>
+          <v-btn class="mt-10" outlined nuxt to="/" color="primary">
+            KEMBALI KE HALAMAN UTAMA
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useAsync, useContext } from '@nuxtjs/composition-api'
-
-import { useDialog } from '@/hooks/dialog'
-import { DialogStatus } from '~/models/component-models/DialogData'
+import {
+  defineComponent,
+  ref,
+  useAsync,
+  useContext,
+} from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  layout: 'registration',
+  layout: 'verification',
   head: {
     title: 'Konfirmasi Pendaftaran',
   },
   setup() {
     const { app, query } = useContext()
 
+    const caption = ref<string | null>(null)
     const token = query.value.token
-    const { dialogData } = useDialog()
 
-    const verificationSuccess = useAsync(async () => {
+    const isVerifSuccess = useAsync(async () => {
       try {
         const memberSnapshots = await app.$fire.firestore
           .collection('members')
@@ -59,6 +56,8 @@ export default defineComponent({
           .get()
 
         if (memberSnapshots.empty) {
+          caption.value =
+            'Mungkin pendaftaranmu sudah terkonfirmasi atau tokenmu tidak valid'
           return false
         }
 
@@ -67,19 +66,19 @@ export default defineComponent({
           'verification.isVerified': true,
           'verification.token': '',
         })
+
+        caption.value = 'Selamat! Kamu terdaftar sebagai anggota KoLU'
         return true
       } catch (err) {
-        dialogData.dialogIsOpen = true
-        dialogData.dialogStatus = DialogStatus.ERROR
-        dialogData.title = 'Terjadi Kesalahan!'
-        dialogData.message =
-          err.message || 'Mohon maaf, coba lagi nanti atau hubungi admin'
+        caption.value =
+          'Mohon maaf, terjadi kesalahan pada sistem, coba lagi nanti atau silahkan hubungi admin'
+        return false
       }
     })
 
     return {
-      verificationSuccess,
-      dialogData,
+      isVerifSuccess,
+      caption,
     }
   },
 })

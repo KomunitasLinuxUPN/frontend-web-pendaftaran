@@ -110,7 +110,7 @@
         </v-card-text>
       </v-col>
     </v-row>
-    <base-dialog :dialog-data="dialogData" />
+    <text-dialog :dialog-data="dialogData" />
   </div>
 </template>
 
@@ -125,9 +125,8 @@ import { AxiosError } from 'axios'
 
 import Windows from '@/constants/Windows'
 import { NewMemberInput } from '@/models/NewMember'
-import { useDialog } from '@/hooks/dialog'
-import { membersStore, ActionType as MembersActionType } from '@/store/members'
-import { DialogStatus } from '@/models/component-models/DialogData'
+import { members, ActionType as MembersActionType } from '@/store/members'
+import { useTextDialog, DialogStatus } from '@/components/ui/TextDialog.vue'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -186,7 +185,7 @@ export default defineComponent({
     const { app } = useContext()
     const formRef = ref<VForm>()
     const btnIsLoading = ref(false)
-    const { dialogData } = useDialog()
+    const { dialogData } = useTextDialog()
 
     // const newMemberInput = reactive<NewMemberInput>({
     //   name: null,
@@ -217,7 +216,7 @@ export default defineComponent({
           btnIsLoading.value = true
 
           await app.store?.dispatch(
-            `${membersStore}/${MembersActionType.REGISTER_MEMBER}`,
+            `${members}/${MembersActionType.REGISTER_MEMBER}`,
             newMemberInput
           )
 

@@ -8,7 +8,7 @@ import { RootState } from './index'
 /*
  * Namespace
  */
-export const membersStore = 'members'
+export const members = 'members'
 
 /*
  * State

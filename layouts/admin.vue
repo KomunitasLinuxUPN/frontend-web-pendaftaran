@@ -6,15 +6,3 @@
     </v-main>
   </v-app>
 </template>
-
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
-
-import AdminNavBar from '@/components/navigation/AdminNavBar.vue'
-
-export default defineComponent({
-  components: {
-    AdminNavBar,
-  },
-})
-</script>

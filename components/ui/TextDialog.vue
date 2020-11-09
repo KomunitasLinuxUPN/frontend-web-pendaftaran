@@ -18,14 +18,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, UnwrapRef } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  PropType,
+  reactive,
+  UnwrapRef,
+} from '@nuxtjs/composition-api'
 
-import DialogData, { DialogStatus } from '@/models/component-models/DialogData'
+export enum DialogStatus {
+  SUCCESS = 'success',
+  INFO = 'info',
+  ERROR = 'error',
+}
+
+export interface TextDialogData {
+  dialogIsOpen: boolean
+  title: string | null
+  message: string | null
+  dialogStatus: DialogStatus
+}
+
+export function useTextDialog() {
+  const dialogData = reactive<TextDialogData>({
+    dialogIsOpen: false,
+    title: null,
+    message: null,
+    dialogStatus: DialogStatus.INFO,
+  })
+
+  return {
+    dialogData,
+  }
+}
 
 export default defineComponent({
   props: {
     dialogData: {
-      type: Object as PropType<UnwrapRef<DialogData>>,
+      type: Object as PropType<UnwrapRef<TextDialogData>>,
       required: true,
     },
   },
