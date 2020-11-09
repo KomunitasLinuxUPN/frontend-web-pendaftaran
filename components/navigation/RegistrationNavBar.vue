@@ -7,11 +7,14 @@
         max-height="40"
         max-width="40"
         contain
+        @click="$router.push('/')"
       />
 
       <v-toolbar-title class="h4 text-uppercase">
-        <span class="font-weight-light text-capitalize">Pendaftaran</span>
-        <span class="text-capitalize">KoLU</span>
+        <nuxt-link to="/" class="white--text font-weight-light text-capitalize">
+          Pendaftaran
+        </nuxt-link>
+        <nuxt-link to="/" class="white--text text-capitalize">KoLU</nuxt-link>
       </v-toolbar-title>
 
       <v-spacer />
