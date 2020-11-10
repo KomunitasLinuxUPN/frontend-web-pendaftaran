@@ -1,12 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog.dialogIsOpen" max-width="400">
+    <v-dialog v-model="data.dialogIsOpen" max-width="400">
       <v-card>
-        <v-card-title class="headline white--text" :class="dialog.dialogStatus">
-          {{ dialog.title }}
+        <v-card-title class="headline white--text" :class="data.dialogStatus">
+          {{ data.title }}
         </v-card-title>
 
-        <v-card-text class="subtitle-1 mt-5">{{ dialog.message }}</v-card-text>
+        <v-card-text class="subtitle-1 mt-5">{{ data.message }}</v-card-text>
 
         <v-card-actions>
           <v-spacer />
@@ -67,7 +67,7 @@ export default defineComponent({
     }
 
     return {
-      dialog: props.dialogData,
+      data: props.dialogData,
       closeDialog,
     }
   },
