@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form ref="formRef" class="my-4">
+    <v-form ref="formRef" class="mt-4">
       <v-text-field
         v-model.trim="memberInput.name"
         :rules="nonEmptyRules"
@@ -59,15 +59,20 @@
         type="text"
         color="primary"
       />
-      <v-file-input
-        v-model="memberInput.photo"
-        :rules="imageRules"
-        accept="image/png, image/jpg, image/jpeg"
-        placeholder="Format png, jpg, jpeg"
-        prepend-icon="mdi-camera"
-        label="Foto Diri"
-        class="mt-3"
-      />
+      <v-input class="mt-3">
+        <v-file-input
+          v-model="memberInput.photo"
+          :rules="imageRules"
+          accept="image/png, image/jpg, image/jpeg"
+          placeholder="png, jpg, jpeg"
+          prepend-icon="mdi-camera"
+          label="Foto Diri"
+          class="mr-8"
+        />
+        <v-avatar size="100" class="info">
+          <v-img position="center" :src="photoPreviewUrl" />
+        </v-avatar>
+      </v-input>
     </v-form>
     <div class="text-center">
       <v-btn :loading="btnIsLoading" rounded color="accent" @click="submit">
@@ -84,6 +89,7 @@ import {
   reactive,
   ref,
   useContext,
+  watch,
 } from '@nuxtjs/composition-api'
 
 import { MemberInput } from '@/models/NewMember'
@@ -158,6 +164,18 @@ export default defineComponent({
     const btnIsLoading = ref(false)
 
     const memberInput = reactive<MemberInput>({ ...props.member })
+    const photoPreviewUrl = ref<string>(
+      require('@/assets/images/default-avatar.png')
+    )
+
+    watch(
+      () => memberInput.photo,
+      () => {
+        photoPreviewUrl.value = memberInput.photo
+          ? URL.createObjectURL(memberInput.photo)
+          : require('@/assets/images/default-avatar.png')
+      }
+    )
 
     function submit() {
       if (formRef.value?.validate()) {
@@ -192,6 +210,7 @@ export default defineComponent({
       emailRules,
       imageRules,
       memberInput,
+      photoPreviewUrl,
       submit,
       isEditing: props.isEdit,
       btnIsLoading,
