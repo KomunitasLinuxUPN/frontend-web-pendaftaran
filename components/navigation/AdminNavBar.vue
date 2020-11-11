@@ -15,12 +15,9 @@
     </v-snackbar>
 
     <v-app-bar flat app>
-      <v-app-bar-nav-icon
-        class="grey--text"
-        @click="drawerIsOpen = !drawerIsOpen"
-      />
+      <v-app-bar-nav-icon @click="drawerIsOpen = !drawerIsOpen" />
 
-      <v-toolbar-title class="text-capitalize grey--text">
+      <v-toolbar-title class="text-capitalize">
         <span class="font-weight-light">Pendaftaran </span>KoLU
       </v-toolbar-title>
 
@@ -28,7 +25,7 @@
 
       <v-menu offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn text color="grey" v-bind="attrs" v-on="on">
+          <v-btn text v-bind="attrs" v-on="on">
             <v-icon left>mdi-chevron-down</v-icon>
             <span>Profil</span>
           </v-btn>
@@ -44,8 +41,8 @@
         </v-list>
       </v-menu>
 
-      <v-btn text color="grey">
-        <span>Sign Out</span>
+      <v-btn text>
+        <span>Logout</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
     </v-app-bar>
@@ -110,7 +107,7 @@ export default defineComponent({
         route: '/admin-dashboard/members/registered',
       },
       {
-        icon: 'mdi-account-question',
+        icon: 'mdi-account-multiple-minus',
         text: 'Pending',
         route: '/admin-dashboard/members/pending',
       },

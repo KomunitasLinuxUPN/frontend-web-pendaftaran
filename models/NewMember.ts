@@ -1,4 +1,4 @@
-export interface NewMemberInput {
+export interface MemberInput {
   name: string | null
   address: string | null
   generation: number | null
@@ -24,6 +24,8 @@ export interface FirestoreNewMember {
     isVerified: boolean
     token: string
   }
+
+  [attr: string]: any
 }
 
 export interface Member extends FirestoreNewMember {

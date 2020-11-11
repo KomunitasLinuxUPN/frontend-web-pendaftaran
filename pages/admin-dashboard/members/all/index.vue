@@ -1,13 +1,173 @@
 <template>
-  <div id="registered">
-    <h1>Hello World</h1>
+  <div class="dashboard">
+    <v-container class="my-8">
+      <v-row class="mb-6" dense>
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              color="grey"
+              v-bind="attrs"
+              v-on="on"
+              @click="sortKey = 'title'"
+            >
+              <v-icon left small>mdi-folder</v-icon>
+              <span class="caption text-lowercase">By Project Name</span>
+            </v-btn>
+          </template>
+          <span>Sort projects by project name</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              v-bind="attrs"
+              color="grey"
+              v-on="on"
+              @click="sortKey = 'personName'"
+            >
+              <v-icon left small>mdi-account</v-icon>
+              <span class="caption text-lowercase">By Person Name</span>
+            </v-btn>
+          </template>
+          <span>Sort projects by persons</span>
+        </v-tooltip>
+      </v-row>
+
+      <v-card v-for="project in sortedProjects" :key="project.id" flat>
+        <v-row dense no-gutters :class="`pa-6 project ${project.status}`">
+          <v-col cols="12" md="6">
+            <h1 class="caption grey--text">Project Title</h1>
+            <p>{{ project.title }}</p>
+          </v-col>
+          <v-col cols="6" sm="4" md="2">
+            <h1 class="caption grey--text">Person</h1>
+            <p>{{ project.person.name }}</p>
+          </v-col>
+          <v-col cols="6" sm="4" md="2">
+            <h1 class="caption grey--text">Due By</h1>
+            <p>{{ project.due }}</p>
+          </v-col>
+          <v-col cols="2" sm="4" md="2">
+            <div class="text-right">
+              <v-chip
+                small
+                :class="`white--text caption my-2 project ${project.status}`"
+              >
+                {{ project.status }}
+              </v-chip>
+            </div>
+          </v-col>
+        </v-row>
+        <v-divider />
+      </v-card>
+    </v-container>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+
+import { Project } from '@/models/Project'
+
+type SortKey = 'personName' | 'title' | 'default'
 
 export default defineComponent({
   layout: 'admin',
+  head: {
+    title: 'Dashboard',
+  },
+  setup() {
+    // const { app } = useContext()
+
+    const sortKey = ref<SortKey>('default')
+    const projects = ref<Project[]>([
+      {
+        id: 'p1',
+        title: 'Design a new website',
+        due: '1st Jan 2019',
+        status: 'ongoing',
+        content:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
+        person: {
+          id: 'u1',
+          name: 'Amir Hakim',
+        },
+      },
+      {
+        id: 'p2',
+        title: 'Code up the homepage',
+        due: '10th Jan 2019',
+        status: 'complete',
+        content:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
+        person: {
+          id: 'u3',
+          name: 'Doni Alfiando',
+        },
+      },
+      {
+        id: 'p3',
+        title: 'Design video thumbnails',
+        due: '20th Dec 2018',
+        status: 'complete',
+        content:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
+        person: {
+          id: 'u2',
+          name: 'Rafael',
+        },
+      },
+      {
+        id: 'p4',
+        title: 'Create a community forum',
+        due: '20th Oct 2018',
+        status: 'overdue',
+        content:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
+        person: {
+          id: 'u4',
+          name: 'Uzumaki Bayu',
+        },
+      },
+      {
+        id: 'p5',
+        title: 'Design a Logo',
+        due: '7st Feb 2019',
+        status: 'ongoing',
+        content:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!',
+        person: {
+          id: 'u1',
+          name: 'Amir Hakim',
+        },
+      },
+    ])
+
+    const sortedProjects = computed<Project[]>(() => {
+      if (sortKey.value === 'default') {
+        return projects.value
+      }
+
+      return projects.value.sort((proj1, proj2) => {
+        switch (sortKey.value) {
+          case 'title':
+            return proj1.title < proj2.title ? -1 : 1
+          case 'personName':
+            return proj1.person.name < proj2.person.name ? -1 : 1
+          default:
+            throw new Error('Unknown sort keyword')
+        }
+      })
+    })
+
+    return {
+      sortedProjects,
+      sortKey,
+    }
+  },
 })
 </script>

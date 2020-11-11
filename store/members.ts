@@ -2,7 +2,7 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
-import { FirestoreNewMember, NewMemberInput } from '@/models/NewMember'
+import { FirestoreNewMember, MemberInput } from '@/models/NewMember'
 import { RootState } from './index'
 
 /*
@@ -39,7 +39,7 @@ export const ActionType = {
 }
 
 export const actions: ActionTree<MembersState, RootState> = {
-  async [ActionType.REGISTER_MEMBER](_, newMemberInput: NewMemberInput) {
+  async [ActionType.REGISTER_MEMBER](_, newMemberInput: MemberInput) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')
       .where('email', '==', newMemberInput.email)
