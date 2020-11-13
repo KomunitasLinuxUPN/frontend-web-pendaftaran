@@ -1,4 +1,9 @@
+import { Context } from '@nuxt/types'
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
+
+import { MEMBERS, ActionType as MembersActionType } from './members'
+
+// import { auth, GetterType } from './auth'
 
 /*
  * State
@@ -24,4 +29,14 @@ export const mutations: MutationTree<RootState> = {}
  */
 export const ActionType = {}
 
-export const actions: ActionTree<RootState, RootState> = {}
+export const actions: ActionTree<RootState, RootState> = {
+  async nuxtServerInit(vuexContext, nuxtContext: Context) {
+    try {
+      await vuexContext.dispatch(
+        `${MEMBERS}/${MembersActionType.FETCH_MEMBERS}`
+      )
+    } catch (err) {
+      nuxtContext.error(err)
+    }
+  },
+}

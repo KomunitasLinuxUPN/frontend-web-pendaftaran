@@ -31,15 +31,15 @@ export enum DialogStatus {
   ERROR = 'error',
 }
 
-export interface TextDialogData {
+export interface InfoDialogData {
   dialogIsOpen: boolean
   title: string | null
   message: string | null
   dialogStatus: DialogStatus
 }
 
-export function useTextDialog() {
-  const dialogData = reactive<TextDialogData>({
+export function useInfoDialog() {
+  const dialogData = reactive<InfoDialogData>({
     dialogIsOpen: false,
     title: null,
     message: null,
@@ -54,7 +54,7 @@ export function useTextDialog() {
 export default defineComponent({
   props: {
     dialogData: {
-      type: Object as PropType<UnwrapRef<TextDialogData>>,
+      type: Object as PropType<UnwrapRef<InfoDialogData>>,
       required: true,
     },
   },

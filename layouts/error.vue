@@ -20,7 +20,7 @@
         </v-row>
       </v-container>
     </v-main>
-    <registration-footer />
+    <the-footer />
   </v-app>
 </template>
 

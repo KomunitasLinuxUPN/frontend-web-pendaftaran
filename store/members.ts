@@ -2,40 +2,75 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
-import { FirestoreNewMember, MemberInput } from '@/models/NewMember'
+import { FirestoreNewMember, Member, MemberInput } from '@/models/NewMember'
 import { RootState } from './index'
 
 /*
  * Namespace
  */
-export const members = 'members'
+export const MEMBERS = 'members'
 
 /*
  * State
  */
-export const state = (): unknown => ({})
+export const state = () => ({
+  members: [] as Member[],
+})
 
 export type MembersState = ReturnType<typeof state>
 
 /*
  * Getters
  */
-export const GetterType = {}
+export const GetterType = {
+  REGISTERED_MEMBERS: 'registeredMembers',
+  PENDING_MEMBERS: 'pendingMembers',
+  MEMBERS: 'members',
+}
 
-export const getters: GetterTree<MembersState, RootState> = {}
+export const getters: GetterTree<MembersState, RootState> = {
+  [GetterType.REGISTERED_MEMBERS](state) {
+    return state.members.filter((member) => {
+      return (
+        member.verification.isVerified === true &&
+        member.verification.token === ''
+      )
+    })
+  },
+  [GetterType.PENDING_MEMBERS](state) {
+    return state.members.filter((member) => {
+      return (
+        member.verification.isVerified === false &&
+        member.verification.token !== ''
+      )
+    })
+  },
+  [GetterType.MEMBERS](state) {
+    return state.members
+  },
+}
 
 /*
  * Mutations
  */
-export const MutationType = {}
+export const MutationType = {
+  SET_MEMBERS: 'setMembers',
+}
 
-export const mutations: MutationTree<MembersState> = {}
+export const mutations: MutationTree<MembersState> = {
+  [MutationType.SET_MEMBERS](state, members: Member[]) {
+    state.members.length = 0
+    state.members.push(...members)
+  },
+}
 
 /*
  * Actions
  */
 export const ActionType = {
   REGISTER_MEMBER: 'registerNewMember',
+  FETCH_MEMBERS: 'fetchMembers',
+  SET_MEMBERS: 'setMembers',
 }
 
 export const actions: ActionTree<MembersState, RootState> = {
@@ -80,5 +115,19 @@ export const actions: ActionTree<MembersState, RootState> = {
     }
 
     await this.$fire.firestore.collection('members').add(newMember)
+  },
+  async [ActionType.FETCH_MEMBERS](vuexContext) {
+    const memberSnapshots = await this.$fire.firestore
+      .collection('members')
+      .get()
+
+    const members = memberSnapshots.docs.map((memberSnapshot) => {
+      return memberSnapshot.data() as Member
+    })
+
+    vuexContext.commit(MutationType.SET_MEMBERS, members)
+  },
+  [ActionType.SET_MEMBERS](vuexContext, members: Member[]) {
+    vuexContext.commit(MutationType.SET_MEMBERS, members)
   },
 }

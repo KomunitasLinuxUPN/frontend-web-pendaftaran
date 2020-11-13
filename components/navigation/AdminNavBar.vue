@@ -51,7 +51,7 @@
       <v-row justify="center" class="mt-5 text-center">
         <v-col>
           <v-avatar size="100">
-            <img :src="currentUser.avatar" />
+            <img src="@/assets/images/default-avatar.png" />
           </v-avatar>
           <p class="subtitle-1 white--text mt-3">{{ currentUser.name }}</p>
         </v-col>
@@ -84,8 +84,8 @@
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
-import { authStore, GetterType as AuthGetterType } from '@/store/auth'
-import Person from '~/models/Person'
+import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
+import Person from '@/models/Person'
 
 interface NavBarLink {
   icon: string
@@ -97,6 +97,7 @@ interface AppBarLink {
   text: string
   route: string
 }
+
 export default defineComponent({
   setup() {
     const drawerIsOpen = ref(false)
@@ -132,7 +133,7 @@ export default defineComponent({
 
     const { store } = useContext()
     const currentUser = store.getters[
-      `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+      `${AUTH}/${AuthGetterType.LOGGED_IN_USER}`
     ] as Person
 
     const snackbarIsDisplayed = ref(false)

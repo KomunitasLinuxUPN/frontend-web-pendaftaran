@@ -4,6 +4,6 @@
     <v-main class="grey lighten-4">
       <nuxt />
     </v-main>
-    <registration-footer />
+    <the-footer />
   </v-app>
 </template>

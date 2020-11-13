@@ -64,7 +64,7 @@
           v-model="memberInput.photo"
           :rules="imageRules"
           accept="image/png, image/jpg, image/jpeg"
-          placeholder="png, jpg, jpeg"
+          placeholder="Format png, jpg, jpeg"
           prepend-icon="mdi-camera"
           label="Foto Diri"
           class="mr-8"
@@ -93,7 +93,7 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { MemberInput } from '@/models/NewMember'
-import { members, ActionType as MembersActionType } from '@/store/members'
+import { MEMBERS, ActionType as MembersActionType } from '@/store/members'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -187,7 +187,7 @@ export default defineComponent({
               // Update member...
             } else {
               await app.store?.dispatch(
-                `${members}/${MembersActionType.REGISTER_MEMBER}`,
+                `${MEMBERS}/${MembersActionType.REGISTER_MEMBER}`,
                 memberInput
               )
             }

@@ -14,15 +14,19 @@
         <v-card-text class="text-center white--text mt-lg-5">
           <h1 class="display-1">Halo rek! &#x1F60A;</h1>
           <h5 class="subtitle-1 mt-5">
-            Ayo monggo daftar, buat babang Fathur bangga! Awoawkwaok
+            Selamat datang di website pendaftaran KoLU
+          </h5>
+          <h5 class="subtitle-1 mt-5">
+            Silahkan melakukan registrasi untuk untuk menjadi calon anggota
+            KoLU!
           </h5>
           <h5 class="subtitle-1 mt-5">
             Harap gunakan email aktifmu untuk melakukan konfirmasi setelah input
             pendaftaran
           </h5>
           <h5 class="subtitle-1 mt-5">
-            Apabila mengalami masalah harap hubungi kepala suku <br />
-            (+62-838-5300-2616)
+            Apabila mengalami masalah harap hubungi humas dengan cara DM ke akun
+            resmi Instagram KoLU
           </h5>
           <h2 class="headline mt-5">Atau</h2>
           <v-btn
@@ -37,7 +41,7 @@
         </v-card-text>
       </v-col>
     </v-row>
-    <text-dialog :dialog-data="dialogData" />
+    <app-info-dialog :dialog-data="dialogData" />
   </div>
 </template>
 
@@ -46,13 +50,13 @@ import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { AxiosError } from 'axios'
 
 import Windows from '@/constants/Windows'
-import { useTextDialog, DialogStatus } from '@/components/ui/TextDialog.vue'
+import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
 import { MemberInput } from '~/models/NewMember'
 
 export default defineComponent({
   emits: ['switch-window'],
   setup() {
-    const { dialogData } = useTextDialog()
+    const { dialogData } = useInfoDialog()
 
     // const newMemberInput = reactive<MemberInput>({
     //   name: null,

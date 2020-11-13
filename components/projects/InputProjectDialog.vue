@@ -59,7 +59,7 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { FirestoreProject, InputProject } from '@/models/Project'
-import { authStore, GetterType as AuthGetterType } from '@/store/auth'
+import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
 import Person from '~/models/Person'
 
 interface VForm extends HTMLFormElement {
@@ -107,7 +107,7 @@ export default defineComponent({
           isLoading.value = true
 
           const currentUser = store.getters[
-            `${authStore}/${AuthGetterType.LOGGED_IN_USER}`
+            `${AUTH}/${AuthGetterType.LOGGED_IN_USER}`
           ] as Person
 
           const project: FirestoreProject = {

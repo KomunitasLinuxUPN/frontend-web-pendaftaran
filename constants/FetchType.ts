@@ -1,7 +1,11 @@
-const FetchType = Object.freeze({
-  ALL: 0,
-  REGISTERED: 1,
-  PENDING: 2,
-})
+export enum Fetch {
+  ALL = 'allMembers',
+  REGISTERED = 'membersRegistered',
+  PENDING = 'membersPending',
+}
 
-export default FetchType
+export const FetchType = Object.freeze({
+  ALL: Fetch.ALL,
+  REGISTERED: Fetch.REGISTERED,
+  PENDING: Fetch.PENDING,
+})

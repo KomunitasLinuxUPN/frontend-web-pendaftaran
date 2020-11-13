@@ -3,38 +3,41 @@
     <v-data-table
       :headers="headers"
       :items="loadedMembers"
-      :search="searchText"
-      :options.sync="fetchOptions"
-      :server-items-length="totalLoadedMembers"
       :loading="fetchLoading"
+      hide-default-footer
+      disable-pagination
       sort-by="id"
-      class="elevation-1"
     >
       <!-- Table Header -->
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Terdaftar</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-
+          <v-divider class="mx-4" inset vertical />
           <v-spacer />
-          <v-spacer />
-          <v-spacer />
-
-          <v-text-field
-            v-model="searchText"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          />
+          <v-btn
+            :loading="fetchLoading"
+            color="primary"
+            dark
+            @click="refetchMembers"
+          >
+            REFRESH
+          </v-btn>
         </v-toolbar>
       </template>
 
       <!-- Photo Column -->
-      <template v-slot:[`item.photoURL`]="{ item }">
-        <v-avatar size="36" class="info">
-          <v-img :src="item.photoURL" />
-        </v-avatar>
+      <template v-slot:[`item.photoURL`]="{ item, on, attrs }">
+        <v-btn icon x-large v-on="on">
+          <v-avatar
+            size="36"
+            class="info"
+            v-bind="attrs"
+            @click="openPhotoDialog(item.photoURL)"
+            v-on="on"
+          >
+            <v-img :src="item.photoURL" />
+          </v-avatar>
+        </v-btn>
       </template>
 
       <!-- Member Registration Status  -->
@@ -42,6 +45,7 @@
         <v-tooltip left :color="getColor(item.verification.isVerified)">
           <template #activator="{ on, attrs }">
             <v-chip
+              small
               v-bind="attrs"
               :color="getColor(item.verification.isVerified)"
               dark
@@ -56,93 +60,138 @@
               </v-icon>
             </v-chip>
           </template>
-          <span>{{
-            item.verification.isVerified
-              ? 'Pendaftaran Terkonfirmasi'
-              : 'Menunggu Konfirmasi'
-          }}</span>
+          <span>
+            {{
+              item.verification.isVerified
+                ? 'Pendaftaran Terkonfirmasi'
+                : 'Menunggu Konfirmasi'
+            }}
+          </span>
         </v-tooltip>
       </template>
 
-      <!-- Edit Member Dialog -->
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
-          <v-card-text>
-            <member-form />
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <!-- Delete Member Dialog -->
-      <v-dialog v-model="dialogDelete" max-width="500px">
-        <v-card>
-          <v-card-title class="headline">
-            Are you sure you want to delete this item?
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeDelete"
-              >Cancel</v-btn
-            >
-            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-              >OK</v-btn
-            >
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <!-- Actions Column -->
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small color="primary" class="mr-2" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small color="error" @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
-      </template>
+        <v-tooltip top color="info">
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              icon
+              :loading="actionLoading"
+              color="primary"
+              v-bind="attrs"
+              text
+              @click="resendEmail(item)"
+              v-on="on"
+            >
+              <v-icon small>mdi-email-send</v-icon>
+            </v-btn>
+          </template>
+          <span>Kirim ulang email konfirmasi</span>
+        </v-tooltip>
 
-      <!-- Re-fetch Button -->
-      <template v-slot:no-data>
-        <v-btn text color="primary" class="my-5" @click="getDataFromFirestore">
-          RELOAD
-        </v-btn>
+        <v-tooltip top color="info">
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              icon
+              :loading="actionLoading"
+              color="error"
+              v-bind="attrs"
+              text
+              @click="deleteMember(item)"
+              v-on="on"
+            >
+              <v-icon small>mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span>Hapus member</span>
+        </v-tooltip>
       </template>
     </v-data-table>
+
+    <!-- View Photo Dialog -->
+    <v-dialog v-model="dialogPhotoToggle" max-width="500px">
+      <v-card>
+        <v-card-title dark class="primary headline white--text justify-center">
+          Lihat Foto
+        </v-card-title>
+
+        <v-card-text class="mt-7">
+          <v-row justify="center">
+            <v-img
+              :src="openedPhotoURL"
+              lazy-src="https://picsum.photos/id/11/100/60"
+              max-width="400"
+              max-height="500"
+            >
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="grey lighten-5" />
+                </v-row>
+              </template>
+            </v-img>
+          </v-row>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="primary" text @click="closePhotoDialog">TUTUP</v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Delete Member Dialog -->
+    <v-dialog v-model="deleteDialogToggle" max-width="500px">
+      <v-card>
+        <v-card-title class="error headline white--text">
+          Konfirmasi Penghapusan
+        </v-card-title>
+        <v-card-title class="subtitle-1 justify-center">
+          Apakah anda yakin ingin menghapus member ini?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="primary" text @click="closeDeleteDialog">BATAL</v-btn>
+          <v-btn color="primary" text @click="deleteMemberConfirm">IYA</v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <app-info-dialog :dialog-data="appDialogData" />
   </v-card>
 </template>
 
 <script lang="ts">
 import {
-  computed,
   defineComponent,
+  PropType,
   reactive,
   ref,
+  useContext,
   watch,
 } from '@nuxtjs/composition-api'
-import { DataOptions, DataTableHeader } from 'vuetify'
+import { DataTableHeader } from 'vuetify'
 
-import { Member, MemberInput } from '@/models/NewMember'
+import { Member } from '@/models/NewMember'
+import {
+  MEMBERS,
+  GetterType as MembersGetterType,
+  ActionType as MembersActionType,
+} from '@/store/members'
+import { Fetch } from '@/constants/FetchType'
+import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
 
 export default defineComponent({
   props: {
     fetchType: {
-      type: Number,
+      type: String as PropType<Fetch>,
       required: true,
     },
   },
-  setup(_) {
-    const searchText = ref('')
+  setup(props) {
     const headers = reactive<DataTableHeader[]>([
       {
         text: 'Foto',
@@ -185,293 +234,121 @@ export default defineComponent({
       {
         text: 'Actions',
         value: 'actions',
+        align: 'center',
         sortable: false,
       },
     ])
 
+    const { store } = useContext()
+
+    let loadedMembers: Member[]
+
+    if (props.fetchType === Fetch.REGISTERED) {
+      loadedMembers = store.getters[
+        `${MEMBERS}/${MembersGetterType.REGISTERED_MEMBERS}`
+      ] as Member[]
+    } else if (props.fetchType === Fetch.PENDING) {
+      loadedMembers = store.getters[
+        `${MEMBERS}/${MembersGetterType.PENDING_MEMBERS}`
+      ] as Member[]
+    } else {
+      loadedMembers = store.getters[
+        `${MEMBERS}/${MembersGetterType.MEMBERS}`
+      ] as Member[]
+    }
+
     const fetchLoading = ref(false)
-    const fetchOptions = ref<DataOptions | null>(null)
-    const loadedMembers = ref<Member[]>([])
-    const totalLoadedMembers = ref(0)
+    const { dialogData: appDialogData } = useInfoDialog()
 
-    watch(fetchOptions, () => {
-      getDataFromFirestore()
-    })
-
-    async function getDataFromFirestore() {
-      fetchLoading.value = true
-      const loadedData = await fakeApiCall()
-      loadedMembers.value = loadedData.members
-      totalLoadedMembers.value = loadedData.totalMembers
-      fetchLoading.value = false
-    }
-
-    function fakeApiCall() {
-      return new Promise<{ members: Member[]; totalMembers: number }>(
-        (resolve) => {
-          const { sortBy, sortDesc, page, itemsPerPage } = fetchOptions.value!
-
-          let members = getMembers()
-          const totalMembers = members.length
-
-          if (sortBy?.length === 1 && sortDesc?.length === 1) {
-            members = members.sort((a, b) => {
-              const sortA = a[sortBy[0]]
-              const sortB = b[sortBy[0]]
-
-              if (sortDesc[0]) {
-                if (sortA < sortB) return 1
-                if (sortA > sortB) return -1
-                return 0
-              } else {
-                if (sortA < sortB) return -1
-                if (sortA > sortB) return 1
-                return 0
-              }
-            })
-          }
-
-          if (itemsPerPage > 0) {
-            members = members.slice(
-              (page - 1) * itemsPerPage,
-              page * itemsPerPage
-            )
-          }
-
-          setTimeout(() => {
-            resolve({
-              members,
-              totalMembers,
-            })
-          }, 1000)
-        }
-      )
-    }
-
-    function getMembers(): Member[] {
-      return [
-        {
-          id: 'nqnduibwcdjwiudniuednuqi',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: 'HXlWGpNC2wr4DznKgcnY',
-          name: 'Amir Hakim',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: false,
-            token: 'ncubwobcyidbcsuchohbhcouibasuchs',
-          },
-        },
-        {
-          id: 'asdqcdcdwceewedw',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: 'acdscvdfbgbgfververververv',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: 'csdcsceqwqwdq3432423rewrwere',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: '234r2fgfsdffwer231r13',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: 'fwefwer24513431refwdfferferff',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-        {
-          id: '3r3efewfweew532re2wrwerwerwe',
-          name: 'Ahmad Syarifuddin',
-          address: 'Kamaku',
-          generation: 2017,
-          department: 'Informatika',
-          email: 'amir.rhythm@gmail.com',
-          phone: '087855777360',
-          lineID: 'mramirid',
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/pendaftaran-kolu-5da54.appspot.com/o/photos%2Famir.mramirid%40gmail.com?alt=media&token=c7513c2b-3fa4-46dd-97c6-193cb8918c3a',
-          verification: {
-            isVerified: true,
-            token: '',
-          },
-        },
-      ]
-    }
-
-    const editedIndex = ref(-1)
-    const editedItem = reactive<MemberInput>({
-      name: null,
-      address: null,
-      generation: null,
-      department: null,
-      email: null,
-      phone: null,
-      lineID: null,
-      photo: null,
-    })
-
-    function editItem(item: Member) {
-      editedIndex.value = loadedMembers.value.indexOf(item)
-      editedItem = Object.assign({}, item)
-      dialog.value = true
-    }
-
-    function deleteItem(item: Member) {
-      editedIndex.value = loadedMembers.value.indexOf(item)
-      editedItem = Object.assign({}, item)
-      dialogDelete.value = true
-    }
-
-    function deleteItemConfirm() {
-      loadedMembers.value.splice(editedIndex.value, 1)
-      closeDelete.value()
-    }
-
-    function close() {
-      dialog.value = false
-      root.$nextTick.value(() => {
-        editedItem = Object.assign({}, defaultItem.value)
-        editedIndex.value = -1
-      })
-    }
-
-    function closeDelete() {
-      dialogDelete.value = false
-      $nextTick.value(() => {
-        editedItem = Object.assign({}, defaultItem.value)
-        editedIndex.value = -1
-      })
-    }
-
-    function save() {
-      if (editedIndex.value > -1) {
-        Object.assign(loadedMembers.value[editedIndex.value], editedItem)
-      } else {
-        loadedMembers.value.push(editedItem)
+    async function refetchMembers() {
+      try {
+        fetchLoading.value = true
+        await store.dispatch(`${MEMBERS}/${MembersActionType.FETCH_MEMBERS}`)
+      } catch (err) {
+        appDialogData.dialogIsOpen = true
+        appDialogData.dialogStatus = DialogStatus.ERROR
+        appDialogData.title = 'Terjadi Kesalahan!'
+        appDialogData.message =
+          err.message || 'Coba lagi nanti atau silahkan hubungi admin'
+      } finally {
+        fetchLoading.value = false
       }
-      close()
     }
-
-    const dialog = ref(false)
-    const dialogDelete = ref(false)
-
-    watch(dialog, (val) => {
-      val || close()
-    })
-
-    watch(dialogDelete, (val) => {
-      val || closeDelete()
-    })
-
-    const formTitle = computed(() => {
-      return editedIndex.value === -1 ? 'Add New Member' : 'Edit Member'
-    })
 
     function getColor(isVerified: boolean) {
       return isVerified ? 'green' : 'orange'
     }
 
+    const actionLoading = ref(false)
+
+    function resendEmail(member: Member) {
+      actionLoading.value = true
+      setTimeout(() => {
+        console.log(member)
+        actionLoading.value = false
+      }, 2000)
+    }
+
+    const dialogPhotoToggle = ref(false)
+
+    watch(dialogPhotoToggle, (val) => {
+      val || closePhotoDialog()
+    })
+
+    const openedPhotoURL = ref<string | null>(null)
+
+    function openPhotoDialog(photoURL: string) {
+      dialogPhotoToggle.value = true
+      openedPhotoURL.value = photoURL
+    }
+
+    function closePhotoDialog() {
+      dialogPhotoToggle.value = false
+      openedPhotoURL.value = null
+    }
+
+    const deleteDialogToggle = ref(false)
+
+    watch(deleteDialogToggle, (val) => {
+      val || closeDeleteDialog()
+    })
+
+    function deleteMember(item: Member) {
+      // editedIndex.value = loadedMembers.value.indexOf(item)
+      // editedItem = Object.assign({}, item)
+      // deleteDialogToggle.value = true
+    }
+
+    function deleteMemberConfirm() {
+      // loadedMembers.value.splice(editedIndex.value, 1)
+      // closeDelete.value()
+    }
+
+    function closeDeleteDialog() {
+      // deleteDialogToggle.value = false
+      // $nextTick.value(() => {
+      //   editedItem = Object.assign({}, defaultItem.value)
+      //   editedIndex.value = -1
+      // })
+    }
+
     return {
-      fetchOptions,
-      getDataFromFirestore,
-      loadedMembers,
-      totalLoadedMembers,
-      fetchLoading,
       headers,
-      searchText,
+      loadedMembers,
+      fetchLoading,
+      refetchMembers,
+      appDialogData,
       getColor,
-      dialog,
-      dialogDelete,
-      formTitle,
-      editItem,
-      deleteItem,
-      deleteItemConfirm,
-      save,
-      close,
-      closeDelete,
+      dialogPhotoToggle,
+      openedPhotoURL,
+      openPhotoDialog,
+      closePhotoDialog,
+      actionLoading,
+      resendEmail,
+      deleteDialogToggle,
+      deleteMember,
+      deleteMemberConfirm,
+      closeDeleteDialog,
     }
   },
 })

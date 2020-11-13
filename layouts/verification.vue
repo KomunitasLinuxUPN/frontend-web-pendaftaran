@@ -6,6 +6,6 @@
         <nuxt />
       </client-only>
     </v-main>
-    <registration-footer />
+    <the-footer />
   </v-app>
 </template>
