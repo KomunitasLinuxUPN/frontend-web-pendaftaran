@@ -2,7 +2,7 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
-import { FirestoreNewMember, Member, MemberInput } from '@/models/NewMember'
+import { FirestoreMember, Member, MemberInput } from '@/models/NewMember'
 import { RootState } from './index'
 
 /*
@@ -55,12 +55,27 @@ export const getters: GetterTree<MembersState, RootState> = {
  */
 export const MutationType = {
   SET_MEMBERS: 'setMembers',
+  UPDATE_MEMBER: 'updateMember',
+  DELETE_MEMBER: 'deleteMember',
 }
 
 export const mutations: MutationTree<MembersState> = {
   [MutationType.SET_MEMBERS](state, members: Member[]) {
     state.members.length = 0
     state.members.push(...members)
+  },
+  [MutationType.UPDATE_MEMBER](state, updatedMember: Member) {
+    const updatedMemberIndex = state.members.findIndex((member) => {
+      return member.id === updatedMember.id
+    })
+    state.members[updatedMemberIndex] = updatedMember
+  },
+  [MutationType.DELETE_MEMBER](state, deletedMember: Member) {
+    const unselectedMembers = state.members.filter((member) => {
+      return member.id !== deletedMember.id
+    })
+    state.members.length = 0
+    state.members.push(...unselectedMembers)
   },
 }
 
@@ -70,7 +85,8 @@ export const mutations: MutationTree<MembersState> = {
 export const ActionType = {
   REGISTER_MEMBER: 'registerNewMember',
   FETCH_MEMBERS: 'fetchMembers',
-  SET_MEMBERS: 'setMembers',
+  RESEND_EMAIL_CONFIRMATION: 'sendEmailConfirmation',
+  DELETE_MEMBER: 'deleteMember',
 }
 
 export const actions: ActionTree<MembersState, RootState> = {
@@ -99,7 +115,7 @@ export const actions: ActionTree<MembersState, RootState> = {
     await photoRef.put(newMemberInput.photo!)
     const photoURL = await photoRef.getDownloadURL()
 
-    const newMember: FirestoreNewMember = {
+    const newMember: FirestoreMember = {
       name: newMemberInput.name!,
       address: newMemberInput.address!,
       generation: newMemberInput.generation!,
@@ -121,13 +137,43 @@ export const actions: ActionTree<MembersState, RootState> = {
       .collection('members')
       .get()
 
-    const members = memberSnapshots.docs.map((memberSnapshot) => {
-      return memberSnapshot.data() as Member
+    const members = memberSnapshots.docs.map<Member>((memberSnapshot) => {
+      const member = memberSnapshot.data() as FirestoreMember
+      return {
+        id: memberSnapshot.id,
+        ...member,
+      }
     })
 
     vuexContext.commit(MutationType.SET_MEMBERS, members)
   },
-  [ActionType.SET_MEMBERS](vuexContext, members: Member[]) {
-    vuexContext.commit(MutationType.SET_MEMBERS, members)
+  async [ActionType.RESEND_EMAIL_CONFIRMATION](vuexContext, member: Member) {
+    const newToken = uuid.v4()
+
+    await Promise.all([
+      this.$axios.post(`http://localhost:3000/backend/confirm-registration`, {
+        email: member.email,
+        token: newToken,
+      } as RegConfirmBody),
+      this.$fire.firestore.collection('members').doc(member.id).update({
+        'verification.isVerified': false,
+        'verification.token': newToken,
+      }),
+    ])
+
+    member.verification.isVerified = false
+    member.verification.token = newToken
+    vuexContext.commit(MutationType.UPDATE_MEMBER, member)
+  },
+  async [ActionType.DELETE_MEMBER](vuexContext, deletedMember: Member) {
+    const storageRef = this.$fire.storage.ref()
+    const photoRef = storageRef.child(`photos/${deletedMember.email}`)
+
+    await Promise.all([
+      this.$fire.firestore.collection('members').doc(deletedMember.id).delete(),
+      photoRef.delete(),
+    ])
+
+    vuexContext.commit(MutationType.DELETE_MEMBER, deletedMember)
   },
 }

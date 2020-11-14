@@ -55,7 +55,7 @@ export const confirmRegistration: RequestHandler = async (req, res) => {
         // Jadi kode ini tidak guna
         res.status(400).json({
           message:
-            'Tidak dapat mengirim konfirmasi pendaftaran ke email anda! Harap cek kembali kebenaran email anda',
+            'Tidak dapat mengirim konfirmasi pendaftaran ke email anda! Coba lagi nanti',
           moreInfo: infoRejected,
         })
       }

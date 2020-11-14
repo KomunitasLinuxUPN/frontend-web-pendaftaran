@@ -11,7 +11,7 @@ export interface MemberInput {
   [attr: string]: any | null
 }
 
-export interface FirestoreNewMember {
+export interface FirestoreMember {
   name: string
   address: string
   generation: number
@@ -28,6 +28,6 @@ export interface FirestoreNewMember {
   [attr: string]: any
 }
 
-export interface Member extends FirestoreNewMember {
+export interface Member extends FirestoreMember {
   id: string
 }

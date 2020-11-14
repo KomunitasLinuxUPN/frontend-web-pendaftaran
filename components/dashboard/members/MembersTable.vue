@@ -72,7 +72,11 @@
 
       <!-- Actions Column -->
       <template v-slot:[`item.actions`]="{ item }">
-        <v-tooltip top color="info">
+        <v-tooltip
+          v-if="!item.verification.isVerified && item.verification.token !== ''"
+          top
+          color="info"
+        >
           <template #activator="{ on, attrs }">
             <v-btn
               small
@@ -214,6 +218,11 @@ export default defineComponent({
         sortable: false,
       },
       {
+        text: 'Email',
+        value: 'email',
+        align: 'center',
+      },
+      {
         text: 'No. HP',
         value: 'phone',
         align: 'center',
@@ -257,8 +266,9 @@ export default defineComponent({
       ] as Member[]
     }
 
-    const fetchLoading = ref(false)
     const { dialogData: appDialogData } = useInfoDialog()
+
+    const fetchLoading = ref(false)
 
     async function refetchMembers() {
       try {
@@ -281,12 +291,28 @@ export default defineComponent({
 
     const actionLoading = ref(false)
 
-    function resendEmail(member: Member) {
-      actionLoading.value = true
-      setTimeout(() => {
-        console.log(member)
+    async function resendEmail(member: Member) {
+      try {
+        actionLoading.value = true
+
+        await store.dispatch(
+          `${MEMBERS}/${MembersActionType.RESEND_EMAIL_CONFIRMATION}`,
+          Object.assign<any, Member>({}, member)
+        )
+
+        appDialogData.dialogIsOpen = true
+        appDialogData.dialogStatus = DialogStatus.SUCCESS
+        appDialogData.title = 'Berhasil!'
+        appDialogData.message = `Email konfirmasi pendaftaran berhasil dikirim ulang ke ${member.email}. Harap beritahu member untuk melakukan konfirmasi`
+      } catch (err) {
+        appDialogData.dialogIsOpen = true
+        appDialogData.dialogStatus = DialogStatus.ERROR
+        appDialogData.title = 'Terjadi Kesalahan!'
+        appDialogData.message =
+          err.message || 'Coba lagi nanti atau silahkan hubungi admin'
+      } finally {
         actionLoading.value = false
-      }, 2000)
+      }
     }
 
     const dialogPhotoToggle = ref(false)
@@ -308,28 +334,47 @@ export default defineComponent({
     }
 
     const deleteDialogToggle = ref(false)
+    const deletedMember = ref<Member | null>(null)
 
     watch(deleteDialogToggle, (val) => {
       val || closeDeleteDialog()
     })
 
-    function deleteMember(item: Member) {
-      // editedIndex.value = loadedMembers.value.indexOf(item)
-      // editedItem = Object.assign({}, item)
-      // deleteDialogToggle.value = true
+    function deleteMember(member: Member) {
+      deletedMember.value = Object.assign<any, Member>({}, member)
+      deleteDialogToggle.value = true
     }
 
-    function deleteMemberConfirm() {
-      // loadedMembers.value.splice(editedIndex.value, 1)
-      // closeDelete.value()
+    async function deleteMemberConfirm() {
+      try {
+        actionLoading.value = true
+
+        await store.dispatch(
+          `${MEMBERS}/${MembersActionType.DELETE_MEMBER}`,
+          deletedMember.value
+        )
+
+        appDialogData.dialogIsOpen = true
+        appDialogData.dialogStatus = DialogStatus.SUCCESS
+        appDialogData.title = 'Penghapusan Berhasil!'
+        appDialogData.message = `Member ${
+          deletedMember.value!.name
+        } berhasil dihapus`
+      } catch (err) {
+        appDialogData.dialogIsOpen = true
+        appDialogData.dialogStatus = DialogStatus.ERROR
+        appDialogData.title = 'Terjadi Kesalahan!'
+        appDialogData.message =
+          err.message || 'Coba lagi nanti atau silahkan hubungi admin'
+      } finally {
+        actionLoading.value = false
+        closeDeleteDialog()
+      }
     }
 
     function closeDeleteDialog() {
-      // deleteDialogToggle.value = false
-      // $nextTick.value(() => {
-      //   editedItem = Object.assign({}, defaultItem.value)
-      //   editedIndex.value = -1
-      // })
+      deletedMember.value = null
+      deleteDialogToggle.value = false
     }
 
     return {
