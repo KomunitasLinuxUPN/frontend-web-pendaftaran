@@ -10,7 +10,7 @@
           <member-form :member="newMemberInput" @submit="submit" />
         </v-card-text>
       </v-col>
-      <v-col cols="12" md="4" class="info pa-5">
+      <v-col cols="12" md="4" class="secondary pa-5">
         <v-card-text class="text-center white--text mt-lg-5">
           <h1 class="display-1">Halo rek! &#x1F60A;</h1>
           <h5 class="subtitle-1 mt-5">
@@ -21,23 +21,12 @@
             KoLU!
           </h5>
           <h5 class="subtitle-1 mt-5">
-            Harap gunakan email aktifmu untuk melakukan konfirmasi setelah input
-            pendaftaran
+            HARAP GUNAKAN EMAIL AKTIFMU untuk melakukan konfirmasi pendaftaran
           </h5>
           <h5 class="subtitle-1 mt-5">
-            Apabila mengalami masalah harap hubungi humas dengan cara DM ke akun
-            resmi Instagram KoLU
+            Apabila mengalami masalah harap hubungi Humas KoLU dengan cara DM ke
+            akun resmi Instagram KoLU yaa
           </h5>
-          <h2 class="headline mt-5">Atau</h2>
-          <v-btn
-            rounded
-            class="mt-5"
-            dark
-            outlined
-            @click="$emit('switch-window', Windows.SIGN_IN_ADMIN)"
-          >
-            LOGIN SEBAGAI ADMIN
-          </v-btn>
         </v-card-text>
       </v-col>
     </v-row>
@@ -49,12 +38,10 @@
 import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { AxiosError } from 'axios'
 
-import Windows from '@/constants/Windows'
 import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
-import { MemberInput } from '~/models/NewMember'
+import { MemberInput } from '@/models/NewMember'
 
 export default defineComponent({
-  emits: ['switch-window'],
   setup() {
     const { dialogData } = useInfoDialog()
 
@@ -106,7 +93,6 @@ export default defineComponent({
     }
 
     return {
-      Windows,
       newMemberInput,
       submit,
       dialogData,

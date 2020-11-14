@@ -20,6 +20,11 @@
       <v-spacer />
 
       <div class="hidden-sm-and-down">
+        <v-btn outlined rounded href="/members/registered" nuxt>
+          <v-icon left>mdi-account-group</v-icon>
+          <span>TERDAFTAR</span>
+        </v-btn>
+
         <v-tooltip bottom>
           <template #activator="{ on, attrs }">
             <v-btn
@@ -78,6 +83,11 @@
             </v-btn>
           </template>
           <v-list>
+            <v-list-item to="/members/registered">
+              <v-icon left>mdi-account-group</v-icon>
+              <v-list-item-title>Member Terdaftar</v-list-item-title>
+            </v-list-item>
+
             <v-list-item to="https://www.kolu.web.id">
               <v-icon left>mdi-web</v-icon>
               <v-list-item-title>Situs Resmi</v-list-item-title>

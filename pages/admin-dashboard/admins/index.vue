@@ -43,7 +43,7 @@ import Person from '@/models/Person'
 export default defineComponent({
   layout: 'admin',
   head: {
-    title: 'Team',
+    title: 'List Admin',
   },
   setup() {
     const team: Person[] = [

@@ -81,7 +81,7 @@ const config: NuxtConfig = {
 
   // Nuxt Loading Bar
   loading: {
-    color: colors.yellow.darken1,
+    color: '#3CAEA3',
     height: '3px',
   },
 
@@ -95,12 +95,12 @@ const config: NuxtConfig = {
       options: {},
       themes: {
         light: {
-          primary: colors.purple.darken4,
-          secondary: colors.purple.darken3,
-          accent: colors.yellow.darken2,
-          info: colors.teal.lighten2,
-          success: colors.green.accent3,
-          warning: colors.yellow.darken3,
+          primary: '#173F5F',
+          secondary: '#20639B',
+          accent: '#ED553B',
+          info: '#3CAEA3',
+          success: colors.green.base,
+          warning: '#ED553B',
           error: colors.red.base,
         },
         dark: {

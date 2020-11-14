@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <registration-nav-bar />
+    <homepage-nav-bar />
     <v-main class="grey lighten-4">
       <v-container class="error-page fill-height" fluid>
         <v-row align="center" justify="center">

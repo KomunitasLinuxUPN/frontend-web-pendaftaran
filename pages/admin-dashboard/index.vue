@@ -19,7 +19,7 @@
 import { defineComponent, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  layout: 'registration',
+  layout: 'homepage',
   setup() {
     const { app } = useContext()
     app.router?.replace('/admin-dashboard/members/registered')

@@ -13,6 +13,9 @@ import { FetchType } from '@/constants/FetchType'
 
 export default defineComponent({
   layout: 'admin',
+  head: {
+    title: 'Semua Pendaftar',
+  },
   setup() {
     return {
       FetchType,

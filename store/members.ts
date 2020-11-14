@@ -100,20 +100,12 @@ export const actions: ActionTree<MembersState, RootState> = {
       throw new Error(`Email ${newMemberInput.email} sudah terpakai`)
     }
 
-    const token = uuid.v4()
-
-    await this.$axios.post(
-      `http://localhost:3000/backend/confirm-registration`,
-      {
-        email: newMemberInput.email,
-        token,
-      } as RegConfirmBody
-    )
-
     const storageRef = this.$fire.storage.ref()
     const photoRef = storageRef.child(`photos/${newMemberInput.email}`)
     await photoRef.put(newMemberInput.photo!)
     const photoURL = await photoRef.getDownloadURL()
+
+    const token = uuid.v4()
 
     const newMember: FirestoreMember = {
       name: newMemberInput.name!,
@@ -130,7 +122,13 @@ export const actions: ActionTree<MembersState, RootState> = {
       },
     }
 
-    await this.$fire.firestore.collection('members').add(newMember)
+    await Promise.all([
+      this.$fire.firestore.collection('members').add(newMember),
+      this.$axios.post(`http://localhost:3000/backend/confirm-registration`, {
+        email: newMemberInput.email,
+        token,
+      } as RegConfirmBody),
+    ])
   },
   async [ActionType.FETCH_MEMBERS](vuexContext) {
     const memberSnapshots = await this.$fire.firestore

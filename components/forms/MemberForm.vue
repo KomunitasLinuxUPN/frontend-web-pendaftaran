@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-form ref="formRef" class="mt-4">
+    <v-form ref="formRef" class="mt-4 secondary--text">
       <v-text-field
         v-model.trim="memberInput.name"
         :rules="nonEmptyRules"
         label="Nama Lengkap"
         prepend-icon="mdi-account"
         type="text"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.trim="memberInput.address"
@@ -15,7 +15,7 @@
         label="Alamat Lengkap"
         prepend-icon="mdi-home"
         type="text"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.number="memberInput.generation"
@@ -24,7 +24,7 @@
         prepend-icon="mdi-calendar-account"
         type="number"
         hint="Range angkatan 2003 - 2020"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.trim="memberInput.department"
@@ -32,7 +32,7 @@
         label="Jurusan"
         prepend-icon="mdi-school"
         type="text"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.trim="memberInput.email"
@@ -40,7 +40,7 @@
         label="Email"
         prepend-icon="mdi-email"
         type="email"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.trim="memberInput.phone"
@@ -48,7 +48,7 @@
         label="Nomor Telefon"
         prepend-icon="mdi-phone"
         type="text"
-        color="primary"
+        color="secondary"
       />
       <v-text-field
         v-model.trim="memberInput.lineID"
@@ -57,9 +57,9 @@
         hint="Hanya ID tanpa '@' seperti 'cah_ganteng_123'"
         prepend-icon="mdi-at"
         type="text"
-        color="primary"
+        color="secondary"
       />
-      <v-input class="mt-3">
+      <v-input class="mt-3" color="secondary">
         <v-file-input
           v-model="memberInput.photo"
           :rules="imageRules"
@@ -69,7 +69,7 @@
           label="Foto Diri"
           class="mr-8"
         />
-        <v-avatar size="100" class="info">
+        <v-avatar size="100" class="secondary">
           <v-img position="center" :src="photoPreviewUrl" />
         </v-avatar>
       </v-input>
