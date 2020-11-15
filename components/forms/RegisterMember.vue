@@ -39,7 +39,7 @@ import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { AxiosError } from 'axios'
 
 import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
-import { MemberInput } from '@/models/NewMember'
+import { MemberInput } from '@/models/Member'
 
 export default defineComponent({
   setup() {

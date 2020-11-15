@@ -92,7 +92,7 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 
-import { MemberInput } from '@/models/NewMember'
+import { MemberInput } from '@/models/Member'
 import { MEMBERS, ActionType as MembersActionType } from '@/store/members'
 
 interface VForm extends HTMLFormElement {

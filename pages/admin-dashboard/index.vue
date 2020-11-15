@@ -22,7 +22,7 @@ export default defineComponent({
   layout: 'homepage',
   setup() {
     const { app } = useContext()
-    app.router?.replace('/admin-dashboard/members/registered')
+    app.router?.replace('/admin-dashboard/members/all')
   },
 })
 </script>

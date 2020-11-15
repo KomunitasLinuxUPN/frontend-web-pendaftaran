@@ -1,7 +1,7 @@
 <template>
   <div id="members-registered">
     <v-container class="my-8">
-      <members-table :fetch-type="FetchType.PENDING" />
+      <dashboard-members-table :fetch-type="FetchType.PENDING" />
     </v-container>
   </div>
 </template>

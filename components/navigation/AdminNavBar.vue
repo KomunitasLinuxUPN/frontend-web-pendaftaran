@@ -56,7 +56,7 @@
           <p class="subtitle-1 white--text mt-3">{{ currentUser.name }}</p>
         </v-col>
         <v-col>
-          <input-project-dialog @project-added="toggleSnackbar(true)" />
+          <add-admin-form @project-added="toggleSnackbar(true)" />
         </v-col>
       </v-row>
 

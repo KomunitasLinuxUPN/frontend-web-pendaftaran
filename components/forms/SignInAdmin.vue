@@ -8,12 +8,16 @@
         </h4>
         <v-form ref="formRef" class="mt-8">
           <v-text-field
+            v-model.trim="loginInput.email"
+            :rules="emailRules"
             label="Email"
             prepend-icon="mdi-email"
             type="email"
             color="secondary"
           />
           <v-text-field
+            v-model.trim="loginInput.password"
+            :rules="passwordRules"
             label="Password"
             prepend-icon="mdi-key"
             type="password"
@@ -21,12 +25,20 @@
           />
         </v-form>
         <h3 class="text-center mt-3">
-          <v-btn text small color="accent">Lupa kata sandi?</v-btn>
+          <v-btn text small color="secondary">Lupa kata sandi?</v-btn>
         </h3>
+        <div class="text-center mt-5">
+          <v-btn
+            :loading="btnIsLoading"
+            rounded
+            dark
+            color="accent"
+            @click="submit"
+          >
+            LOGIN
+          </v-btn>
+        </div>
       </v-card-text>
-      <div class="text-center mt-2">
-        <v-btn rounded dark color="accent">REGISTER</v-btn>
-      </div>
     </v-col>
     <v-col cols="12" md="5" class="secondary pa-5">
       <v-card-text class="white--text mt-lg-5">
@@ -44,11 +56,91 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+
+import { AuthInput } from '@/models/Admin'
+import { DialogStatus, useInfoDialog } from '@/components/ui/AppInfoDialog.vue'
+
+interface VForm extends HTMLFormElement {
+  reset(): void
+  resetValidation(): void
+  validate(): boolean
+}
+
+interface InputTextRules {
+  (value: string | null): boolean | string
+}
 
 export default defineComponent({
   setup() {
-    // Later...
+    const emailRules: InputTextRules[] = [
+      (email) =>
+        (email && email.trim().length > 0) || 'Email tidak boleh kosong',
+      (email) =>
+        (email && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) ||
+        'Email tidak valid',
+    ]
+
+    const passwordRules: InputTextRules[] = [
+      (text) =>
+        (text && text.trim().length > 0) || 'Password tidak boleh kosong',
+      (text) => (text && text.trim().length >= 6) || 'Password minimal 6 huruf',
+    ]
+
+    const loginInput = reactive<AuthInput>({
+      email: null,
+      password: null,
+    })
+
+    // const { app } = useContext()
+    const formRef = ref<VForm>()
+    const { dialogData } = useInfoDialog()
+    const btnIsLoading = ref(false)
+
+    async function submit() {
+      if (formRef.value?.validate()) {
+        try {
+          btnIsLoading.value = true
+
+          // TODO: Check & set token
+          await new Promise((resolve) => {
+            setTimeout(() => {
+              console.log(Object.assign({}, loginInput))
+              resolve()
+            }, 2000)
+          })
+
+          // await app.store?.dispatch(
+          //   `${MEMBERS}/${MembersActionType.REGISTER_MEMBER}`,
+          //   memberInput
+          // )
+
+          for (const key in loginInput) {
+            loginInput[key] = null
+          }
+          formRef.value!.resetValidation()
+
+          // TODO: Redirect to dashboard
+        } catch (err) {
+          dialogData.dialogIsOpen = true
+          dialogData.dialogStatus = DialogStatus.ERROR
+          dialogData.title = 'Terjadi Kesalahan!'
+          dialogData.message =
+            err.message || 'Coba lagi nanti atau silahkan hubungi admin'
+        } finally {
+          btnIsLoading.value = false
+        }
+      }
+    }
+
+    return {
+      formRef,
+      loginInput,
+      emailRules,
+      passwordRules,
+      submit,
+      btnIsLoading,
+    }
   },
 })
 </script>

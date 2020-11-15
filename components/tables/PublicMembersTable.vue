@@ -25,21 +25,6 @@
         </v-toolbar>
       </template>
 
-      <!-- Photo Column -->
-      <template v-slot:[`item.photoURL`]="{ item, on, attrs }">
-        <v-btn icon x-large v-on="on">
-          <v-avatar
-            size="36"
-            class="info"
-            v-bind="attrs"
-            @click="openPhotoDialog(item.photoURL)"
-            v-on="on"
-          >
-            <v-img :src="item.photoURL" />
-          </v-avatar>
-        </v-btn>
-      </template>
-
       <!-- Member Registration Status  -->
       <template v-slot:[`item.status`]="{ item }">
         <v-tooltip left :color="getColor(item.verification.isVerified)">
@@ -69,100 +54,7 @@
           </span>
         </v-tooltip>
       </template>
-
-      <!-- Actions Column -->
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-tooltip
-          v-if="!item.verification.isVerified && item.verification.token !== ''"
-          top
-          color="info"
-        >
-          <template #activator="{ on, attrs }">
-            <v-btn
-              small
-              icon
-              :loading="actionLoading"
-              color="primary"
-              v-bind="attrs"
-              text
-              @click="resendEmail(item)"
-              v-on="on"
-            >
-              <v-icon small>mdi-email-send</v-icon>
-            </v-btn>
-          </template>
-          <span>Kirim ulang email konfirmasi</span>
-        </v-tooltip>
-
-        <v-tooltip top color="info">
-          <template #activator="{ on, attrs }">
-            <v-btn
-              small
-              icon
-              :loading="actionLoading"
-              color="error"
-              v-bind="attrs"
-              text
-              @click="deleteMember(item)"
-              v-on="on"
-            >
-              <v-icon small>mdi-delete</v-icon>
-            </v-btn>
-          </template>
-          <span>Hapus member</span>
-        </v-tooltip>
-      </template>
     </v-data-table>
-
-    <!-- View Photo Dialog -->
-    <v-dialog v-model="dialogPhotoToggle" max-width="500px">
-      <v-card>
-        <v-card-title dark class="primary headline white--text justify-center">
-          Lihat Foto
-        </v-card-title>
-
-        <v-card-text class="mt-7">
-          <v-row justify="center">
-            <v-img
-              :src="openedPhotoURL"
-              lazy-src="https://picsum.photos/id/11/100/60"
-              max-width="400"
-              max-height="500"
-            >
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5" />
-                </v-row>
-              </template>
-            </v-img>
-          </v-row>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" text @click="closePhotoDialog">TUTUP</v-btn>
-          <v-spacer />
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- Delete Member Dialog -->
-    <v-dialog v-model="deleteDialogToggle" max-width="500px">
-      <v-card>
-        <v-card-title class="error headline white--text">
-          Konfirmasi Penghapusan
-        </v-card-title>
-        <v-card-title class="subtitle-1 justify-center">
-          Apakah anda yakin ingin menghapus member ini?
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" text @click="closeDeleteDialog">BATAL</v-btn>
-          <v-btn color="primary" text @click="deleteMemberConfirm">IYA</v-btn>
-          <v-spacer />
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <app-info-dialog :dialog-data="appDialogData" />
   </v-card>
@@ -179,7 +71,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { DataTableHeader } from 'vuetify'
 
-import { Member } from '@/models/NewMember'
+import { Member } from '@/models/Member'
 import {
   MEMBERS,
   GetterType as MembersGetterType,

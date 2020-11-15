@@ -2,7 +2,7 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
-import { FirestoreMember, Member, MemberInput } from '@/models/NewMember'
+import { FirestoreMember, Member, MemberInput } from '@/models/Member'
 import { RootState } from './index'
 
 /*

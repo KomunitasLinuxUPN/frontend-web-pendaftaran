@@ -1,7 +1,7 @@
 <template>
   <div id="members-registered">
     <v-container class="my-8">
-      <members-table :fetch-type="FetchType.REGISTERED" />
+      <dashboard-members-table :fetch-type="FetchType.REGISTERED" />
     </v-container>
   </div>
 </template>

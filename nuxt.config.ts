@@ -59,6 +59,14 @@ const config: NuxtConfig = {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios'],
 
+  // Environment Variables ($config object)
+  publicRuntimeConfig: {
+    firebaseSignUpURL: process.env.FIREBASE_SIGN_UP_URL,
+    firebaseLoginURL: process.env.FIREBASE_SIGN_IN_WITH_PASSWORD_URL,
+    firebaseKey: process.env.FIREBASE_API_KEY,
+  },
+  privateRuntimeConfig: {},
+
   // Node Express Middlewares (Backend)
   serverMiddleware: [
     bodyParser.json(),
@@ -89,7 +97,7 @@ const config: NuxtConfig = {
   vuetify: {
     customVariables: ['@/assets/styles/variables.scss'],
     theme: {
-      dark: false,
+      dark: true,
       default: 'light',
       disable: false,
       options: {},
