@@ -51,9 +51,7 @@ const config: NuxtConfig = {
           measurementId: process.env.MEASUREMENT_ID,
         },
         services: {
-          auth: {
-            ssr: true,
-          },
+          auth: true,
           firestore: true,
           storage: true,
         },
