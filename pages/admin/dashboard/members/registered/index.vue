@@ -1,7 +1,7 @@
 <template>
-  <div id="members-all">
+  <div id="members-registered">
     <v-container class="my-8">
-      <dashboard-members-table :fetch-type="FetchType.ALL" />
+      <dashboard-members-table :fetch-type="FetchType.REGISTERED" />
     </v-container>
   </div>
 </template>
@@ -13,13 +13,13 @@ import { FetchType } from '@/constants/FetchType'
 
 export default defineComponent({
   layout: 'admin',
-  head: {
-    title: 'Semua Pendaftar',
-  },
   setup() {
     return {
       FetchType,
     }
+  },
+  head: {
+    title: 'Pendaftar Terkonfirmasi',
   },
 })
 </script>

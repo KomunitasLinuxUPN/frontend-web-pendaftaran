@@ -41,7 +41,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn text>
+      <v-btn text @click="logout">
         <span>Logout</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
@@ -84,8 +84,7 @@
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
-import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
-import Person from '@/models/Person'
+import { AUTH, ActionType as AuthActionType } from '@/store/auth'
 
 interface NavBarLink {
   icon: string
@@ -100,46 +99,52 @@ interface AppBarLink {
 
 export default defineComponent({
   setup() {
-    const drawerIsOpen = ref(false)
+    const drawerIsOpen = ref(true)
     const navBarlinks: NavBarLink[] = [
       {
         icon: 'mdi-account-multiple-check',
         text: 'Terdaftar',
-        route: '/admin-dashboard/members/registered',
+        route: '/admin/dashboard/members/registered',
       },
       {
         icon: 'mdi-account-multiple-minus',
         text: 'Pending',
-        route: '/admin-dashboard/members/pending',
+        route: '/admin/dashboard/members/pending',
       },
       {
         icon: 'mdi-account-multiple',
         text: 'List Pendaftar',
-        route: '/admin-dashboard/members/all',
+        route: '/admin/dashboard/members/all',
       },
       {
         icon: 'mdi-account-tie',
         text: 'List Admin',
-        route: '/admin-dashboard/admins',
+        route: '/admin/dashboard/admins',
       },
     ]
 
     const profileLinks: AppBarLink[] = [
       {
         text: 'Pengaturan Akun',
-        route: '/admin-dashboard/account/settting',
+        route: '/admin/dashboard/account/setting',
       },
     ]
 
     const { store } = useContext()
-    const currentUser = store.getters[
-      `${AUTH}/${AuthGetterType.LOGGED_IN_USER}`
-    ] as Person
+
+    const currentUser = {
+      name: 'Amir Hakim',
+    }
 
     const snackbarIsDisplayed = ref(false)
     function toggleSnackbar(newState: boolean) {
       snackbarIsDisplayed.value = newState
     }
+
+    async function logout() {
+      await store.dispatch(`${AUTH}/${AuthActionType.SIGN_OUT}`)
+    }
+
     return {
       drawerIsOpen,
       navBarlinks,
@@ -147,6 +152,7 @@ export default defineComponent({
       snackbarIsDisplayed,
       toggleSnackbar,
       profileLinks,
+      logout,
     }
   },
 })

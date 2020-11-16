@@ -59,8 +59,6 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { FirestoreProject, InputProject } from '@/models/Project'
-import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
-import Person from '~/models/Person'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -99,23 +97,21 @@ export default defineComponent({
     })
 
     const isLoading = ref(false)
-    const { app, store, error } = useContext()
+    const { app, error } = useContext()
 
     async function submit() {
       if (formRef.value?.validate()) {
         try {
           isLoading.value = true
 
-          const currentUser = store.getters[
-            `${AUTH}/${AuthGetterType.LOGGED_IN_USER}`
-          ] as Person
+          const currentUser = app.$fire.auth.currentUser
 
           const project: FirestoreProject = {
             title: inputProject.title!,
             due: inputProject.due!,
             content: inputProject.content!,
             status: 'ongoing',
-            person: app.$fire.firestore.doc(`persons/${currentUser.id}`),
+            person: app.$fire.firestore.doc(`persons/${currentUser?.uid}`),
           }
 
           await app.$fire.firestore.collection('projects').add(project)

@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 import backend from './backend/app'
 
 const config: NuxtConfig = {
+  ssr: false,
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - Pendaftaran KoLU',
@@ -49,6 +51,9 @@ const config: NuxtConfig = {
           measurementId: process.env.MEASUREMENT_ID,
         },
         services: {
+          auth: {
+            ssr: true,
+          },
           firestore: true,
           storage: true,
         },
@@ -58,14 +63,6 @@ const config: NuxtConfig = {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios'],
-
-  // Environment Variables ($config object)
-  publicRuntimeConfig: {
-    firebaseSignUpURL: process.env.FIREBASE_SIGN_UP_URL,
-    firebaseLoginURL: process.env.FIREBASE_SIGN_IN_WITH_PASSWORD_URL,
-    firebaseKey: process.env.FIREBASE_API_KEY,
-  },
-  privateRuntimeConfig: {},
 
   // Node Express Middlewares (Backend)
   serverMiddleware: [
@@ -97,7 +94,7 @@ const config: NuxtConfig = {
   vuetify: {
     customVariables: ['@/assets/styles/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       default: 'light',
       disable: false,
       options: {},

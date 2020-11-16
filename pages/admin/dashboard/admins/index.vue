@@ -42,9 +42,6 @@ import Person from '@/models/Person'
 
 export default defineComponent({
   layout: 'admin',
-  head: {
-    title: 'List Admin',
-  },
   setup() {
     const team: Person[] = [
       {
@@ -82,6 +79,9 @@ export default defineComponent({
     return {
       team,
     }
+  },
+  head: {
+    title: 'List Admin',
   },
 })
 </script>

@@ -1,64 +1,76 @@
 <template>
-  <v-row dense class="fill-height">
-    <v-col cols="12" md="7" class="pa-5">
-      <v-card-text class="mt-5">
-        <h1 class="text-center display-1">Login Admin</h1>
-        <h4 class="subtitle-1 text-center mt-4">
-          Gunakan akunmu yang telah terdaftar sebagai admin &#128521;
-        </h4>
-        <v-form ref="formRef" class="mt-8">
-          <v-text-field
-            v-model.trim="loginInput.email"
-            :rules="emailRules"
-            label="Email"
-            prepend-icon="mdi-email"
-            type="email"
-            color="secondary"
-          />
-          <v-text-field
-            v-model.trim="loginInput.password"
-            :rules="passwordRules"
-            label="Password"
-            prepend-icon="mdi-key"
-            type="password"
-            color="secondary"
-          />
-        </v-form>
-        <h3 class="text-center mt-3">
-          <v-btn text small color="secondary">Lupa kata sandi?</v-btn>
-        </h3>
-        <div class="text-center mt-5">
-          <v-btn
-            :loading="btnIsLoading"
-            rounded
-            dark
-            color="accent"
-            @click="submit"
-          >
-            LOGIN
-          </v-btn>
-        </div>
-      </v-card-text>
-    </v-col>
-    <v-col cols="12" md="5" class="secondary pa-5">
-      <v-card-text class="white--text mt-lg-5">
-        <h1 class="text-center display-1">Halo Admin! &#x1F60A;</h1>
-        <h5 class="text-center subtitle-1 mt-5">
-          Form login ini hanya untuk pengguna yang telah terdaftar sebagai admin
-        </h5>
-        <h5 class="text-center subtitle-1 mt-5">
-          Harap hubungi ketua umum KoLU untuk mendaftarkan diri anda sebagai
-          Admin
-        </h5>
-      </v-card-text>
-    </v-col>
-  </v-row>
+  <div>
+    <v-row dense class="fill-height">
+      <v-col cols="12" md="7" class="pa-5">
+        <v-card-text class="mt-5">
+          <h1 class="text-center display-1">Login Admin</h1>
+          <h4 class="subtitle-1 text-center mt-4">
+            Gunakan akunmu yang telah terdaftar sebagai admin &#128521;
+          </h4>
+          <v-form ref="formRef" class="mt-8" @submit="submit">
+            <v-text-field
+              v-model.trim="loginInput.email"
+              :rules="emailRules"
+              label="Email"
+              prepend-icon="mdi-email"
+              type="email"
+              color="secondary"
+            />
+            <v-text-field
+              v-model.trim="loginInput.password"
+              :rules="passwordRules"
+              label="Password"
+              prepend-icon="mdi-key"
+              :append-icon="passwordIsDisplayed ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="passwordIsDisplayed ? 'text' : 'password'"
+              color="secondary"
+              @click:append="passwordIsDisplayed = !passwordIsDisplayed"
+            />
+          </v-form>
+          <h3 class="text-center mt-3">
+            <v-btn text small color="secondary">Lupa kata sandi?</v-btn>
+          </h3>
+          <div class="text-center mt-5">
+            <v-btn
+              :loading="btnIsLoading"
+              rounded
+              dark
+              color="accent"
+              @click="submit"
+            >
+              LOGIN
+            </v-btn>
+          </div>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="5" class="secondary pa-5">
+        <v-card-text class="white--text mt-lg-5">
+          <h1 class="text-center display-1">Halo Admin! &#x1F60A;</h1>
+          <h5 class="text-center subtitle-1 mt-5">
+            Form login ini hanya untuk pengguna yang telah terdaftar sebagai
+            admin
+          </h5>
+          <h5 class="text-center subtitle-1 mt-5">
+            Harap hubungi ketua umum KoLU untuk mendaftarkan diri anda sebagai
+            Admin
+          </h5>
+        </v-card-text>
+      </v-col>
+    </v-row>
+    <app-info-dialog :dialog-data="dialogData" />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  reactive,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
 
-import { AuthInput } from '@/models/Admin'
+import { AdminSignInInput } from '@/models/Admin'
+import { AUTH, ActionType as AuthActionType } from '@/store/auth'
 import { DialogStatus, useInfoDialog } from '@/components/ui/AppInfoDialog.vue'
 
 interface VForm extends HTMLFormElement {
@@ -87,14 +99,15 @@ export default defineComponent({
       (text) => (text && text.trim().length >= 6) || 'Password minimal 6 huruf',
     ]
 
-    const loginInput = reactive<AuthInput>({
+    const loginInput = reactive<AdminSignInInput>({
       email: null,
       password: null,
     })
 
-    // const { app } = useContext()
-    const formRef = ref<VForm>()
+    const { app, store } = useContext()
     const { dialogData } = useInfoDialog()
+    const formRef = ref<VForm>()
+    const passwordIsDisplayed = ref(false)
     const btnIsLoading = ref(false)
 
     async function submit() {
@@ -102,25 +115,14 @@ export default defineComponent({
         try {
           btnIsLoading.value = true
 
-          // TODO: Check & set token
-          await new Promise((resolve) => {
-            setTimeout(() => {
-              console.log(Object.assign({}, loginInput))
-              resolve()
-            }, 2000)
-          })
-
-          // await app.store?.dispatch(
-          //   `${MEMBERS}/${MembersActionType.REGISTER_MEMBER}`,
-          //   memberInput
-          // )
+          await store.dispatch(`${AUTH}/${AuthActionType.SIGN_IN}`, loginInput)
 
           for (const key in loginInput) {
             loginInput[key] = null
           }
           formRef.value!.resetValidation()
 
-          // TODO: Redirect to dashboard
+          app.router?.replace('/admin/dashboard/members/all')
         } catch (err) {
           dialogData.dialogIsOpen = true
           dialogData.dialogStatus = DialogStatus.ERROR
@@ -135,11 +137,13 @@ export default defineComponent({
 
     return {
       formRef,
+      passwordIsDisplayed,
       loginInput,
       emailRules,
       passwordRules,
       submit,
       btnIsLoading,
+      dialogData,
     }
   },
 })

@@ -7,3 +7,13 @@
     </v-main>
   </v-app>
 </template>
+
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+import authMiddleware from '@/middleware/auth'
+
+export default defineComponent({
+  middleware: authMiddleware,
+})
+</script>

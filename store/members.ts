@@ -130,7 +130,7 @@ export const actions: ActionTree<MembersState, RootState> = {
       } as RegConfirmBody),
     ])
   },
-  async [ActionType.FETCH_MEMBERS](vuexContext) {
+  async [ActionType.FETCH_MEMBERS](context) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')
       .get()
@@ -143,9 +143,9 @@ export const actions: ActionTree<MembersState, RootState> = {
       }
     })
 
-    vuexContext.commit(MutationType.SET_MEMBERS, members)
+    context.commit(MutationType.SET_MEMBERS, members)
   },
-  async [ActionType.RESEND_EMAIL_CONFIRMATION](vuexContext, member: Member) {
+  async [ActionType.RESEND_EMAIL_CONFIRMATION](context, member: Member) {
     const newToken = uuid.v4()
 
     await Promise.all([
@@ -161,9 +161,9 @@ export const actions: ActionTree<MembersState, RootState> = {
 
     member.verification.isVerified = false
     member.verification.token = newToken
-    vuexContext.commit(MutationType.UPDATE_MEMBER, member)
+    context.commit(MutationType.UPDATE_MEMBER, member)
   },
-  async [ActionType.DELETE_MEMBER](vuexContext, deletedMember: Member) {
+  async [ActionType.DELETE_MEMBER](context, deletedMember: Member) {
     const storageRef = this.$fire.storage.ref()
     const photoRef = storageRef.child(`photos/${deletedMember.email}`)
 
@@ -172,6 +172,6 @@ export const actions: ActionTree<MembersState, RootState> = {
       photoRef.delete(),
     ])
 
-    vuexContext.commit(MutationType.DELETE_MEMBER, deletedMember)
+    context.commit(MutationType.DELETE_MEMBER, deletedMember)
   },
 }
