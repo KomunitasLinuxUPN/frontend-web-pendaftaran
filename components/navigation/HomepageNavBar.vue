@@ -20,12 +20,12 @@
       <v-spacer />
 
       <div class="hidden-sm-and-down">
-        <v-btn outlined rounded href="/members/registered" nuxt>
+        <v-btn outlined rounded href="/members/registered" nuxt class="mr-1">
           <v-icon left>mdi-account-group</v-icon>
           <span>TERDAFTAR</span>
         </v-btn>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom color="info">
           <template #activator="{ on, attrs }">
             <v-btn
               text
@@ -41,7 +41,7 @@
           <span>Situs Resmi KoLU</span>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom color="info">
           <template #activator="{ on, attrs }">
             <v-btn
               text
@@ -57,7 +57,7 @@
           <span>Instagram KoLU</span>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom color="info">
           <template #activator="{ on, attrs }">
             <v-btn
               text

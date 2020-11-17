@@ -9,7 +9,7 @@
       sort-by="id"
     >
       <!-- Table Header -->
-      <template v-slot:top>
+      <template #top>
         <v-toolbar flat>
           <v-toolbar-title>Terdaftar</v-toolbar-title>
           <v-divider class="mx-4" inset vertical />
@@ -26,7 +26,7 @@
       </template>
 
       <!-- Photo Column -->
-      <template v-slot:[`item.photoURL`]="{ item, on, attrs }">
+      <template #[`item.photoURL`]="{ item, on, attrs }">
         <v-btn icon x-large v-on="on">
           <v-avatar
             size="36"
@@ -41,7 +41,7 @@
       </template>
 
       <!-- Member Registration Status  -->
-      <template v-slot:[`item.status`]="{ item }">
+      <template #[`item.status`]="{ item }">
         <v-tooltip left :color="getColor(item.verification.isVerified)">
           <template #activator="{ on, attrs }">
             <v-chip
@@ -71,7 +71,7 @@
       </template>
 
       <!-- Actions Column -->
-      <template v-slot:[`item.actions`]="{ item }">
+      <template #[`item.actions`]="{ item }">
         <v-tooltip
           v-if="!item.verification.isVerified && item.verification.token !== ''"
           top
@@ -129,7 +129,7 @@
               max-width="400"
               max-height="500"
             >
-              <template v-slot:placeholder>
+              <template #placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
                   <v-progress-circular indeterminate color="grey lighten-5" />
                 </v-row>
@@ -186,7 +186,10 @@ import {
   ActionType as MembersActionType,
 } from '@/store/members'
 import { Fetch } from '@/constants/FetchType'
-import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
+import {
+  useInfoDialog,
+  DialogStatus,
+} from '@/components/info/AppInfoDialog.vue'
 
 export default defineComponent({
   props: {

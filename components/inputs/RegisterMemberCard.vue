@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-card class="elevation-6" style="overflow: hidden">
     <v-row dense>
       <v-col cols="12" md="8" class="pa-5">
         <v-card-text class="mt-5">
@@ -31,14 +31,17 @@
       </v-col>
     </v-row>
     <app-info-dialog :dialog-data="dialogData" />
-  </div>
+  </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { AxiosError } from 'axios'
 
-import { useInfoDialog, DialogStatus } from '@/components/ui/AppInfoDialog.vue'
+import {
+  useInfoDialog,
+  DialogStatus,
+} from '@/components/info/AppInfoDialog.vue'
 import { MemberInput } from '@/models/Member'
 
 export default defineComponent({

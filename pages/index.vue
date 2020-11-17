@@ -2,9 +2,7 @@
   <v-container class="registration fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="8">
-        <v-card class="elevation-6" style="overflow: hidden">
-          <register-member />
-        </v-card>
+        <register-member-card />
       </v-col>
     </v-row>
   </v-container>

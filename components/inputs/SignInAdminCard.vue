@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-card class="elevation-6" style="overflow: hidden">
     <v-row dense class="fill-height">
       <v-col cols="12" md="7" class="pa-5">
         <v-card-text class="mt-5">
@@ -58,7 +58,7 @@
       </v-col>
     </v-row>
     <app-info-dialog :dialog-data="dialogData" />
-  </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -71,7 +71,10 @@ import {
 
 import { AdminSignInInput } from '@/models/Admin'
 import { AUTH, ActionType as AuthActionType } from '@/store/auth'
-import { DialogStatus, useInfoDialog } from '@/components/ui/AppInfoDialog.vue'
+import {
+  DialogStatus,
+  useInfoDialog,
+} from '@/components/info/AppInfoDialog.vue'
 
 interface VForm extends HTMLFormElement {
   reset(): void

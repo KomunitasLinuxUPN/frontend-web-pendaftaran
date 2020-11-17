@@ -11,9 +11,15 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import authMiddleware from '@/middleware/auth'
+import setAuthMiddleware from '@/middleware/auth/set-auth'
+import requireAuthMiddleware from '@/middleware/auth/require-auth'
+import fetchMembersMiddleware from '@/middleware/members/fetch-members'
 
 export default defineComponent({
-  middleware: authMiddleware,
+  middleware: [
+    setAuthMiddleware,
+    requireAuthMiddleware,
+    fetchMembersMiddleware,
+  ],
 })
 </script>

@@ -87,6 +87,11 @@ const config: NuxtConfig = {
     color: '#3CAEA3',
     height: '3px',
   },
+  // Nuxt Loading Spinner
+  // loadingIndicator: {
+  //   name: 'rectangle-bounce',
+  //   color: '#20639B',
+  // },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
@@ -107,13 +112,13 @@ const config: NuxtConfig = {
           error: colors.red.base,
         },
         dark: {
-          primary: colors.blue.darken2,
-          secondary: colors.amber.darken3,
-          accent: colors.grey.darken3,
-          info: colors.blue.lighten1,
-          success: colors.green.accent3,
-          warning: colors.yellow.darken3,
-          error: colors.red.lighten2,
+          primary: '',
+          secondary: '',
+          accent: '',
+          info: '',
+          success: '',
+          warning: '',
+          error: '',
         },
       },
     },

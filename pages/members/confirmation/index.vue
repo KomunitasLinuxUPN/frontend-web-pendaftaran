@@ -38,9 +38,6 @@ import {
 
 export default defineComponent({
   layout: 'verification',
-  head: {
-    title: 'Konfirmasi Pendaftaran',
-  },
   setup() {
     const { app, query } = useContext()
 
@@ -80,6 +77,9 @@ export default defineComponent({
       isVerifSuccess,
       caption,
     }
+  },
+  head: {
+    title: 'Konfirmasi Pendaftaran',
   },
 })
 </script>

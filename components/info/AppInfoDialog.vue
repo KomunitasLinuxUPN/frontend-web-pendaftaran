@@ -60,6 +60,7 @@ export default defineComponent({
   },
   setup(props) {
     function closeDialog() {
+      /* eslint-disable vue/no-mutating-props */
       props.dialogData.dialogIsOpen = false
       props.dialogData.title = null
       props.dialogData.message = null

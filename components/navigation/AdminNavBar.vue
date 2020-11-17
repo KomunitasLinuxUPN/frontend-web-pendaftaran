@@ -1,18 +1,6 @@
 <template>
   <nav>
-    <v-snackbar
-      v-model="snackbarIsDisplayed"
-      :timeout="4000"
-      top
-      color="success"
-    >
-      Awesome! You added a new project!
-      <template #action="{ attrs }">
-        <v-btn text color="white" v-bind="attrs" @click="toggleSnackbar(false)">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+    <app-info-snackbar :snackbar-data="snackbarData" />
 
     <v-app-bar flat app>
       <v-app-bar-nav-icon @click="drawerIsOpen = !drawerIsOpen" />
@@ -31,13 +19,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            v-for="link in profileLinks"
-            :key="link.text"
-            :to="link.route"
-          >
-            <v-list-item-title>{{ link.text }}</v-list-item-title>
-          </v-list-item>
+          <edit-profile-dialog />
         </v-list>
       </v-menu>
 
@@ -53,10 +35,9 @@
           <v-avatar size="100">
             <img src="@/assets/images/default-avatar.png" />
           </v-avatar>
-          <p class="subtitle-1 white--text mt-3">{{ currentUser.name }}</p>
-        </v-col>
-        <v-col>
-          <add-admin-form @project-added="toggleSnackbar(true)" />
+          <p class="subtitle-1 white--text mt-3">
+            {{ currentUser.name || 'Unknown' }}
+          </p>
         </v-col>
       </v-row>
 
@@ -84,15 +65,19 @@
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
-import { AUTH, ActionType as AuthActionType } from '@/store/auth'
+import {
+  AUTH,
+  ActionType as AuthActionType,
+  GetterType as AuthGetterType,
+} from '@/store/auth'
+import { Admin } from '@/models/Admin'
+import {
+  SnackbarStatus,
+  useInfoSnackbar,
+} from '@/components/info/AppInfoSnackbar.vue'
 
 interface NavBarLink {
   icon: string
-  text: string
-  route: string
-}
-
-interface AppBarLink {
   text: string
   route: string
 }
@@ -123,35 +108,30 @@ export default defineComponent({
       },
     ]
 
-    const profileLinks: AppBarLink[] = [
-      {
-        text: 'Pengaturan Akun',
-        route: '/admin/dashboard/account/setting',
-      },
-    ]
+    const { store, redirect } = useContext()
 
-    const { store } = useContext()
+    const currentUser = store.getters[
+      `${AUTH}/${AuthGetterType.ADMIN}`
+    ] as Admin
 
-    const currentUser = {
-      name: 'Amir Hakim',
-    }
-
-    const snackbarIsDisplayed = ref(false)
-    function toggleSnackbar(newState: boolean) {
-      snackbarIsDisplayed.value = newState
-    }
+    const { snackbarData } = useInfoSnackbar()
 
     async function logout() {
-      await store.dispatch(`${AUTH}/${AuthActionType.SIGN_OUT}`)
+      try {
+        await store.dispatch(`${AUTH}/${AuthActionType.SIGN_OUT}`)
+        redirect('/admin/login')
+      } catch (err) {
+        snackbarData.snackbarIsDisplayed = true
+        snackbarData.message = 'Terjadi kesalahan saat melakukan logout'
+        snackbarData.snackbarStatus = SnackbarStatus.ERROR
+      }
     }
 
     return {
       drawerIsOpen,
       navBarlinks,
       currentUser,
-      snackbarIsDisplayed,
-      toggleSnackbar,
-      profileLinks,
+      snackbarData,
       logout,
     }
   },

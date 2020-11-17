@@ -110,7 +110,6 @@ interface InputFileRules {
 }
 
 export default defineComponent({
-  emits: ['submit'],
   props: {
     isEdit: {
       type: Boolean,
@@ -121,6 +120,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['submit'],
   setup(props, context) {
     const nonEmptyRules: InputTextRules[] = [
       (text) =>

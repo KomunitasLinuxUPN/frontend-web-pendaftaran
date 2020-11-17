@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-model="dialogIsOpen" eager max-width="600px">
     <template #activator="{ on, attrs }">
-      <v-btn text class="accent mb-4" v-bind="attrs" v-on="on">
-        Add New Project
-      </v-btn>
+      <v-list-item v-bind="attrs" v-on="on">
+        <v-list-item-title>Pengaturan</v-list-item-title>
+      </v-list-item>
     </template>
 
     <v-card>
@@ -11,33 +11,7 @@
         <h2 class="title">Add a New Project</h2>
       </v-card-title>
       <v-card-text>
-        <v-form ref="formRef" class="px-3">
-          <v-text-field
-            v-model="inputProject.title"
-            label="Title"
-            prepend-icon="mdi-folder"
-            :rules="inputRules"
-          />
-          <v-textarea
-            v-model="inputProject.content"
-            label="Content"
-            prepend-icon="mdi-pencil"
-            :rules="inputRules"
-          />
-          <v-menu>
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                :value="formattedDate"
-                v-bind="attrs"
-                label="Due date"
-                readonly
-                prepend-icon="mdi-calendar-range"
-                v-on="on"
-              />
-            </template>
-            <v-date-picker v-model="inputProject.due" />
-          </v-menu>
-        </v-form>
+        <admin-form />
       </v-card-text>
       <v-card-actions>
         <v-spacer />
