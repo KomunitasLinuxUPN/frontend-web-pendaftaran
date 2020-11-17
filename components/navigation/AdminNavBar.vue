@@ -106,6 +106,11 @@ export default defineComponent({
         text: 'List Admin',
         route: '/admin/dashboard/admins',
       },
+      {
+        icon: 'mdi-home',
+        text: 'Halaman Utama',
+        route: '/',
+      },
     ]
 
     const { store, redirect } = useContext()
