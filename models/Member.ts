@@ -31,3 +31,10 @@ export interface FirestoreMember {
 export interface Member extends FirestoreMember {
   id: string
 }
+
+export interface SimpleMember {
+  name: string
+  generation: number
+  department: string
+  isVerified: boolean
+}

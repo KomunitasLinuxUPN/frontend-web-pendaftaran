@@ -2,7 +2,7 @@
   <v-container class="public-members-registered" fluid>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="8">
-        <public-members-table :fetch-type="FetchType.REGISTERED" />
+        <public-members-table />
       </v-col>
     </v-row>
   </v-container>
@@ -11,17 +11,11 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import { FetchType } from '@/constants/FetchType'
-import fetchMembersMiddleware from '@/middleware/members/fetch-members'
+import fetchPublicMembersMiddleware from '@/middleware/members/fetch-public-members'
 
 export default defineComponent({
   layout: 'homepage',
-  middleware: fetchMembersMiddleware,
-  setup() {
-    return {
-      FetchType,
-    }
-  },
+  middleware: fetchPublicMembersMiddleware,
   head: {
     title: 'Member Terdaftar',
   },

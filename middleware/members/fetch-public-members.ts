@@ -5,20 +5,20 @@ import {
   ActionType as MembersActionType,
   GetterType as MembersGetterType,
 } from '@/store/members'
-import { Member } from '@/models/Member'
+import { SimpleMember } from '@/models/Member'
 
 export default defineNuxtMiddleware(async (context) => {
-  const loadedMembers = context.store.getters[
-    `${MEMBERS}/${MembersGetterType.MEMBERS}`
-  ] as Member[]
+  const loadedSimpleMembers = context.store.getters[
+    `${MEMBERS}/${MembersGetterType.SIMPLE_REGISTERED_MEMBERS}`
+  ] as SimpleMember[]
 
-  if (loadedMembers.length > 0) {
+  if (loadedSimpleMembers.length > 0) {
     return
   }
 
   try {
     await context.store.dispatch(
-      `${MEMBERS}/${MembersActionType.FETCH_MEMBERS_FOR_ADMIN}`
+      `${MEMBERS}/${MembersActionType.FETCH_REGISTERED_MEMBERS_FOR_PUBLIC}`
     )
   } catch (err) {
     context.error(err.message || 'Terjadi kesalahan saat memuat data members')

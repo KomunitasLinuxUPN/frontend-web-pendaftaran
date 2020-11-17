@@ -63,6 +63,7 @@
         <v-file-input
           v-model="memberInput.photo"
           :rules="imageRules"
+          :show-size="true"
           accept="image/png, image/jpg, image/jpeg"
           placeholder="Format png, jpg, jpeg"
           prepend-icon="mdi-camera"

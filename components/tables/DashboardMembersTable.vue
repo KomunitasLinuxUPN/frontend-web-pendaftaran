@@ -123,24 +123,31 @@
 
         <v-card-text class="mt-7">
           <v-row justify="center">
-            <v-img
-              :src="openedPhotoURL"
-              lazy-src="https://picsum.photos/id/11/100/60"
-              max-width="400"
-              max-height="500"
-            >
-              <template #placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5" />
-                </v-row>
-              </template>
-            </v-img>
+            <v-card tile outlined>
+              <v-img
+                contain
+                :src="openedPhotoURL"
+                lazy-src="https://picsum.photos/id/11/100/60"
+                max-width="400"
+                max-height="500"
+              >
+                <template #placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-progress-circular indeterminate color="grey lighten-5" />
+                  </v-row>
+                </template>
+              </v-img>
+            </v-card>
           </v-row>
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class="pb-4">
           <v-spacer />
-          <v-btn color="primary" text @click="closePhotoDialog">TUTUP</v-btn>
+          <v-btn color="accent" @click="closePhotoDialog">TUTUP</v-btn>
           <v-spacer />
         </v-card-actions>
       </v-card>
@@ -276,7 +283,9 @@ export default defineComponent({
     async function refetchMembers() {
       try {
         fetchLoading.value = true
-        await store.dispatch(`${MEMBERS}/${MembersActionType.FETCH_MEMBERS}`)
+        await store.dispatch(
+          `${MEMBERS}/${MembersActionType.FETCH_MEMBERS_FOR_ADMIN}`
+        )
       } catch (err) {
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.ERROR

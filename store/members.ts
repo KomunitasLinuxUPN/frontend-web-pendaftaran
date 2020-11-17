@@ -2,7 +2,12 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
-import { FirestoreMember, Member, MemberInput } from '@/models/Member'
+import {
+  FirestoreMember,
+  Member,
+  MemberInput,
+  SimpleMember,
+} from '@/models/Member'
 import { RootState } from './index'
 
 /*
@@ -15,6 +20,7 @@ export const MEMBERS = 'members'
  */
 export const state = () => ({
   members: [] as Member[],
+  simpleRegisteredMembers: [] as SimpleMember[],
 })
 
 export type MembersState = ReturnType<typeof state>
@@ -26,6 +32,7 @@ export const GetterType = {
   REGISTERED_MEMBERS: 'registeredMembers',
   PENDING_MEMBERS: 'pendingMembers',
   MEMBERS: 'members',
+  SIMPLE_REGISTERED_MEMBERS: 'simpleMembers',
 }
 
 export const getters: GetterTree<MembersState, RootState> = {
@@ -48,6 +55,9 @@ export const getters: GetterTree<MembersState, RootState> = {
   [GetterType.MEMBERS](state) {
     return state.members
   },
+  [GetterType.SIMPLE_REGISTERED_MEMBERS](state) {
+    return state.simpleRegisteredMembers
+  },
 }
 
 /*
@@ -57,6 +67,7 @@ export const MutationType = {
   SET_MEMBERS: 'setMembers',
   UPDATE_MEMBER: 'updateMember',
   DELETE_MEMBER: 'deleteMember',
+  SET_SIMPLE_REGISTERED_MEMBERS: 'setSimpleMembers',
 }
 
 export const mutations: MutationTree<MembersState> = {
@@ -77,6 +88,13 @@ export const mutations: MutationTree<MembersState> = {
     state.members.length = 0
     state.members.push(...unselectedMembers)
   },
+  [MutationType.SET_SIMPLE_REGISTERED_MEMBERS](
+    state,
+    simpleRegisteredMembers: SimpleMember[]
+  ) {
+    state.simpleRegisteredMembers.length = 0
+    state.simpleRegisteredMembers.push(...simpleRegisteredMembers)
+  },
 }
 
 /*
@@ -84,9 +102,10 @@ export const mutations: MutationTree<MembersState> = {
  */
 export const ActionType = {
   REGISTER_MEMBER: 'registerNewMember',
-  FETCH_MEMBERS: 'fetchMembers',
+  FETCH_MEMBERS_FOR_ADMIN: 'fetchMembersForAdmin',
   RESEND_EMAIL_CONFIRMATION: 'sendEmailConfirmation',
   DELETE_MEMBER: 'deleteMember',
+  FETCH_REGISTERED_MEMBERS_FOR_PUBLIC: 'fetchMembersForPublic',
 }
 
 export const actions: ActionTree<MembersState, RootState> = {
@@ -130,7 +149,7 @@ export const actions: ActionTree<MembersState, RootState> = {
       } as RegConfirmBody),
     ])
   },
-  async [ActionType.FETCH_MEMBERS](context) {
+  async [ActionType.FETCH_MEMBERS_FOR_ADMIN](context) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')
       .get()
@@ -173,5 +192,30 @@ export const actions: ActionTree<MembersState, RootState> = {
     ])
 
     context.commit(MutationType.DELETE_MEMBER, deletedMember)
+  },
+  async [ActionType.FETCH_REGISTERED_MEMBERS_FOR_PUBLIC](context) {
+    const memberSnapshots = await this.$fire.firestore
+      .collection('members')
+      .where('verification.token', '==', '')
+      .where('verification.isVerified', '==', true)
+      .get()
+
+    const simpleRegisteredMembers = memberSnapshots.docs.map<SimpleMember>(
+      (memberSnapshot) => {
+        const member = memberSnapshot.data() as FirestoreMember
+        return {
+          id: memberSnapshot.id,
+          name: member.name,
+          department: member.department,
+          generation: member.generation,
+          isVerified: member.verification.isVerified,
+        }
+      }
+    )
+
+    context.commit(
+      MutationType.SET_SIMPLE_REGISTERED_MEMBERS,
+      simpleRegisteredMembers
+    )
   },
 }

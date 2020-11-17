@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-6">
+  <v-card class="elevation-6 pa-2">
     <v-data-table
       :headers="headers"
       :items="loadedMembers"
@@ -27,27 +27,25 @@
 
       <!-- Member Registration Status  -->
       <template #[`item.status`]="{ item }">
-        <v-tooltip left :color="getColor(item.verification.isVerified)">
+        <v-tooltip left :color="getColor(item.isVerified)">
           <template #activator="{ on, attrs }">
             <v-chip
               small
               v-bind="attrs"
-              :color="getColor(item.verification.isVerified)"
+              :color="getColor(item.isVerified)"
               dark
               v-on="on"
             >
               <v-icon small>
                 {{
-                  item.verification.isVerified
-                    ? 'mdi-account-check'
-                    : 'mdi-account-clock'
+                  item.isVerified ? 'mdi-account-check' : 'mdi-account-clock'
                 }}
               </v-icon>
             </v-chip>
           </template>
           <span>
             {{
-              item.verification.isVerified
+              item.isVerified
                 ? 'Pendaftaran Terkonfirmasi'
                 : 'Menunggu Konfirmasi'
             }}
@@ -69,7 +67,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { DataTableHeader } from 'vuetify'
 
-import { Member } from '@/models/Member'
+import { SimpleMember } from '@/models/Member'
 import {
   MEMBERS,
   GetterType as MembersGetterType,
@@ -108,8 +106,8 @@ export default defineComponent({
     const { store } = useContext()
 
     const loadedMembers = store.getters[
-      `${MEMBERS}/${MembersGetterType.REGISTERED_MEMBERS}`
-    ] as Member[]
+      `${MEMBERS}/${MembersGetterType.SIMPLE_REGISTERED_MEMBERS}`
+    ] as SimpleMember[]
 
     const { dialogData: appDialogData } = useInfoDialog()
 
@@ -118,7 +116,9 @@ export default defineComponent({
     async function refetchMembers() {
       try {
         fetchLoading.value = true
-        await store.dispatch(`${MEMBERS}/${MembersActionType.FETCH_MEMBERS}`)
+        await store.dispatch(
+          `${MEMBERS}/${MembersActionType.FETCH_REGISTERED_MEMBERS_FOR_PUBLIC}`
+        )
       } catch (err) {
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.ERROR
