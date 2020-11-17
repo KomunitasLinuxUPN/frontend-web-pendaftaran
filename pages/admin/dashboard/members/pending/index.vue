@@ -13,13 +13,13 @@ import { FetchType } from '@/constants/FetchType'
 
 export default defineComponent({
   layout: 'admin',
-  head: {
-    title: 'Pendaftar Pending',
-  },
   setup() {
     return {
       FetchType,
     }
+  },
+  head: {
+    title: 'Pendaftar Pending',
   },
 })
 </script>

@@ -35,9 +35,6 @@ export default defineComponent({
       default: null,
     },
   },
-  head: {
-    title: 'Halaman Error',
-  },
   setup(props) {
     const pageNotFound = ref('404 Not Found')
     const otherError = ref('An error occurred')
@@ -50,6 +47,9 @@ export default defineComponent({
       pageNotFound,
       otherError,
     }
+  },
+  head: {
+    title: 'Halaman Error',
   },
 })
 </script>
