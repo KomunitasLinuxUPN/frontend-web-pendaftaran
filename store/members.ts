@@ -1,5 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
+import imageCompression from 'browser-image-compression'
 
 import RegConfirmBody from '@/backend/models/RegConfirmBody'
 import {
@@ -119,9 +120,15 @@ export const actions: ActionTree<MembersState, RootState> = {
       throw new Error(`Email ${newMemberInput.email} sudah terpakai`)
     }
 
+    const comporessedPhoto = await imageCompression(newMemberInput.photo!, {
+      maxSizeMB: 0.512,
+      useWebWorker: true,
+      maxIteration: 50,
+    })
+
     const storageRef = this.$fire.storage.ref()
     const photoRef = storageRef.child(`photos/${newMemberInput.email}`)
-    await photoRef.put(newMemberInput.photo!)
+    await photoRef.put(comporessedPhoto)
     const photoURL = await photoRef.getDownloadURL()
 
     const token = uuid.v4()
