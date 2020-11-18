@@ -73,14 +73,9 @@ const config: NuxtConfig = {
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
-
-  // Enable Vue Devtools
-  vue: {
-    config: {
-      productionTip: false,
-      devtools: true,
-    },
+  build: {
+    extractCSS: true,
+    // analyze: true,
   },
 
   // Nuxt Loading Bar
@@ -128,6 +123,14 @@ const config: NuxtConfig = {
   router: {
     // middleware: maintenanceMiddleware,
   },
+
+  // Enable Vue Devtools
+  // vue: {
+  //   config: {
+  //     productionTip: false,
+  //     devtools: true,
+  //   },
+  // },
 }
 
 export default config
