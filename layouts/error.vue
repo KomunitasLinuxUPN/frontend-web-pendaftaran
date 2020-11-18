@@ -6,13 +6,12 @@
         <v-row align="center" justify="center">
           <v-col cols="12">
             <div class="text-center">
-              <h1 v-if="error.statusCode === 404" class="display-1">
-                {{ pageNotFound }}
+              <h1 class="display-1">&#128533;</h1>
+              <h1 class="display-1 mt-5 mb-3">
+                HTTP {{ errorData.statusCode }}
               </h1>
-              <h1 v-else class="display-1">
-                {{ otherError }}
-              </h1>
-              <v-btn class="mt-8" outlined nuxt to="/" color="primary">
+              <h1 class="display-1">{{ errorData.message }}</h1>
+              <v-btn class="mt-8" outlined to="/" color="primary">
                 KEMBALI KE HALAMAN UTAMA
               </v-btn>
             </div>
@@ -25,27 +24,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, useMeta } from '@nuxtjs/composition-api'
+
+import { NuxtError } from '@nuxt/types'
 
 export default defineComponent({
   layout: 'empty',
   props: {
     error: {
-      type: Object,
+      type: Object as PropType<NuxtError>,
       default: null,
     },
   },
   setup(props) {
-    const pageNotFound = ref('404 Not Found')
-    const otherError = ref('An error occurred')
-
     const { title } = useMeta()
-    title.value =
-      props.error.statusCode === 404 ? pageNotFound.value : otherError.value
+    const errorData: NuxtError = {
+      statusCode: 500,
+      message: 'Something went wrong',
+    }
+
+    if (props.error) {
+      title.value = props.error.message
+      errorData.statusCode = props.error.statusCode
+      errorData.message = props.error.message
+    } else {
+      title.value = errorData.message
+    }
 
     return {
-      pageNotFound,
-      otherError,
+      errorData,
     }
   },
   head: {

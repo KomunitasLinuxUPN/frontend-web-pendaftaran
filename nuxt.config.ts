@@ -3,6 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 import bodyParser from 'body-parser'
 
 import backend from './backend/app'
+// import { name as maintenanceMiddleware } from './middleware/maintenance-mode'
 
 const config: NuxtConfig = {
   ssr: false,
@@ -122,6 +123,10 @@ const config: NuxtConfig = {
         },
       },
     },
+  },
+
+  router: {
+    // middleware: maintenanceMiddleware,
   },
 }
 
