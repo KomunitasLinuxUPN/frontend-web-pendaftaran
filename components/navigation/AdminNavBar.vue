@@ -24,7 +24,7 @@
             <img src="@/assets/images/default-avatar.png" />
           </v-avatar>
           <p class="subtitle-1 white--text mt-3">
-            {{ currentUser.name || 'Unknown' }}
+            {{ currentUser.email || 'Unknown' }}
           </p>
         </v-col>
       </v-row>

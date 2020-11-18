@@ -20,7 +20,7 @@
       <v-spacer />
 
       <div class="hidden-sm-and-down">
-        <v-btn outlined rounded to="/members/registered" nuxt class="mr-1">
+        <v-btn outlined rounded to="/members/registered" class="mr-1">
           <v-icon left>mdi-account-group</v-icon>
           <span>TERDAFTAR</span>
         </v-btn>
