@@ -11,11 +11,8 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import fetchPublicMembersMiddleware from '@/middleware/members/fetch-public-members'
-
 export default defineComponent({
   layout: 'homepage',
-  middleware: fetchPublicMembersMiddleware,
   head: {
     title: 'Member Terdaftar',
   },

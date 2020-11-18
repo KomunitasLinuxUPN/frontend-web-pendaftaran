@@ -18,7 +18,7 @@
             :loading="fetchLoading"
             color="primary"
             dark
-            @click="refetchMembers"
+            @click="fetchMembers"
           >
             REFRESH
           </v-btn>
@@ -110,10 +110,13 @@ export default defineComponent({
     ] as SimpleMember[]
 
     const { dialogData: appDialogData } = useInfoDialog()
-
     const fetchLoading = ref(false)
 
-    async function refetchMembers() {
+    if (loadedMembers.length === 0) {
+      fetchMembers()
+    }
+
+    async function fetchMembers() {
       try {
         fetchLoading.value = true
         await store.dispatch(
@@ -138,7 +141,7 @@ export default defineComponent({
       headers,
       loadedMembers,
       fetchLoading,
-      refetchMembers,
+      fetchMembers,
       appDialogData,
       getColor,
     }
