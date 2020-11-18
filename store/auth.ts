@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
-import { Admin, AdminSignInInput } from '@/models/Admin'
+import { Admin, AdminEditInput, AdminSignInInput } from '@/models/Admin'
 import { RootState } from './index'
 
 /*
@@ -64,6 +64,7 @@ export const ActionType = {
   SIGN_OUT: 'signOut',
   SIGN_UP: 'signUp',
   SET_SESSION: 'setSession',
+  UPDATE_CURRENT_ADMIN: 'updateCurrentAdmin',
 }
 
 export const actions: ActionTree<AuthState, RootState> = {
@@ -86,11 +87,17 @@ export const actions: ActionTree<AuthState, RootState> = {
       }
     }
   },
-  [ActionType.SET_SESSION](context, admin: Admin) {
-    context.commit(MutationType.SET_ADMIN, admin)
-  },
   async [ActionType.SIGN_OUT](context) {
     context.commit(MutationType.CLEAR_ADMIN)
     await this.$fire.auth.signOut()
+  },
+  [ActionType.SET_SESSION](context, admin: Admin) {
+    context.commit(MutationType.SET_ADMIN, admin)
+  },
+  async [ActionType.UPDATE_CURRENT_ADMIN](
+    context,
+    inputAdmin: AdminEditInput
+  ) {
+    
   },
 }

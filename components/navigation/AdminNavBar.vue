@@ -11,7 +11,8 @@
 
       <v-spacer />
 
-      <v-menu offset-y>
+      <!-- Not implemented yet -->
+      <!-- <v-menu offset-y>
         <template #activator="{ on, attrs }">
           <v-btn text v-bind="attrs" v-on="on">
             <v-icon left>mdi-chevron-down</v-icon>
@@ -19,9 +20,9 @@
           </v-btn>
         </template>
         <v-list>
-          <edit-profile-dialog />
+          <edit-admin-dialog />
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <v-btn text @click="logout">
         <span>Logout</span>

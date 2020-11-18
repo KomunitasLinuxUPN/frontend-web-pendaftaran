@@ -19,7 +19,7 @@
               indeterminate
             />
           </div>
-          <v-btn class="mt-10" outlined nuxt to="/" color="primary">
+          <v-btn class="mt-10" outlined to="/" color="primary">
             KEMBALI KE HALAMAN UTAMA
           </v-btn>
         </div>

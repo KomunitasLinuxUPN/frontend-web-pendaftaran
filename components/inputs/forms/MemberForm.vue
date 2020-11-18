@@ -160,11 +160,12 @@ export default defineComponent({
       },
     ]
 
-    const { app } = useContext()
+    const { store } = useContext()
     const formRef = ref<VForm>()
     const btnIsLoading = ref(false)
 
     const memberInput = reactive<MemberInput>({ ...props.member })
+
     const photoPreviewUrl = ref<string>(
       require('@/assets/images/default-avatar.png')
     )
@@ -181,25 +182,23 @@ export default defineComponent({
     function submit() {
       if (formRef.value?.validate()) {
         context.emit('submit', async () => {
-          try {
-            btnIsLoading.value = true
+          btnIsLoading.value = true
 
-            if (props.isEdit) {
-              // Update member...
-            } else {
-              await app.store?.dispatch(
-                `${MEMBERS}/${MembersActionType.REGISTER_MEMBER}`,
-                memberInput
-              )
-            }
-
-            for (const key in memberInput) {
-              memberInput[key] = null
-            }
-            formRef.value!.resetValidation()
-          } finally {
-            btnIsLoading.value = false
+          if (props.isEdit) {
+            // Update member...
+          } else {
+            await store.dispatch(
+              `${MEMBERS}/${MembersActionType.REGISTER_MEMBER}`,
+              memberInput
+            )
           }
+
+          for (const key in memberInput) {
+            memberInput[key] = null
+          }
+          formRef.value!.resetValidation()
+
+          btnIsLoading.value = false
         })
       }
     }

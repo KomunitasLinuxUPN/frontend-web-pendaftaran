@@ -5,32 +5,32 @@ import { RootState } from './index'
 /*
  * Namespace
  */
-export const AUTH = 'auth'
+export const ADMIN = 'admin'
 
 /*
  * State
  */
 export const state = () => ({})
 
-export type AuthState = ReturnType<typeof state>
+export type AdminState = ReturnType<typeof state>
 
 /*
  * Getters
  */
 export const GetterType = {}
 
-export const getters: GetterTree<AuthState, RootState> = {}
+export const getters: GetterTree<AdminState, RootState> = {}
 
 /*
  * Mutations
  */
 export const MutationType = {}
 
-export const mutations: MutationTree<AuthState> = {}
+export const mutations: MutationTree<AdminState> = {}
 
 /*
  * Actions
  */
 export const ActionType = {}
 
-export const actions: ActionTree<AuthState, RootState> = {}
+export const actions: ActionTree<AdminState, RootState> = {}

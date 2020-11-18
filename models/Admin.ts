@@ -5,10 +5,12 @@ export interface AdminSignInInput {
 }
 
 export interface AdminEditInput {
+  uid: string | null
   name: string | null
-  password: string | null
   email: string | null
+  password: string | null
   photo: File | null
+  [attr: string]: any
 }
 
 export interface Admin {
