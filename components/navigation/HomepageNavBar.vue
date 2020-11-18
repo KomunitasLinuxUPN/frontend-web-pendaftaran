@@ -3,7 +3,7 @@
     <v-app-bar app dark color="primary px-2">
       <v-img
         class="mr-4"
-        src="https://www.kolu.web.id/wp-content/uploads/2016/09/logo-kolu.png"
+        src="/favicon.ico"
         max-height="40"
         max-width="40"
         contain
@@ -108,3 +108,15 @@
     </v-app-bar>
   </nav>
 </template>
+
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  data() {
+    return {
+      iconURL: `${process.env.BASE_URL}`,
+    }
+  },
+})
+</script>
