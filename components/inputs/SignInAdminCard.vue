@@ -27,10 +27,7 @@
               @click:append="passwordIsDisplayed = !passwordIsDisplayed"
             />
           </v-form>
-          <h3 class="text-center mt-3">
-            <v-btn text small color="secondary">Lupa kata sandi?</v-btn>
-          </h3>
-          <div class="text-center mt-5">
+          <div class="text-center mt-8">
             <v-btn
               :loading="btnIsLoading"
               rounded
