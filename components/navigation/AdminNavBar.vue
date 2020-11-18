@@ -11,19 +11,6 @@
 
       <v-spacer />
 
-      <!-- Not implemented yet -->
-      <!-- <v-menu offset-y>
-        <template #activator="{ on, attrs }">
-          <v-btn text v-bind="attrs" v-on="on">
-            <v-icon left>mdi-chevron-down</v-icon>
-            <span>Profil</span>
-          </v-btn>
-        </template>
-        <v-list>
-          <edit-admin-dialog />
-        </v-list>
-      </v-menu> -->
-
       <v-btn text @click="logout">
         <span>Logout</span>
         <v-icon right>mdi-exit-to-app</v-icon>
@@ -101,11 +88,6 @@ export default defineComponent({
         icon: 'mdi-account-multiple',
         text: 'List Pendaftar',
         route: '/admin/dashboard/members/all',
-      },
-      {
-        icon: 'mdi-account-tie',
-        text: 'List Admin',
-        route: '/admin/dashboard/admins',
       },
       {
         icon: 'mdi-home',

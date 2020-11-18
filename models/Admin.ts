@@ -4,15 +4,6 @@ export interface AdminSignInInput {
   [attr: string]: any
 }
 
-export interface AdminEditInput {
-  uid: string | null
-  name: string | null
-  email: string | null
-  password: string | null
-  photo: File | null
-  [attr: string]: any
-}
-
 export interface Admin {
   uid: string | null
   name: string | null

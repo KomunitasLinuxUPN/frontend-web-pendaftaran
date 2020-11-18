@@ -48,26 +48,14 @@ export default defineComponent({
   setup() {
     const { dialogData } = useInfoDialog()
 
-    // const newMemberInput = reactive<MemberInput>({
-    //   name: null,
-    //   address: null,
-    //   generation: null,
-    //   department: null,
-    //   email: null,
-    //   phone: null,
-    //   lineID: null,
-    //   photo: null,
-    // })
-
-    // Dummy input
     const newMemberInput = reactive<MemberInput>({
-      name: 'Amir Hakim',
-      address: 'Kamaku',
-      generation: 2017,
-      department: 'Informatika',
-      email: 'amir.rhythm@gmail.com',
-      phone: '087855777360',
-      lineID: 'mramirid',
+      name: null,
+      address: null,
+      generation: null,
+      department: null,
+      email: null,
+      phone: null,
+      lineID: null,
       photo: null,
     })
 
