@@ -7,7 +7,11 @@
           <h4 class="subtitle-1 text-center mt-4 mb-8">
             Kuy rek gabung KoLU &#128521;
           </h4>
-          <member-form :member="newMemberInput" @submit="submit" />
+          <member-form
+            :member="newMemberInput"
+            :disabled="registrationClosed"
+            @submit="submit"
+          />
         </v-card-text>
       </v-col>
       <v-col cols="12" md="4" class="secondary pa-5">
@@ -83,10 +87,21 @@ export default defineComponent({
       }
     }
 
+    const registrationClosed = false
+
+    if (registrationClosed) {
+      dialogData.dialogIsOpen = true
+      dialogData.dialogStatus = DialogStatus.INFO
+      dialogData.title = 'Pendaftaran telah ditutup'
+      dialogData.message =
+        'Mohon maaf, pendaftaran anggota KoLU telah ditutup. Kamu masih bisa join dengan cara menghubungi Humas KoLU yoi (DM Instagram KoLU) 😉'
+    }
+
     return {
       newMemberInput,
       submit,
       dialogData,
+      registrationClosed,
     }
   },
 })

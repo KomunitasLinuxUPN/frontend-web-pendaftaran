@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form ref="formRef" class="mt-4 secondary--text">
+    <v-form ref="formRef" class="mt-4 secondary--text" :disabled="disabled">
       <v-text-field
         v-model.trim="memberInput.name"
         :rules="nonEmptyRules"
@@ -76,7 +76,13 @@
       </v-input>
     </v-form>
     <div class="text-center">
-      <v-btn :loading="btnIsLoading" rounded color="accent" @click="submit">
+      <v-btn
+        :loading="btnIsLoading"
+        rounded
+        color="accent"
+        :disabled="disabled"
+        @click="submit"
+      >
         {{ isEditing ? 'UPDATE' : 'REGISTER' }}
       </v-btn>
     </div>
@@ -119,6 +125,10 @@ export default defineComponent({
     member: {
       type: Object as PropType<MemberInput>,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['submit'],
