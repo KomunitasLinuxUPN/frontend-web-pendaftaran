@@ -17,7 +17,7 @@ export const confirmRegistration: RequestHandler = async (req, res) => {
   const emailTemplate = await ejs.renderFile(
     Path.join(__dirname, '..', '/templates/confirmation.ejs'),
     {
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
+      baseURL: process.env.BASE_URL!,
       token,
     }
   )
