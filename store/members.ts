@@ -150,7 +150,7 @@ export const actions: ActionTree<MembersState, RootState> = {
 
     await Promise.all([
       this.$fire.firestore.collection('members').add(newMember),
-      this.$axios.post(`${process.env.BACKEND_URL}/confirm-registration`, {
+      this.$axios.post(process.env.backendURL!, {
         email: newMemberInput.email,
         token,
       } as RegConfirmBody),
@@ -175,7 +175,7 @@ export const actions: ActionTree<MembersState, RootState> = {
     const newToken = uuid.v4()
 
     await Promise.all([
-      this.$axios.post(`${process.env.BACKEND_URL}/confirm-registration`, {
+      this.$axios.post(process.env.backendURL!, {
         email: member.email,
         token: newToken,
       } as RegConfirmBody),

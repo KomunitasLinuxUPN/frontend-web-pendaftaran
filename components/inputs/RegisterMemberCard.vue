@@ -237,8 +237,6 @@ export default defineComponent({
           }
           formRef.value!.resetValidation()
 
-          btnIsLoading.value = false
-
           dialogData.dialogIsOpen = true
           dialogData.dialogStatus = DialogStatus.SUCCESS
           dialogData.title = 'Pendaftaran berhasil!'
