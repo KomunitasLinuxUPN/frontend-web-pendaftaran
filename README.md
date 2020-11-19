@@ -1,4 +1,4 @@
-# Web Pendaftaran KoLU
+# Frontend Web Pendaftaran KoLU
 
 ## Build Setup
 
