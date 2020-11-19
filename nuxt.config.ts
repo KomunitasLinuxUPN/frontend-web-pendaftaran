@@ -1,8 +1,6 @@
 import { NuxtConfig } from '@nuxt/types'
 import colors from 'vuetify/es5/util/colors'
-import bodyParser from 'body-parser'
 
-import backend from './backend/app'
 // import { name as maintenanceMiddleware } from './middleware/maintenance-mode'
 
 const config: NuxtConfig = {
@@ -63,19 +61,10 @@ const config: NuxtConfig = {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios'],
 
-  // Node Express Middlewares (Backend)
-  serverMiddleware: [
-    bodyParser.json(),
-    {
-      path: '/backend',
-      handler: backend,
-    },
-  ],
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extractCSS: true,
-    // analyze: true,
+    analyze: true,
   },
 
   // Nuxt Loading Bar
@@ -125,12 +114,12 @@ const config: NuxtConfig = {
   },
 
   // Enable Vue Devtools
-  // vue: {
-  //   config: {
-  //     productionTip: false,
-  //     devtools: true,
-  //   },
-  // },
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true,
+    },
+  },
 }
 
 export default config
