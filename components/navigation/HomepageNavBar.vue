@@ -88,17 +88,17 @@
               <v-list-item-title>Member Terdaftar</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="https://www.kolu.web.id">
+            <v-list-item href="https://www.kolu.web.id">
               <v-icon left>mdi-web</v-icon>
               <v-list-item-title>Situs Resmi</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="https://www.instagram.com/kolu_upn_jatim">
+            <v-list-item href="https://www.instagram.com/kolu_upn_jatim">
               <v-icon left>mdi-instagram</v-icon>
               <v-list-item-title>Instagram KoLU</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="https://github.com/KomunitasLinuxUPN">
+            <v-list-item href="https://github.com/KomunitasLinuxUPN">
               <v-icon left>mdi-github</v-icon>
               <v-list-item-title>Github KoLU</v-list-item-title>
             </v-list-item>
