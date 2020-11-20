@@ -185,9 +185,15 @@ export const actions: ActionTree<MembersState, RootState> = {
       }),
     ])
 
-    member.verification.isVerified = false
-    member.verification.token = newToken
-    context.commit(MutationType.UPDATE_MEMBER, member)
+    const updatedMember: Member = {
+      ...member,
+      verification: {
+        isVerified: false,
+        token: newToken,
+      },
+    }
+
+    context.commit(MutationType.UPDATE_MEMBER, updatedMember)
   },
   async [ActionType.DELETE_MEMBER](context, deletedMember: Member) {
     const storageRef = this.$fire.storage.ref()
