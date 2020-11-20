@@ -28,21 +28,25 @@
               type="text"
               color="secondary"
             />
-            <v-text-field
+            <v-select
               v-model.number="newMemberInput.generation"
+              type="number"
               :rules="angkatanRules"
+              :items="generationYears"
+              menu-props="auto"
               label="Angkatan"
               prepend-icon="mdi-calendar-account"
-              type="number"
               hint="Range angkatan 2003 - 2020"
               color="secondary"
             />
-            <v-text-field
+            <v-select
               v-model.trim="newMemberInput.department"
+              type="text"
               :rules="nonEmptyRules"
+              :items="['Informatika', 'Sistem Informasi', 'Sains Data']"
+              menu-props="auto"
               label="Jurusan"
               prepend-icon="mdi-school"
-              type="text"
               color="secondary"
             />
             <v-text-field
@@ -58,6 +62,7 @@
               :rules="nonEmptyRules"
               label="Nomor Telefon"
               prepend-icon="mdi-phone"
+              hint="Terserah pakai +62 atau tidak"
               type="text"
               color="secondary"
             />
@@ -155,6 +160,17 @@ interface InputFileRules {
   (value: File | null): boolean | string
 }
 
+function getGenerationYears() {
+  const generationYears = []
+  const curYear = new Date().getFullYear()
+
+  for (let year = 2003; year <= curYear; year++) {
+    generationYears.push(year)
+  }
+
+  return generationYears
+}
+
 export default defineComponent({
   setup() {
     const nonEmptyRules: InputTextRules[] = [
@@ -162,11 +178,15 @@ export default defineComponent({
         (text && text.trim().length > 0) || 'Field ini tidak boleh kosong',
     ]
 
+    const generationYears = getGenerationYears()
+    const minYear = generationYears[0]
+    const maxYear = generationYears[generationYears.length - 1]
+
     const angkatanRules: InputTextRules[] = [
       (tahun) => !!tahun || 'Field ini tidak boleh kosong',
       (tahun) =>
-        (tahun && +tahun >= 2003 && +tahun < 2021) ||
-        'Range angkatan antara 2003 - 2020',
+        (tahun && +tahun >= minYear && +tahun <= maxYear) ||
+        `Range angkatan antara ${minYear} - ${maxYear}`,
     ]
 
     const emailRules: InputTextRules[] = [
@@ -279,6 +299,7 @@ export default defineComponent({
       formRef,
       newMemberInput,
       nonEmptyRules,
+      generationYears,
       angkatanRules,
       emailRules,
       imageRules,
