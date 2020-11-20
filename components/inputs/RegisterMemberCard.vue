@@ -73,6 +73,7 @@
             <v-input class="mt-3" color="secondary">
               <v-file-input
                 v-model="newMemberInput.photo"
+                :truncate-length="10"
                 :rules="imageRules"
                 :show-size="true"
                 accept="image/png, image/jpg, image/jpeg"
@@ -236,8 +237,6 @@ export default defineComponent({
             newMemberInput[key] = null
           }
           formRef.value!.resetValidation()
-
-          btnIsLoading.value = false
 
           dialogData.dialogIsOpen = true
           dialogData.dialogStatus = DialogStatus.SUCCESS

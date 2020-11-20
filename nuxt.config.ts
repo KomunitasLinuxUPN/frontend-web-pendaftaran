@@ -58,6 +58,10 @@ const config: NuxtConfig = {
     ],
   ],
 
+  env: {
+    backendURL: process.env.BACKEND_URL!,
+  },
+
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios'],
 
