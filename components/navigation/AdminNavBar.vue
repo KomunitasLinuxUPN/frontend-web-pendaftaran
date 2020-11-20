@@ -72,7 +72,7 @@ interface NavBarLink {
 
 export default defineComponent({
   setup() {
-    const drawerIsOpen = ref(true)
+    const drawerIsOpen = ref(false)
     const navBarlinks: NavBarLink[] = [
       {
         icon: 'mdi-account-multiple-check',
