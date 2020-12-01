@@ -4,6 +4,7 @@
       :headers="headers"
       :items="loadedMembers"
       :loading="fetchLoading"
+      no-data-text="Belum ada data"
       hide-default-footer
       disable-pagination
       sort-by="id"
@@ -18,7 +19,7 @@
             :loading="fetchLoading"
             color="primary"
             dark
-            @click="refetchMembers"
+            @click="fetchMembersFromFirestore"
           >
             REFRESH
           </v-btn>
@@ -153,6 +154,27 @@
       </v-card>
     </v-dialog>
 
+    <!-- Resend Email Member Dialog -->
+    <v-dialog v-model="resendEmailDialogToggle" max-width="500px">
+      <v-card>
+        <v-card-title class="info headline white--text">
+          Konfirmasi Pengiriman Email
+        </v-card-title>
+        <v-card-title class="subtitle-1 justify-center">
+          Apakah anda yakin ingin mengirim ulang email konfirmasi kepada member
+          ini?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="primary" text @click="closeResendEmailDialog">
+            BATAL
+          </v-btn>
+          <v-btn color="primary" text @click="resendEmailConfirm">IYA</v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- Delete Member Dialog -->
     <v-dialog v-model="deleteDialogToggle" max-width="500px">
       <v-card>
@@ -260,32 +282,40 @@ export default defineComponent({
 
     const { store } = useContext()
 
-    let loadedMembers: Member[]
+    // Fetch Members --------------------------------------
 
-    if (props.fetchType === Fetch.REGISTERED) {
-      loadedMembers = store.getters[
-        `${MEMBERS}/${MembersGetterType.REGISTERED_MEMBERS}`
-      ] as Member[]
-    } else if (props.fetchType === Fetch.PENDING) {
-      loadedMembers = store.getters[
-        `${MEMBERS}/${MembersGetterType.PENDING_MEMBERS}`
-      ] as Member[]
-    } else {
-      loadedMembers = store.getters[
-        `${MEMBERS}/${MembersGetterType.MEMBERS}`
-      ] as Member[]
+    const loadedMembers = ref(getMembersFromStore())
+
+    function getMembersFromStore() {
+      switch (props.fetchType) {
+        case Fetch.REGISTERED:
+          return store.getters[
+            `${MEMBERS}/${MembersGetterType.REGISTERED_MEMBERS}`
+          ] as Member[]
+        case Fetch.PENDING:
+          return store.getters[
+            `${MEMBERS}/${MembersGetterType.PENDING_MEMBERS}`
+          ] as Member[]
+        case Fetch.ALL:
+          return store.getters[
+            `${MEMBERS}/${MembersGetterType.MEMBERS}`
+          ] as Member[]
+        default:
+          throw new Error('Unknown fetch type!')
+      }
     }
 
     const { dialogData: appDialogData } = useInfoDialog()
 
     const fetchLoading = ref(false)
 
-    async function refetchMembers() {
+    async function fetchMembersFromFirestore() {
       try {
         fetchLoading.value = true
         await store.dispatch(
           `${MEMBERS}/${MembersActionType.FETCH_MEMBERS_FOR_ADMIN}`
         )
+        loadedMembers.value = getMembersFromStore()
       } catch (err) {
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.ERROR
@@ -301,21 +331,38 @@ export default defineComponent({
       return isVerified ? 'green' : 'orange'
     }
 
+    // Resend Email ---------------------------------------
+
     const actionLoading = ref(false)
 
-    async function resendEmail(member: Member) {
+    const resendEmailDialogToggle = ref(false)
+    const destMember = ref<Member | null>(null)
+
+    watch(resendEmailDialogToggle, (val) => {
+      val || closeResendEmailDialog()
+    })
+
+    function resendEmail(member: Member) {
+      destMember.value = Object.assign<any, Member>({}, member)
+      resendEmailDialogToggle.value = true
+    }
+
+    async function resendEmailConfirm() {
       try {
+        closeResendEmailDialog()
         actionLoading.value = true
 
         await store.dispatch(
           `${MEMBERS}/${MembersActionType.RESEND_EMAIL_CONFIRMATION}`,
-          Object.assign<any, Member>({}, member)
+          Object.assign<any, Member>({}, destMember.value!)
         )
 
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.SUCCESS
         appDialogData.title = 'Berhasil!'
-        appDialogData.message = `Email konfirmasi pendaftaran berhasil dikirim ulang ke ${member.email}. Harap beritahu member untuk melakukan konfirmasi`
+        appDialogData.message = `Email konfirmasi pendaftaran berhasil dikirim ulang ke ${
+          destMember.value!.email
+        }. Harap beritahu member untuk melakukan konfirmasi`
       } catch (err) {
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.ERROR
@@ -324,8 +371,15 @@ export default defineComponent({
           err.message || 'Coba lagi nanti atau silahkan hubungi admin'
       } finally {
         actionLoading.value = false
+        destMember.value = null
       }
     }
+
+    function closeResendEmailDialog() {
+      resendEmailDialogToggle.value = false
+    }
+
+    // View Photo Dialog ----------------------------------
 
     const dialogPhotoToggle = ref(false)
 
@@ -345,6 +399,8 @@ export default defineComponent({
       openedPhotoURL.value = null
     }
 
+    // Delete Member ---------------------------------------
+
     const deleteDialogToggle = ref(false)
     const deletedMember = ref<Member | null>(null)
 
@@ -359,12 +415,14 @@ export default defineComponent({
 
     async function deleteMemberConfirm() {
       try {
+        closeDeleteDialog()
         actionLoading.value = true
 
         await store.dispatch(
           `${MEMBERS}/${MembersActionType.DELETE_MEMBER}`,
           deletedMember.value
         )
+        loadedMembers.value = getMembersFromStore()
 
         appDialogData.dialogIsOpen = true
         appDialogData.dialogStatus = DialogStatus.SUCCESS
@@ -380,12 +438,11 @@ export default defineComponent({
           err.message || 'Coba lagi nanti atau silahkan hubungi admin'
       } finally {
         actionLoading.value = false
-        closeDeleteDialog()
+        deletedMember.value = null
       }
     }
 
     function closeDeleteDialog() {
-      deletedMember.value = null
       deleteDialogToggle.value = false
     }
 
@@ -393,7 +450,7 @@ export default defineComponent({
       headers,
       loadedMembers,
       fetchLoading,
-      refetchMembers,
+      fetchMembersFromFirestore,
       appDialogData,
       getColor,
       dialogPhotoToggle,
@@ -401,7 +458,10 @@ export default defineComponent({
       openPhotoDialog,
       closePhotoDialog,
       actionLoading,
+      resendEmailDialogToggle,
       resendEmail,
+      resendEmailConfirm,
+      closeResendEmailDialog,
       deleteDialogToggle,
       deleteMember,
       deleteMemberConfirm,
