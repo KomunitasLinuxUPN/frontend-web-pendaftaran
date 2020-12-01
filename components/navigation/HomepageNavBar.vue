@@ -20,6 +20,17 @@
       <v-spacer />
 
       <div class="hidden-sm-and-down">
+        <v-btn
+          v-if="curUser.uid"
+          outlined
+          rounded
+          to="/admin/dashboard/members/all"
+          class="mr-3"
+        >
+          <v-icon left>mdi-table-account</v-icon>
+          <span>DASHBOARD</span>
+        </v-btn>
+
         <v-btn outlined rounded to="/members/registered" class="mr-1">
           <v-icon left>mdi-account-group</v-icon>
           <span>TERDAFTAR</span>
@@ -83,6 +94,11 @@
             </v-btn>
           </template>
           <v-list>
+            <v-list-item v-if="curUser.uid" to="/admin/dashboard/members/all">
+              <v-icon left>mdi-table-account</v-icon>
+              <v-list-item-title>Dashboard</v-list-item-title>
+            </v-list-item>
+
             <v-list-item to="/members/registered">
               <v-icon left>mdi-account-group</v-icon>
               <v-list-item-title>Member Terdaftar</v-list-item-title>
@@ -110,12 +126,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useContext } from '@nuxtjs/composition-api'
+
+import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
+import { Admin } from '@/models/Admin'
 
 export default defineComponent({
-  data() {
+  setup() {
+    const { store } = useContext()
+    const curUser = store.getters[`${AUTH}/${AuthGetterType.ADMIN}`] as Admin
+
     return {
       iconURL: `${process.env.BASE_URL}`,
+      curUser,
     }
   },
 })
