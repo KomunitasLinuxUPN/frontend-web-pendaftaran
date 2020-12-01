@@ -47,7 +47,7 @@ import {
  * yang menekan tombol konfirmasi di email
  */
 export default defineComponent({
-  layout: 'verification',
+  layout: 'homepage',
   setup() {
     const { app, query } = useContext()
 
