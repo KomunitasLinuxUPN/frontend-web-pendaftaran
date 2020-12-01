@@ -36,6 +36,16 @@ import {
   useContext,
 } from '@nuxtjs/composition-api'
 
+/*
+ * Halaman Konfirmasi Registrasi
+ *
+ * Halaman ini berisi:
+ * 1. Tampilan info konfirmasi pendaftaran
+ * 2. Logic untuk melakukan konfirmasi pendaftaran
+ *
+ * Halaman ini sebaiknya hanya bisa diakses oleh pengguna
+ * yang menekan tombol konfirmasi di email
+ */
 export default defineComponent({
   layout: 'verification',
   setup() {

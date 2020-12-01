@@ -11,6 +11,11 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
+/*
+ * Halaman Utama
+ *
+ * By default, halaman utama hanya menampilkan formulir register member baru
+ */
 export default defineComponent({
   layout: 'homepage',
   head: {

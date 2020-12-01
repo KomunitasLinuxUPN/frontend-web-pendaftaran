@@ -3,14 +3,12 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { Admin, AdminSignInInput } from '@/models/Admin'
 import { RootState } from './index'
 
-/*
- * Namespace
- */
+// Namespace ----------------------------------------
+
 export const AUTH = 'auth'
 
-/*
- * State
- */
+// State --------------------------------------------
+
 export const state = (): Admin => ({
   uid: null,
   name: null,
@@ -20,9 +18,8 @@ export const state = (): Admin => ({
 
 export type AuthState = ReturnType<typeof state>
 
-/*
- * Getters
- */
+// Getters ------------------------------------------
+
 export const GetterType = {
   ADMIN: 'admin',
 }
@@ -33,9 +30,8 @@ export const getters: GetterTree<AuthState, RootState> = {
   },
 }
 
-/*
- * Mutations
- */
+// Mutations ----------------------------------------
+
 export const MutationType = {
   SET_ADMIN: 'setAdmin',
   CLEAR_ADMIN: 'clearAdmin',
@@ -56,9 +52,8 @@ export const mutations: MutationTree<AuthState> = {
   },
 }
 
-/*
- * Actions
- */
+// Actions ------------------------------------------
+
 export const ActionType = {
   SIGN_IN: 'signIn',
   SIGN_OUT: 'signOut',

@@ -15,6 +15,9 @@ import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
 import { Admin } from '@/models/Admin'
 import setAuthMiddelware from '@/middleware/auth/set-auth'
 
+/*
+ * Halaman Login Admin
+ */
 export default defineComponent({
   layout: 'homepage',
   middleware: [

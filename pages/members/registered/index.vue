@@ -11,6 +11,12 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
+/*
+ * Halaman Lihat Member Teregister (Publik)
+ *
+ * Halaman ini menampilkan member yang telah teregister kepada publik. Adapun
+ * data yang ditampilkan hanya sekedar nama, angkatan dan jurusan.
+ */
 export default defineComponent({
   layout: 'homepage',
   head: {

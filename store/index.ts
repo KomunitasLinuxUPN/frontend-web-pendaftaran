@@ -1,27 +1,23 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
-/*
- * State
- */
+// State --------------------------------------------
+
 export const state = () => ({})
 
 export type RootState = ReturnType<typeof state>
 
-/*
- * Getters
- */
+// Getters ------------------------------------------
+
 export const getters: GetterTree<RootState, RootState> = {}
 
-/*
- * Mutations
- */
+// Mutations ----------------------------------------
+
 export const MutationType = {}
 
 export const mutations: MutationTree<RootState> = {}
 
-/*
- * Actions
- */
+// Actions ------------------------------------------
+
 export const ActionType = {}
 
 export const actions: ActionTree<RootState, RootState> = {}

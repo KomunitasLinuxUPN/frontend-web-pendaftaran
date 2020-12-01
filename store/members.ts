@@ -61,7 +61,7 @@ export const getters: GetterTree<MembersState, RootState> = {
     })
   },
   [GetterType.MEMBERS](state) {
-    return state.members
+    return state.members.slice()
   },
   [GetterType.SIMPLE_REGISTERED_MEMBERS](state) {
     return state.simpleRegisteredMembers
@@ -89,11 +89,9 @@ export const mutations: MutationTree<MembersState> = {
     state.members[updatedMemberIndex] = updatedMember
   },
   [MutationType.DELETE_MEMBER](state, deletedMember: Member) {
-    const unselectedMembers = state.members.filter((member) => {
+    state.members = state.members.filter((member) => {
       return member.id !== deletedMember.id
     })
-    state.members.length = 0
-    state.members.push(...unselectedMembers)
   },
   [MutationType.SET_SIMPLE_REGISTERED_MEMBERS](
     state,
@@ -190,15 +188,9 @@ export const actions: ActionTree<MembersState, RootState> = {
       }),
     ])
 
-    const updatedMember: Member = {
-      ...member,
-      verification: {
-        isVerified: false,
-        token: newToken,
-      },
-    }
-
-    context.commit(MutationType.UPDATE_MEMBER, updatedMember)
+    member.verification.isVerified = false
+    member.verification.token = newToken
+    context.commit(MutationType.UPDATE_MEMBER, member)
   },
   async [ActionType.DELETE_MEMBER](context, deletedMember: Member) {
     const storageRef = this.$fire.storage.ref()
