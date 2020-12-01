@@ -1,7 +1,6 @@
 export interface AdminSignInInput {
   email: string | null
   password: string | null
-  [attr: string]: any
 }
 
 export interface Admin {

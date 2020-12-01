@@ -114,14 +114,8 @@ export default defineComponent({
       if (formRef.value?.validate()) {
         try {
           btnIsLoading.value = true
-
           await store.dispatch(`${AUTH}/${AuthActionType.SIGN_IN}`, loginInput)
-
-          for (const key in loginInput) {
-            loginInput[key] = null
-          }
           formRef.value!.resetValidation()
-
           app.router?.replace('/admin/dashboard/members/all')
         } catch (err) {
           dialogData.dialogIsOpen = true
