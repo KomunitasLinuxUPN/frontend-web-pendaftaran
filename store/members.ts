@@ -11,24 +11,31 @@ import {
 } from '@/models/Member'
 import { RootState } from './index'
 
-/*
- * Namespace
- */
+// Namespace ----------------------------------------
+
 export const MEMBERS = 'members'
 
-/*
- * State
- */
+// State --------------------------------------------
+
 export const state = () => ({
+  /*
+   * members menyimpan data lengkap seluruh pendaftar
+   * yang telah menginputkan data
+   */
   members: [] as Member[],
+
+  /*
+   * simpleRegisteredMembers menyimpan seluruh pendaftar yang
+   * telah terkonfirmasi dalam bentuk simpel (nama, angkatan, jurusan).
+   * Data ini ditujukan untuk konsumsi publik
+   */
   simpleRegisteredMembers: [] as SimpleMember[],
 })
 
 export type MembersState = ReturnType<typeof state>
 
-/*
- * Getters
- */
+// Getters ------------------------------------------
+
 export const GetterType = {
   REGISTERED_MEMBERS: 'registeredMembers',
   PENDING_MEMBERS: 'pendingMembers',
@@ -61,9 +68,8 @@ export const getters: GetterTree<MembersState, RootState> = {
   },
 }
 
-/*
- * Mutations
- */
+// Mutations ----------------------------------------
+
 export const MutationType = {
   SET_MEMBERS: 'setMembers',
   UPDATE_MEMBER: 'updateMember',
@@ -98,9 +104,8 @@ export const mutations: MutationTree<MembersState> = {
   },
 }
 
-/*
- * Actions
- */
+// Actions ------------------------------------------
+
 export const ActionType = {
   REGISTER_MEMBER: 'registerNewMember',
   FETCH_MEMBERS_FOR_ADMIN: 'fetchMembersForAdmin',
@@ -151,8 +156,8 @@ export const actions: ActionTree<MembersState, RootState> = {
     await Promise.all([
       this.$fire.firestore.collection('members').add(newMember),
       this.$axios.post(process.env.backendURL!, {
-        email: newMemberInput.email,
-        token,
+        destEmail: newMemberInput.email,
+        confirmationURL: `${window.location.origin}/members/confirmation?token=${token}`,
       } as RegConfirmBody),
     ])
   },
@@ -176,8 +181,8 @@ export const actions: ActionTree<MembersState, RootState> = {
 
     await Promise.all([
       this.$axios.post(process.env.backendURL!, {
-        email: member.email,
-        token: newToken,
+        destEmail: member.email,
+        confirmationURL: `${window.location.origin}/members/confirmation?token=${newToken}`,
       } as RegConfirmBody),
       this.$fire.firestore.collection('members').doc(member.id).update({
         'verification.isVerified': false,

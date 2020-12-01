@@ -1,4 +1,4 @@
 export default interface RegConfirmBody {
-  token: string
-  email: string
+  destEmail: string
+  confirmationURL: string
 }

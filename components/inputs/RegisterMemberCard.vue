@@ -70,7 +70,6 @@
               v-model.trim="newMemberInput.lineID"
               :rules="nonEmptyRules"
               label="ID LINE"
-              hint="Hanya ID tanpa '@' seperti 'cah_ganteng_123'"
               prepend-icon="mdi-at"
               type="text"
               color="secondary"
@@ -178,9 +177,9 @@ export default defineComponent({
         (text && text.trim().length > 0) || 'Field ini tidak boleh kosong',
     ]
 
-    const generationYears = getGenerationYears()
-    const minYear = generationYears[0]
-    const maxYear = generationYears[generationYears.length - 1]
+    const generationYears = getGenerationYears().reverse()
+    const maxYear = generationYears[0]
+    const minYear = generationYears[generationYears.length - 1]
 
     const angkatanRules: InputTextRules[] = [
       (tahun) => !!tahun || 'Field ini tidak boleh kosong',
