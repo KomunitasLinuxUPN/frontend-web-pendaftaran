@@ -4,6 +4,8 @@
       :headers="headers"
       :items="loadedMembers"
       :loading="fetchLoading"
+      no-data-text="Belum ada data"
+      loading-text="Memuat data ..."
       hide-default-footer
       disable-pagination
       sort-by="id"
