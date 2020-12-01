@@ -10,9 +10,7 @@ Aplikasi ini memerlukan Backend dan dapat dilihat di repository [Backend-Web-Pen
 
 #### Tentang Ekstensi
 
-- Dimohon untuk memasang Prettier di _text editor_ masing-masing. Untuk pengguna VSCode silakan memasang ekstensi Prettier yang tersedia di _marketplace_, lalu aktifkan opsi _"format on save"_ pada _setting_ VSCode anda.
-
-- Juga dianjurkan untuk memasang ekstensi ESLint untuk pengguna VSCode, karena proyek ini memiliki _hook pre-commit_ yang menjalankan ESLint untuk menjaga kualitas dan konsistensi kode.
+- Dianjurkan untuk memasang ekstensi ESLint untuk pengguna VSCode, karena proyek ini memiliki _hook pre-commit_ yang menjalankan ESLint untuk menjaga kualitas dan konsistensi kode.
 
 #### Tentang _commit_
 
