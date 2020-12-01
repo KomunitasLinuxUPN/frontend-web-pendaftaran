@@ -157,19 +157,21 @@
     <!-- Resend Email Member Dialog -->
     <v-dialog v-model="resendEmailDialogToggle" max-width="500px">
       <v-card>
-        <v-card-title class="info headline white--text">
+        <v-card-title class="primary headline white--text">
           Konfirmasi Pengiriman Email
         </v-card-title>
         <v-card-title class="subtitle-1 justify-center">
           Apakah anda yakin ingin mengirim ulang email konfirmasi kepada member
           ini?
         </v-card-title>
-        <v-card-actions>
+        <v-card-actions class="pb-4">
           <v-spacer />
           <v-btn color="primary" text @click="closeResendEmailDialog">
             BATAL
           </v-btn>
-          <v-btn color="primary" text @click="resendEmailConfirm">IYA</v-btn>
+          <v-btn color="primary" elevation="0" @click="resendEmailConfirm">
+            IYA
+          </v-btn>
           <v-spacer />
         </v-card-actions>
       </v-card>
@@ -184,10 +186,12 @@
         <v-card-title class="subtitle-1 justify-center">
           Apakah anda yakin ingin menghapus member ini?
         </v-card-title>
-        <v-card-actions>
+        <v-card-actions class="pb-4">
           <v-spacer />
           <v-btn color="primary" text @click="closeDeleteDialog">BATAL</v-btn>
-          <v-btn color="primary" text @click="deleteMemberConfirm">IYA</v-btn>
+          <v-btn color="primary" elevation="0" @click="deleteMemberConfirm">
+            IYA
+          </v-btn>
           <v-spacer />
         </v-card-actions>
       </v-card>
