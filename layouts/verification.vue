@@ -9,3 +9,13 @@
     <the-footer />
   </v-app>
 </template>
+
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+import setAuthMiddleware from '@/middleware/auth/set-auth'
+
+export default defineComponent({
+  middleware: setAuthMiddleware,
+})
+</script>

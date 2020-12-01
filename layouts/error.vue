@@ -25,11 +25,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType, useMeta } from '@nuxtjs/composition-api'
-
 import { NuxtError } from '@nuxt/types'
+
+import setAuthMiddleware from '@/middleware/auth/set-auth'
 
 export default defineComponent({
   layout: 'empty',
+  middleware: setAuthMiddleware,
   props: {
     error: {
       type: Object as PropType<NuxtError>,
