@@ -9,6 +9,10 @@ export const AUTH = 'auth'
 
 // State --------------------------------------------
 
+/*
+ * Auth State; merupakan data session admin yang disimpan di dalam store auth
+ * Data session didapatkan dari IndexedDB yang dibuat oleh Firebase Auth
+ */
 export const state = (): Admin => ({
   uid: null,
   name: null,
@@ -62,6 +66,14 @@ export const ActionType = {
 }
 
 export const actions: ActionTree<AuthState, RootState> = {
+  /*
+   * Action SIGN_IN; untuk melakukan login admin
+   *
+   * Karena disini kita menggunakan Firebase Auth dengan memanggil fungsi
+   * .signInWithEmailAndPassword() maka firebase akan menyimpan data session
+   * di indexedDB. Data tersebut nantinya kita ambil melalui middleware set-auth
+   * untuk kemudian disimpan ke dalam state auth (vuex)
+   */
   async [ActionType.SIGN_IN](_, AdminSignInInput: AdminSignInInput) {
     try {
       await this.$fire.auth.signInWithEmailAndPassword(
@@ -81,10 +93,21 @@ export const actions: ActionTree<AuthState, RootState> = {
       }
     }
   },
+
+  /*
+   * Action SIGN_OUT; untuk melakukan logout admin
+   *
+   * Fungsi ini akan menghapus data session yang disimpan di state auth,
+   * beserta data session yang disimpan di IndexedDB
+   */
   async [ActionType.SIGN_OUT](context) {
-    context.commit(MutationType.CLEAR_ADMIN)
     await this.$fire.auth.signOut()
+    context.commit(MutationType.CLEAR_ADMIN)
   },
+
+  /*
+   * Action SET_SESSION; untuk set session admin ke dalam state auth
+   */
   [ActionType.SET_SESSION](context, admin: Admin) {
     context.commit(MutationType.SET_ADMIN, admin)
   },

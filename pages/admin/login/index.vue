@@ -23,6 +23,7 @@ export default defineComponent({
   middleware: [
     setAuthMiddelware,
     (context) => {
+      // Jika session masih ada, redirect ke dashboard
       const curUser = context.store.getters[
         `${AUTH}/${AuthGetterType.ADMIN}`
       ] as Admin

@@ -25,6 +25,9 @@ import {
   UnwrapRef,
 } from '@nuxtjs/composition-api'
 
+/*
+ * Enum DialogStatus; untuk menentukan warna dialog
+ */
 export enum DialogStatus {
   SUCCESS = 'success',
   INFO = 'info',
@@ -38,6 +41,12 @@ export interface InfoDialogData {
   dialogStatus: DialogStatus
 }
 
+/*
+ * Hook useInfoDialog()
+ *
+ * Gunakan hook ini untuk menampilkan dan mengisi dialog, yakni dengan mengubah2
+ * isi dari objek dialogData
+ */
 export function useInfoDialog() {
   const dialogData = reactive<InfoDialogData>({
     dialogIsOpen: false,
@@ -51,6 +60,20 @@ export function useInfoDialog() {
   }
 }
 
+/*
+ * Komponen AppInfoDialog
+ *
+ * Komponen ini digunakan untuk menampilkan dialog info yang berupa title & text
+ *
+ * Tampilan dari komponen ini dikontrol oleh objek dialogData yang
+ * ada di hook useInfoDialog(). Jadi, untuk menampilkan dan mengisi dialog
+ * silahkan ubah2 isi dari objek dialogData yang ada di hook useInfoDialog()
+ *
+ * Anda tidak perlu menulis kode untuk menutup dialog ini karena sudah dihandle
+ * dari internal oleh fungsi closeDialog() di bawah
+ *
+ * Lihat contoh penggunaan komponen ini di komponen RegisterMemberCard.vue
+ */
 export default defineComponent({
   props: {
     dialogData: {
@@ -59,8 +82,8 @@ export default defineComponent({
     },
   },
   setup(props) {
+    /* eslint-disable vue/no-mutating-props */
     function closeDialog() {
-      /* eslint-disable vue/no-mutating-props */
       props.dialogData.dialogIsOpen = false
       props.dialogData.title = null
       props.dialogData.message = null

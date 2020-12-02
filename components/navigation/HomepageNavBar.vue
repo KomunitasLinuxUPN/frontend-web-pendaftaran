@@ -131,6 +131,11 @@ import { defineComponent, useContext } from '@nuxtjs/composition-api'
 import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
 import { Admin } from '@/models/Admin'
 
+/*
+ * Komponen AdminNavBar
+ *
+ * Komponen ini adalah App Bar untuk layout homepage & layout error
+ */
 export default defineComponent({
   setup() {
     const { store } = useContext()

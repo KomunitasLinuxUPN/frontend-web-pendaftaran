@@ -11,6 +11,12 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 import { FetchType } from '@/constants/FetchType'
 
+/*
+ * Halaman Pendaftar Terkonfirmasi
+ *
+ * Halaman ini menampilkan tabel yang berisi data seluruh pendaftar yang
+ * pendaftarannya telah terkonfirmasi
+ */
 export default defineComponent({
   layout: 'admin',
   setup() {

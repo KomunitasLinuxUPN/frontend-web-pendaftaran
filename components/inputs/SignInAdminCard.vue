@@ -83,6 +83,11 @@ interface InputTextRules {
   (value: string | null): boolean | string
 }
 
+/*
+ * Komponen SignInAdminCard
+ *
+ * Komponen ini digunakan untuk menampilkan form login sebagai admin
+ */
 export default defineComponent({
   setup() {
     const emailRules: InputTextRules[] = [

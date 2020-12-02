@@ -3,6 +3,13 @@ import { defineNuxtMiddleware } from '@nuxtjs/composition-api'
 import { AUTH, ActionType as AuthActionType } from '@/store/auth'
 import { Admin } from '@/models/Admin'
 
+/*
+ * Set Auth Middleware
+ *
+ * Middleware ini digunakan untuk memasang session admin ke store auth (vuex).
+ * Data session didapatkan dari firebase auth. Jika firebase auth tidak memiliki
+ * session, maka state session di store auth akan dikosongkan (null semua)
+ */
 export default defineNuxtMiddleware((context) => {
   return new Promise((resolve, reject) => {
     const unsubscribe = context.$fire.auth.onAuthStateChanged(

@@ -70,6 +70,13 @@ interface NavBarLink {
   route: string
 }
 
+/*
+ * Komponen AdminNavBar
+ *
+ * Komponen ini terdiri dari:
+ * 1. App Bar untuk layout admin
+ * 2. Navigation Drawer untuk layout admin
+ */
 export default defineComponent({
   setup() {
     const drawerIsOpen = ref(false)

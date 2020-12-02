@@ -7,6 +7,12 @@ import {
 } from '@/store/members'
 import { Member } from '@/models/Member'
 
+/*
+ * Fetch Members Middleware
+ *
+ * Middleware ini digunakan untuk fetch members, dengan tujuan untuk menyiapkan
+ * data members ketika aplikasi hendak merender layout admin
+ */
 export default defineNuxtMiddleware(async (context) => {
   const loadedMembers = context.store.getters[
     `${MEMBERS}/${MembersGetterType.MEMBERS}`

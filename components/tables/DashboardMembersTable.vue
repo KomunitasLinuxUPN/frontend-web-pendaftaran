@@ -225,6 +225,13 @@ import {
   DialogStatus,
 } from '@/components/info/AppInfoDialog.vue'
 
+/*
+ * Komponen DashboardMembersTable
+ *
+ * Komponen ini digunakan untuk menampilkan data member berdasarkan FetchType.
+ * Komponen ini menerima props FetchType untuk menentukan data mana yang akan
+ * ditampilkan.
+ */
 export default defineComponent({
   props: {
     fetchType: {

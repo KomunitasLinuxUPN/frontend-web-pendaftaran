@@ -80,6 +80,12 @@ import {
   DialogStatus,
 } from '@/components/info/AppInfoDialog.vue'
 
+/*
+ * Komponen PublicMembersTable
+ *
+ * Komponen ini digunakan untuk menampilkan data member kepada publik.
+ * Adapun data member yang ditampilkan cukup simpel: nama, angkatan & jurusan.
+ */
 export default defineComponent({
   setup() {
     const headers = reactive<DataTableHeader[]>([

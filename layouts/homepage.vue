@@ -13,6 +13,10 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 import setAuthMiddleware from '@/middleware/auth/set-auth'
 
+/*
+ * Layout homepage hanya digunakan untuk menyusun tampilan
+ * halaman register & halaman konfirmasi pendaftaran
+ */
 export default defineComponent({
   middleware: setAuthMiddleware,
 })

@@ -29,6 +29,12 @@ import { NuxtError } from '@nuxt/types'
 
 import setAuthMiddleware from '@/middleware/auth/set-auth'
 
+/*
+ * Layout error
+ *
+ * Tampilan layout ini mirip dengan layout homepage, akan tetapi
+ * isinya spesifik untuk menyusun tampilan web ketika terjadi error / maintenance
+ */
 export default defineComponent({
   layout: 'empty',
   middleware: setAuthMiddleware,

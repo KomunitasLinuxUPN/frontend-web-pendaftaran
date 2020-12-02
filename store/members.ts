@@ -27,7 +27,7 @@ export const state = () => ({
   /*
    * simpleRegisteredMembers menyimpan seluruh pendaftar yang
    * telah terkonfirmasi dalam bentuk simpel (nama, angkatan, jurusan).
-   * Data ini ditujukan untuk konsumsi publik
+   * Data ini ditujukan untuk konsumsi publik di homepage
    */
   simpleRegisteredMembers: [] as SimpleMember[],
 })
@@ -113,6 +113,16 @@ export const ActionType = {
 }
 
 export const actions: ActionTree<MembersState, RootState> = {
+  /*
+   * Getter REGISTER_MEMBER untuk mendaftarkan member baru
+   *
+   * Ada beberapa langkah yang dilakukan fungsi ini:
+   * 1. Mengecek email, apakah sudah digunakan?
+   * 2. Mengkompresi ukuran foto member
+   * 3. Mengupload foto member ke Firebase Storage
+   * 4. Mengupload data member ke Firestore
+   * 5. Mengirim email konfirmasi pendaftaran ke member
+   */
   async [ActionType.REGISTER_MEMBER](_, newMemberInput: MemberInput) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')
@@ -159,6 +169,16 @@ export const actions: ActionTree<MembersState, RootState> = {
       } as RegConfirmBody),
     ])
   },
+
+  /*
+   * Action FETCH_MEMBERS_FOR_ADMIN
+   *
+   * Action ini untuk mendapatkan data lengkap seluruh member baik yang sudah
+   * melakukan konfirmasi pendaftaran maupun yang belum melakukan konfirmasi
+   * pendaftaran
+   *
+   * Data didapatkan dari firestore & disimpan di dalam state members
+   */
   async [ActionType.FETCH_MEMBERS_FOR_ADMIN](context) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')
@@ -174,6 +194,13 @@ export const actions: ActionTree<MembersState, RootState> = {
 
     context.commit(MutationType.SET_MEMBERS, members)
   },
+
+  /*
+   * Getter RESEND_EMAIL_CONFIRMATION untuk mengirim ulang email konfirmasi
+   *
+   * Fungsi ini akan mereset ulang token konfirmasi dan status verifikasi dari
+   * suatu member serta mengirim ulang email konfirmasi ke member tujuan
+   */
   async [ActionType.RESEND_EMAIL_CONFIRMATION](context, member: Member) {
     const newToken = uuid.v4()
 
@@ -192,6 +219,12 @@ export const actions: ActionTree<MembersState, RootState> = {
     member.verification.token = newToken
     context.commit(MutationType.UPDATE_MEMBER, member)
   },
+
+  /*
+   * Getter DELETE_MEMBER untuk menghapus data suatu member
+   *
+   * Fungsi ini akan menghapus data member yang ada di firestore & state members
+   */
   async [ActionType.DELETE_MEMBER](context, deletedMember: Member) {
     const storageRef = this.$fire.storage.ref()
     const photoRef = storageRef.child(`photos/${deletedMember.email}`)
@@ -203,6 +236,17 @@ export const actions: ActionTree<MembersState, RootState> = {
 
     context.commit(MutationType.DELETE_MEMBER, deletedMember)
   },
+
+  /*
+   * Getter FETCH_REGISTERED_MEMBERS_FOR_PUBLIC untuk mendapatkan data seluruh
+   * member yang telah melakukan kofirmasi pendaftaran dalam bentuk yang simpel
+   *
+   * Datanya simpel, terdiri dari nama, angkatan & jurusan
+   * Data2 ini bertujuan untuk ditampilkan pada publik di homepage
+   *
+   * Data didapatkan dari firestore & disimpan di dalam state
+   * simpleRegisteredMembers
+   */
   async [ActionType.FETCH_REGISTERED_MEMBERS_FOR_PUBLIC](context) {
     const memberSnapshots = await this.$fire.firestore
       .collection('members')

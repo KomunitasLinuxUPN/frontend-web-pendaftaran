@@ -170,6 +170,11 @@ function getGenerationYears() {
   return generationYears
 }
 
+/*
+ * Komponen RegisterMemberCard
+ *
+ * Komponen ini digunakan untuk menampilkan form register member baru
+ */
 export default defineComponent({
   setup() {
     const nonEmptyRules: InputTextRules[] = [

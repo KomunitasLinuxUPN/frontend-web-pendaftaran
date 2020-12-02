@@ -15,6 +15,9 @@ import setAuthMiddleware from '@/middleware/auth/set-auth'
 import requireAuthMiddleware from '@/middleware/auth/require-auth'
 import fetchMembersMiddleware from '@/middleware/members/fetch-members'
 
+/*
+ * Layout admin hanya digunakan untuk halaman dashboard (admin)
+ */
 export default defineComponent({
   middleware: [
     setAuthMiddleware,
