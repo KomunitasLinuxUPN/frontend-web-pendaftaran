@@ -10,11 +10,11 @@ Aplikasi ini memerlukan Backend dan dapat dilihat di repository [Backend-Web-Pen
 
 #### Tentang Ekstensi
 
-- Dianjurkan untuk memasang ekstensi ESLint untuk pengguna VSCode, karena proyek ini memiliki _hook pre-commit_ yang menjalankan ESLint untuk menjaga kualitas dan konsistensi kode.
+- Dimohon untuk memasang ekstensi ESLint bagi pengguna VSCode, karena proyek ini menggunakan ESLint untuk menjaga kualitas dan konsistensi kode.
 
 #### Tentang _commit_
 
-- Dimohon untuk tidak melakukan _commit_ langsung ke _branch master_. Dimohon untuk membuat _branch_ baru untuk setiap pekerjaan anda, lalu _push_ branch tersebut ke _repository_ ini dan lakukan _pull request_ ke _branch master_.
+- Dimohon untuk tidak melakukan _commit_ langsung ke _branch main_. Dimohon untuk membuat _branch_ baru untuk setiap pekerjaan anda, lalu _push_ branch tersebut ke _repository_ ini dan lakukan _pull request_ ke _branch main_.
 
 ---
 
