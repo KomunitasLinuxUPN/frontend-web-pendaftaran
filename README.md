@@ -1,8 +1,8 @@
 # Frontend Web Pendaftaran KoLU
 
-Aplikasi ini dibuat menggunakan framework Nuxt dengan mode SPA (Single Page Application)
+Aplikasi ini dibuat menggunakan framework Nuxt dengan mode SPA (Single Page Application).
 
-Aplikasi ini memerlukan Backend dan dapat dilihat di repository [Backend-Web-Pendaftaran-KoLU](https://github.com/KomunitasLinuxUPN/Backend-Web-Pendaftaran-KoLU.git)
+Aplikasi ini memerlukan Backend dan dapat dilihat di repository [Backend-Web-Pendaftaran-KoLU](https://github.com/KomunitasLinuxUPN/Backend-Web-Pendaftaran-KoLU.git).
 
 ---
 
