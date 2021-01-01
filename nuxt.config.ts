@@ -33,7 +33,14 @@ const config: NuxtConfig = {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    '@nuxt/typescript-build', // https://go.nuxtjs.dev/typescript
+    [
+      '@nuxt/typescript-build',
+      {
+        typeCheck: {
+          typescript: require.resolve('typescript'),
+        },
+      },
+    ], // https://go.nuxtjs.dev/typescript
     '@nuxtjs/vuetify', // https://go.nuxtjs.dev/vuetify,
     '@nuxtjs/composition-api', // https://composition-api.nuxtjs.org/
     [
