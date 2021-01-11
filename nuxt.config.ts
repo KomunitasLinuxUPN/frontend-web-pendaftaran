@@ -1,6 +1,7 @@
 import { NuxtConfig } from '@nuxt/types'
 import colors from 'vuetify/es5/util/colors'
 
+import { RegStatus } from './constants/app-status'
 // import { name as maintenanceMiddleware } from './middleware/maintenance-mode'
 
 const config: NuxtConfig = {
@@ -66,7 +67,8 @@ const config: NuxtConfig = {
   ],
 
   env: {
-    backendURL: process.env.BACKEND_URL!,
+    backendURL: process.env.BACKEND_URL || 'Please provide your backend URL',
+    regStatus: process.env.REGISTRATION_STATUS || RegStatus.CLOSED,
   },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
