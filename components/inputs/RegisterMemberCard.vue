@@ -75,7 +75,7 @@
               color="secondary"
             />
             <v-input class="mt-3" color="secondary">
-              <v-file-input
+              <!-- <v-file-input
                 v-model="newMemberInput.photo"
                 :truncate-length="10"
                 :rules="imageRules"
@@ -85,13 +85,24 @@
                 prepend-icon="mdi-camera"
                 label="Foto Diri"
                 class="mr-8"
+              /> -->
+              <!-- Pakai yang atas jika ingin buka pendaftaran -->
+              <v-file-input
+                v-model="newMemberInput.photo"
+                :truncate-length="10"
+                :rules="imageRules"
+                :show-size="true"
+                accept="image/png, image/jpg, image/jpeg"
+                prepend-icon="mdi-camera"
+                label="Foto Diri"
+                class="mr-8"
               />
               <v-avatar size="100" class="secondary">
                 <v-img position="center" :src="photoPreviewUrl" />
               </v-avatar>
             </v-input>
           </v-form>
-          <div class="text-center">
+          <div class="text-center mb-5">
             <v-btn
               :loading="btnIsLoading"
               rounded
@@ -144,6 +155,7 @@ import {
 } from '@/components/info/AppInfoDialog.vue'
 import { MemberInput } from '@/models/Member'
 import { MEMBERS, ActionType as MembersActionType } from '@/store/members'
+import { RegStatus } from '~/constants/app-status'
 
 interface VForm extends HTMLFormElement {
   reset(): void
@@ -247,8 +259,24 @@ export default defineComponent({
     const btnIsLoading = ref(false)
     const { dialogData } = useInfoDialog()
 
+    // Buka tutup pendaftaran
+    // Komen salah satu message jika ingin buka/tutup pendaftaran
+    const registrationState = {
+      isClosed: process.env.regStatus === RegStatus.CLOSED,
+      // message: 'Pendaftaran masih belum dibuka',
+      message:
+        'Mohon maaf, pendaftaran anggota KoLU telah ditutup. Kamu masih bisa join dengan cara menghubungi Humas KoLU yoi (DM Instagram KoLU)',
+    }
+
+    if (registrationState.isClosed) {
+      dialogData.dialogIsOpen = true
+      dialogData.dialogStatus = DialogStatus.INFO
+      dialogData.title = 'Pendaftaran telah ditutup'
+      dialogData.message = registrationState.message
+    }
+
     async function submit() {
-      if (formRef.value?.validate()) {
+      if (formRef.value?.validate() && !registrationState.isClosed) {
         try {
           btnIsLoading.value = true
 
@@ -283,20 +311,6 @@ export default defineComponent({
           btnIsLoading.value = false
         }
       }
-    }
-
-    const registrationState = {
-      isClosed: false,
-      message: 'Pendaftaran masih belum dibuka',
-      // message:
-      //   'Mohon maaf, pendaftaran anggota KoLU telah ditutup. Kamu masih bisa join dengan cara menghubungi Humas KoLU yoi (DM Instagram KoLU) 😉',
-    }
-
-    if (registrationState.isClosed) {
-      dialogData.dialogIsOpen = true
-      dialogData.dialogStatus = DialogStatus.INFO
-      dialogData.title = 'Pendaftaran telah ditutup'
-      dialogData.message = registrationState.message
     }
 
     return {
