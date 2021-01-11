@@ -1,6 +1,7 @@
 <template>
-  <v-card class="elevation-6 pa-2">
+  <v-card class="elevation-6">
     <v-data-table
+      class="pa-2"
       :headers="headers"
       :items="loadedMembers"
       :loading="fetchLoading"

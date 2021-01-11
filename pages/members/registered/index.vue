@@ -1,5 +1,5 @@
 <template>
-  <v-container class="public-members-registered" fluid>
+  <v-container class="public-members-registered mb-8" fluid>
     <v-row justify="center">
       <v-col cols="12" sm="8" md="8">
         <public-members-table />

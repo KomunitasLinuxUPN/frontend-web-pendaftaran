@@ -1,6 +1,7 @@
 <template>
-  <v-card>
+  <v-card class="elevation-6">
     <v-data-table
+      class="pa-2"
       :headers="headers"
       :items="loadedMembers"
       :loading="fetchLoading"
@@ -219,7 +220,7 @@ import {
   GetterType as MembersGetterType,
   ActionType as MembersActionType,
 } from '@/store/members'
-import { Fetch } from '@/constants/FetchType'
+import { Fetch } from '@/constants/fetch-type'
 import {
   useInfoDialog,
   DialogStatus,
