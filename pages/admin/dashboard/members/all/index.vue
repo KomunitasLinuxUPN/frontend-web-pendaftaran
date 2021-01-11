@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import { FetchType } from '@/constants/FetchType'
+import { FetchType } from '@/constants/fetch-type'
 
 /*
  * Halaman Semua Pendaftar
