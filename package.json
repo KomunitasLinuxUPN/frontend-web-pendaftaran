@@ -18,7 +18,7 @@
     "@nuxtjs/firebase": "^7.3.3",
     "browser-image-compression": "^1.0.13",
     "core-js": "^3.8.1",
-    "firebase": "^8.2.3",
+    "firebase": "^8.2.4",
     "nuxt": "^2.14.12",
     "vue-uuid": "^2.0.2"
   },
