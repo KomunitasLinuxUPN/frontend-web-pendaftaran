@@ -11,6 +11,8 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
+import { RegStatus } from '~/constants/app-status'
+
 /*
  * Halaman Utama
  *
@@ -18,6 +20,11 @@ import { defineComponent } from '@nuxtjs/composition-api'
  */
 export default defineComponent({
   layout: 'homepage',
+  middleware: (context) => {
+    if (process.env.regStatus === RegStatus.CLOSED) {
+      context.redirect('/members/registered')
+    }
+  },
   head: {
     title: 'Daftar Member Baru',
   },

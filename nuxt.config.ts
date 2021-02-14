@@ -123,7 +123,7 @@ const config: NuxtConfig = {
   },
 
   router: {
-    // middleware: maintenanceMiddleware,
+    // middleware: [maintenanceMiddleware],
   },
 
   // Enable Vue Devtools
