@@ -153,9 +153,9 @@ import {
   useInfoDialog,
   DialogStatus,
 } from '@/components/info/AppInfoDialog.vue'
-import { MemberInput } from '@/models/Member'
+import { MemberInput } from '@/typings/Member'
 import { MEMBERS, ActionType as MembersActionType } from '@/store/members'
-import { RegStatus } from '~/constants/app-status'
+import { RegStatus } from '@/constants/app-status'
 
 interface VForm extends HTMLFormElement {
   reset(): void

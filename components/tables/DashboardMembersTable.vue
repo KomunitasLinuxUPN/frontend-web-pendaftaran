@@ -214,7 +214,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { DataTableHeader } from 'vuetify'
 
-import { Member } from '@/models/Member'
+import { Member } from '@/typings/Member'
 import {
   MEMBERS,
   GetterType as MembersGetterType,

@@ -5,7 +5,7 @@ import {
   ActionType as MembersActionType,
   GetterType as MembersGetterType,
 } from '@/store/members'
-import { Member } from '@/models/Member'
+import { Member } from '@/typings/Member'
 
 /*
  * Fetch Members Middleware

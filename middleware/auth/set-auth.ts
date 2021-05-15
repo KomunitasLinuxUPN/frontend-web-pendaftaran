@@ -1,7 +1,7 @@
 import { defineNuxtMiddleware } from '@nuxtjs/composition-api'
 
 import { AUTH, ActionType as AuthActionType } from '@/store/auth'
-import { Admin } from '@/models/Admin'
+import { Admin } from '@/typings/Admin'
 
 /*
  * Set Auth Middleware

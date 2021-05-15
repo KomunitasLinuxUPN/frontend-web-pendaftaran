@@ -12,7 +12,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 import { AUTH, GetterType as AuthGetterType } from '@/store/auth'
-import { Admin } from '@/models/Admin'
+import { Admin } from '@/typings/Admin'
 import setAuthMiddelware from '@/middleware/auth/set-auth'
 
 /*

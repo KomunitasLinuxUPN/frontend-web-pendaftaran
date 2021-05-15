@@ -66,7 +66,7 @@ import {
   useContext,
 } from '@nuxtjs/composition-api'
 
-import { AdminSignInInput } from '@/models/Admin'
+import { AdminSignInInput } from '@/typings/Admin'
 import { AUTH, ActionType as AuthActionType } from '@/store/auth'
 import {
   DialogStatus,
