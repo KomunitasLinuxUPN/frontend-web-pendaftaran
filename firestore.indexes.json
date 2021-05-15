@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "members",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "verification.token",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "verification.isVerified",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
