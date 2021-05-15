@@ -70,7 +70,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { DataTableHeader } from 'vuetify'
 
-import { SimpleMember } from '@/models/Member'
+import { SimpleMember } from '@/typings/Member'
 import {
   MEMBERS,
   GetterType as MembersGetterType,

@@ -2,13 +2,13 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { uuid } from 'vue-uuid'
 import imageCompression from 'browser-image-compression'
 
-import RegConfirmBody from '@/models/backend/RegConfirmBody'
+import RegConfirmBody from '@/typings/backend/RegConfirmBody'
 import {
   FirestoreMember,
   Member,
   MemberInput,
   SimpleMember,
-} from '@/models/Member'
+} from '@/typings/Member'
 import { RootState } from './index'
 
 // Namespace ----------------------------------------

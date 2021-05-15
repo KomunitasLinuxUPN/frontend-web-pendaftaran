@@ -58,7 +58,7 @@ import {
   ActionType as AuthActionType,
   GetterType as AuthGetterType,
 } from '@/store/auth'
-import { Admin } from '@/models/Admin'
+import { Admin } from '@/typings/Admin'
 import {
   SnackbarStatus,
   useInfoSnackbar,

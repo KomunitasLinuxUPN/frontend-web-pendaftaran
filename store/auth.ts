@@ -1,6 +1,6 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex'
 
-import { Admin, AdminSignInInput } from '@/models/Admin'
+import { Admin, AdminSignInInput } from '@/typings/Admin'
 import { RootState } from './index'
 
 // Namespace ----------------------------------------

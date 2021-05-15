@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
-import { RegStatus } from '~/constants/app-status'
+import { RegStatus } from '@/constants/app-status'
 
 /*
  * Halaman Utama
